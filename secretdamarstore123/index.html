@@ -295,8 +295,25 @@
 
         .admin-category-items {
             display: flex;
-            flex-direction: column;
-            gap: 10px;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-yellow) var(--surface-alt);
+        }
+
+        .admin-category-items::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .admin-category-items::-webkit-scrollbar-track {
+            background: var(--surface-alt);
+            border-radius: 3px;
+        }
+
+        .admin-category-items::-webkit-scrollbar-thumb {
+            background: var(--primary-yellow);
+            border-radius: 3px;
         }
 
         .admin-product-item {
@@ -307,6 +324,8 @@
             justify-content: space-between;
             align-items: center;
             gap: 16px;
+            min-width: 260px;
+            flex: 0 0 auto;
         }
 
         .admin-product-info {
@@ -320,6 +339,10 @@
             font-size: 0.95rem;
             font-weight: 700;
             color: var(--text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 150px;
         }
 
         .admin-product-meta {
@@ -431,35 +454,35 @@
                         <div class="form-group">
                             <label class="form-label">Judul Layanan</label>
                             <div class="input-wrapper">
-                                <input type="text" class="form-input" id="prodTitle" placeholder="Contoh: Trial V4 Full Gear" required autocomplete="off">
+                                <input type="text" class="form-input" id="prodTitle" placeholder="Contoh: Trial V4 Full Gear" required autocomplete="off" autocapitalize="off" spellcheck="false" data-form-type="other">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label">Kategori</label>
                             <div class="input-wrapper">
-                                <input type="text" class="form-input" id="prodCategory" placeholder="Contoh: gear, boss, atau paket" required autocomplete="off">
+                                <input type="text" class="form-input" id="prodCategory" placeholder="Contoh: gear, boss, atau paket" required autocomplete="off" autocapitalize="off" spellcheck="false" data-form-type="other">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label">Tags / Kata Kunci Pencarian</label>
                             <div class="input-wrapper">
-                                <input type="text" class="form-input" id="prodTags" placeholder="Contoh: trial, v4, gear (pisahkan koma)" required autocomplete="off">
+                                <input type="text" class="form-input" id="prodTags" placeholder="Contoh: trial, v4, gear (pisahkan koma)" required autocomplete="off" autocapitalize="off" spellcheck="false" data-form-type="other">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label">Harga (Rp)</label>
                             <div class="input-wrapper">
-                                <input type="number" class="form-input" id="prodPrice" placeholder="Contoh: 50000" required min="0">
+                                <input type="number" class="form-input" id="prodPrice" placeholder="Contoh: 50000" required min="0" autocomplete="off" inputmode="numeric">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label">Deskripsi Layanan</label>
                             <div class="input-wrapper">
-                                <textarea class="form-textarea" id="prodDesc" placeholder="Tuliskan keterangan singkat layanan..." autocomplete="off"></textarea>
+                                <textarea class="form-textarea" id="prodDesc" placeholder="Tuliskan keterangan singkat layanan..." autocomplete="off" autocapitalize="off" spellcheck="false" data-form-type="other"></textarea>
                             </div>
                         </div>
 
