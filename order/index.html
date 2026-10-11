@@ -231,7 +231,7 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
-            gap: 12px;
+            gap: 16px;
         }
 
         .qris-badge-title {
@@ -244,20 +244,40 @@
         }
 
         .qris-img-wrapper {
-            background: #ffffff;
-            padding: 12px;
-            border-radius: 16px;
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            margin: 4px 0;
+            gap: 12px;
+            margin: 4px auto;
+            max-width: 100%;
+            box-shadow: none;
         }
 
         .qris-img {
-            width: 170px;
-            height: 170px;
+            width: 100%;
+            max-width: 280px;
+            height: auto;
             object-fit: contain;
+            display: block;
+            border-radius: 12px;
+        }
+
+        .btn-download-qris {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background-color: rgba(255, 255, 255, 0.08);
+            color: var(--text-main);
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: 0.2s;
         }
 
         .qris-desc {
@@ -553,6 +573,78 @@
             background-color: rgba(255, 255, 255, 0.15);
         }
 
+        .custom-alert-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 400;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s;
+            padding: 20px;
+        }
+
+        .custom-alert-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .custom-alert-box {
+            background-color: var(--surface-alt);
+            border-radius: 18px;
+            max-width: 320px;
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            text-align: center;
+            transform: scale(0.95);
+            transition: transform 0.25s ease;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .custom-alert-overlay.active .custom-alert-box {
+            transform: scale(1);
+        }
+
+        .custom-alert-title {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .custom-alert-desc {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .custom-alert-btn {
+            background-color: var(--primary-yellow);
+            color: var(--bg-color);
+            border: none;
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.2s;
+            width: 100%;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .custom-alert-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
         @media (max-width: 767px) {
             .desktop-nav {
                 display: none;
@@ -623,7 +715,7 @@
         
         <nav class="desktop-nav">
             <a href="/" class="desktop-nav-item">Beranda</a>
-            <a href="/jokk" class="desktop-nav-item">List Joki</a>
+            <a href="/jokii" class="desktop-nav-item">List Joki</a>
         </nav>
     </header>
 
@@ -652,7 +744,7 @@
                         </div>
                         <div class="summary-row total">
                             <span>Total Harga</span>
-                            <span id="summaryTotalPrice">Rp 0</span>
+                            <span id="summaryTotalPrice">Harga via WA</span>
                         </div>
                     </div>
                 </div>
@@ -664,9 +756,13 @@
                     </div>
                     <div class="qris-img-wrapper">
                         <img src="../source/qris.jpg" alt="QRIS All Payment Marz" class="qris-img">
+                        <a href="../source/qris.jpg" download="QRIS-Marz-Store.jpg" class="btn-download-qris">
+                            <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                            Download QRIS
+                        </a>
                     </div>
                     <p class="qris-desc">
-                        Scan QRIS di atas via Dana, OVO, GoPay, ShopeePay, BCA, Mandiri, atau E-Wallet/Bank lainnya sesuai <strong>Total Harga</strong>.<br><br>
+                        Scan QRIS di atas via Dana, OVO, GoPay, ShopeePay, BCA, Mandiri, atau E-Wallet/Bank lainnya sesuai nominal kesepakatan.<br><br>
                         ⚠️ <strong>PENTING:</strong> Wajib <strong>Simpan Bukti Pembayaran (Screenshot)</strong>! Setelah isi data di samping, klik tombol bawah untuk langsung dialihkan ke WhatsApp Admin dan kirimkan bukti pembayaranmu.
                     </p>
                 </div>
@@ -763,6 +859,14 @@
         </div>
     </div>
 
+    <div class="custom-alert-overlay" id="customAlertOverlay">
+        <div class="custom-alert-box">
+            <div class="custom-alert-title">Keranjang Kosong</div>
+            <div class="custom-alert-desc">Keranjang kamu masih kosong. Silakan pilih produk joki terlebih dahulu.</div>
+            <a href="/joki" class="custom-alert-btn">Pilih Produk</a>
+        </div>
+    </div>
+
     <nav class="bottom-nav">
         <a href="/" class="nav-item">
             <svg class="svg-nav-icon" viewBox="0 0 24 24">
@@ -793,6 +897,16 @@
             localStorage.setItem('marz_cart', JSON.stringify(cart));
         }
 
+        function showEmptyCartAlert() {
+            document.getElementById('customAlertOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCustomAlert() {
+            document.getElementById('customAlertOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
         function renderCheckoutCart() {
             let cart = getCart();
             let container = document.getElementById('checkoutCartList');
@@ -800,10 +914,17 @@
             let totalPriceEl = document.getElementById('summaryTotalPrice');
 
             let totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
-            let totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            let hasValidPrice = cart.some(item => item.price && item.price > 0);
+            let totalPrice = cart.reduce((sum, item) => sum + ((item.price || 0) * item.qty), 0);
 
             totalItemsEl.innerText = totalItems + ' item';
-            totalPriceEl.innerText = 'Rp ' + totalPrice.toLocaleString();
+            if (cart.length === 0) {
+                totalPriceEl.innerText = 'Rp 0';
+            } else if (!hasValidPrice || totalPrice === 0) {
+                totalPriceEl.innerText = 'Harga via WA';
+            } else {
+                totalPriceEl.innerText = 'Rp ' + totalPrice.toLocaleString();
+            }
 
             if (cart.length === 0) {
                 container.innerHTML = '<div class="empty-cart-msg">Keranjang kamu masih kosong. Silakan tambah layanan terlebih dahulu.</div>';
@@ -812,11 +933,12 @@
 
             let html = '';
             cart.forEach((item, index) => {
+                let itemPriceText = (!item.price || item.price <= 0) ? 'Harga via WA' : 'Rp ' + (item.price * item.qty).toLocaleString();
                 html += `
                     <div class="cart-item-row">
                         <div class="cart-item-detail">
                             <span class="cart-item-name">${item.name}</span>
-                            <span class="cart-item-price">Rp ${(item.price * item.qty).toLocaleString()}</span>
+                            <span class="cart-item-price">${itemPriceText}</span>
                         </div>
                         <div class="cart-item-actions">
                             <span class="cart-item-qty">${item.qty}x</span>
@@ -866,8 +988,12 @@
 
         window.onclick = function(event) {
             let modal = document.getElementById('recoveryHelpModal');
+            let alertModal = document.getElementById('customAlertOverlay');
             if (event.target === modal) {
                 closeRecoveryHelpModal();
+            }
+            if (event.target === alertModal) {
+                closeCustomAlert();
             }
         };
 
@@ -876,7 +1002,7 @@
             
             let cart = getCart();
             if (cart.length === 0) {
-                alert("Keranjang kamu masih kosong!");
+                showEmptyCartAlert();
                 return;
             }
 
@@ -910,17 +1036,19 @@
 
             if (!isValid) return;
 
-            let totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            let hasValidPrice = cart.some(item => item.price && item.price > 0);
+            let totalPrice = cart.reduce((sum, item) => sum + ((item.price || 0) * item.qty), 0);
             
             let message = "Halo Admin Marz Joki Blox Fruits, saya ingin memesan layanan berikut:%0A%0A";
             cart.forEach(item => {
-                message += `- ${item.name} (${item.qty}x) : Rp ${(item.price * item.qty).toLocaleString()}%0A`;
+                let itemPriceText = (!item.price || item.price <= 0) ? 'Harga via WA' : 'Rp ' + (item.price * item.qty).toLocaleString();
+                message += `- ${item.name} (${item.qty}x) : ${itemPriceText}%0A`;
             });
-            message += `%0A*Total Harga:* Rp ${totalPrice.toLocaleString()}%0A%0A`;
+            message += `%0A*Total Harga:* ${(!hasValidPrice || totalPrice === 0) ? 'Harga via WA' : 'Rp ' + totalPrice.toLocaleString()}%0A%0A`;
             message += `*Data Akun:*%0A- Username: ${username}%0A- Password: ${password}%0A- Email: ${email}%0A%0A`;
             message += `_Saya sudah melakukan transfer via QRIS dan akan menyertakan bukti pembayaran (screenshot) di bawah ini:_`;
 
-            let adminNumber = "6281234567890";
+            let adminNumber = "6288211975711";
             let whatsappUrl = `https://wa.me/${adminNumber}?text=${message}`;
 
             window.open(whatsappUrl, '_blank');
