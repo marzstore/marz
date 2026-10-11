@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marz - Order</title>
+    <meta name="description" content="Jasa joki dan Items roblox.">
+    
+    <meta property="og:title" content="Marz - List Joki & Item Store roblox">
+    <meta property="og:description" content="Jasa joki dan kalkulator leveling Blox Fruits terpercaya di Marz Store.">
+    <meta property="og:type" content="website">
+
+    <link rel="icon" type="image/png" href="../source/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #0b0b0b;
+            --surface-color: #161616;
+            --surface-alt: #141414;
+            --primary-yellow: #ffcc00;
+            --primary-hover: #e6b800;
+            --text-main: #ffffff;
+            --text-muted: #a3a3a3;
+            --text-dimmed: #737373;
+            --danger-color: #ff3b30;
+            --radius-btn: 20px;
+            --radius-card: 16px;
+            --radius-input: 20px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding-bottom: 40px;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            background-color: var(--bg-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: none;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-logo {
+            height: 30px;
+            width: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        .desktop-nav {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .desktop-nav-item {
+            color: var(--text-dimmed);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            background: none;
+            border: none;
+        }
+
+        .desktop-nav-item:hover,
+        .desktop-nav-item.active {
+            color: var(--primary-yellow);
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .page-header {
+            margin-bottom: 24px;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .order-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+
+        @media (min-width: 900px) {
+            .order-layout {
+                grid-template-columns: 1.2fr 0.8fr;
+            }
+        }
+
+        .left-column {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .order-card {
+            background-color: var(--surface-alt);
+            border-radius: var(--radius-card);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .section-heading {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cart-items-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 320px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .cart-item-row {
+            background-color: var(--surface-color);
+            padding: 14px 16px;
+            border-radius: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cart-item-detail {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .cart-item-price {
+            font-size: 0.8rem;
+            color: var(--primary-yellow);
+            font-weight: 700;
+        }
+
+        .cart-item-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cart-item-qty {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .cart-remove-btn {
+            background: none;
+            border: none;
+            color: var(--text-dimmed);
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 800;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: 0.2s;
+        }
+
+        .cart-remove-btn:hover {
+            background-color: rgba(255, 59, 48, 0.2);
+            color: var(--danger-color);
+        }
+
+        .empty-cart-msg {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        .qris-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 12px;
+        }
+
+        .qris-badge-title {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--primary-yellow);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .qris-img-wrapper {
+            background: #ffffff;
+            padding: 12px;
+            border-radius: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            margin: 4px 0;
+        }
+
+        .qris-img {
+            width: 170px;
+            height: 170px;
+            object-fit: contain;
+        }
+
+        .qris-desc {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .qris-desc strong {
+            color: var(--primary-yellow);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .help-icon-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
+            color: var(--text-main);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 800;
+            transition: 0.2s;
+        }
+
+        .help-icon-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--primary-yellow);
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .form-input {
+            width: 100%;
+            background-color: var(--surface-color);
+            border: 1.5px solid transparent;
+            padding: 14px 20px;
+            border-radius: var(--radius-input);
+            color: var(--text-main);
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus {
+            background-color: #1f1f1f;
+            border-color: rgba(255, 204, 0, 0.4);
+        }
+
+        .form-input.input-error {
+            border-color: var(--danger-color) !important;
+            background-color: rgba(255, 59, 48, 0.05);
+        }
+
+        .form-input.input-error::placeholder {
+            color: var(--danger-color);
+            font-weight: 600;
+        }
+
+        .toggle-password-btn {
+            position: absolute;
+            right: 16px;
+            background: none;
+            border: none;
+            color: var(--text-dimmed);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px;
+            transition: 0.2s;
+        }
+
+        .toggle-password-btn:hover {
+            color: var(--text-main);
+        }
+
+        .info-notice-box {
+            background-color: var(--surface-color);
+            border-radius: var(--radius-input);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .order-summary-box {
+            background-color: var(--surface-color);
+            padding: 16px 20px;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .summary-row.total {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--primary-yellow);
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding-top: 10px;
+            margin-top: 4px;
+        }
+
+        .btn-primary-yellow {
+            background-color: var(--primary-yellow);
+            color: var(--bg-color);
+            border: none;
+            padding: 16px 20px;
+            border-radius: var(--radius-btn);
+            font-weight: 700;
+            font-size: 0.95rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 15px rgba(255, 204, 0, 0.2);
+            text-decoration: none;
+            width: 100%;
+        }
+
+        .btn-primary-yellow:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 300;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s;
+            padding: 16px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-container-box {
+            background-color: var(--surface-alt);
+            border-radius: 24px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 28px 24px;
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .modal-overlay.active .modal-container-box {
+            transform: translateY(0);
+        }
+
+        .modal-top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-security-badge {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            color: #d1d1d1;
+            text-transform: uppercase;
+        }
+
+        .modal-close-icon-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 12px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .modal-close-icon-btn:hover {
+            background: rgba(255, 255, 255, 0.18);
+            color: var(--primary-yellow);
+        }
+
+        .modal-main-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            line-height: 1.25;
+            color: var(--text-main);
+        }
+
+        .modal-subtitle-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .modal-steps-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .modal-step-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 0.85rem;
+            color: #d1d1d1;
+            line-height: 1.5;
+        }
+
+        .modal-step-num {
+            font-weight: 700;
+            color: var(--text-muted);
+            min-width: 18px;
+        }
+
+        .modal-alert-box {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 14px;
+            padding: 14px 16px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .modal-btn-close-action {
+            background-color: rgba(255, 255, 255, 0.08);
+            color: var(--text-main);
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            align-self: flex-end;
+            border: none;
+            transition: 0.2s;
+        }
+
+        .modal-btn-close-action:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        @media (max-width: 767px) {
+            .desktop-nav {
+                display: none;
+            }
+            .bottom-nav {
+                position: fixed;
+                bottom: 8px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: calc(100% - 32px);
+                max-width: 380px;
+                background-color: rgba(26, 26, 26, 0.75);
+                border: none;
+                border-radius: 24px;
+                display: flex;
+                justify-content: space-around;
+                padding: 10px 0;
+                z-index: 100;
+            }
+            .nav-item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                color: var(--text-dimmed);
+                text-decoration: none;
+                font-size: 0.75rem;
+                gap: 4px;
+                transition: 0.2s;
+                cursor: pointer;
+                flex: 1;
+                background: none;
+                border: none;
+            }
+            .nav-item .svg-nav-icon {
+                width: 20px;
+                height: 20px;
+                fill: none;
+                stroke: var(--text-dimmed);
+                stroke-width: 2;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                transition: 0.2s;
+            }
+            .nav-item.active {
+                color: var(--primary-yellow);
+            }
+            .nav-item.active .svg-nav-icon {
+                stroke: var(--primary-yellow);
+            }
+            body {
+                padding-bottom: 90px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .bottom-nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="nav-brand">
+            <img src="../source/logo.png" alt="Marz Logo" class="nav-logo">
+        </div>
+        
+        <nav class="desktop-nav">
+            <a href="/" class="desktop-nav-item">Beranda</a>
+            <a href="/jokk" class="desktop-nav-item">List Joki</a>
+        </nav>
+    </header>
+
+    <div class="main-container">
+        <div class="page-header">
+            <h1 class="page-title">Checkout Pesanan</h1>
+            <p class="page-subtitle">Periksa kembali daftar layanan di keranjangmu, lakukan pembayaran QRIS, dan isi data akun untuk proses joki.</p>
+        </div>
+
+        <div class="order-layout">
+            <div class="left-column">
+                <div class="order-card">
+                    <div class="section-heading">
+                        <svg style="width:20px;height:20px;fill:var(--primary-yellow)" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                        <span>Daftar Layanan Dipilih</span>
+                    </div>
+                    
+                    <div class="cart-items-list" id="checkoutCartList">
+                        <div class="empty-cart-msg">Keranjang kamu masih kosong.</div>
+                    </div>
+
+                    <div class="order-summary-box">
+                        <div class="summary-row">
+                            <span>Total Layanan</span>
+                            <span id="summaryTotalItems">0 item</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total Harga</span>
+                            <span id="summaryTotalPrice">Rp 0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="order-card qris-card">
+                    <div class="qris-badge-title">
+                        <svg style="width:20px;height:20px;fill:var(--primary-yellow)" viewBox="0 0 24 24"><path d="M3 11h8V3H3v8zm2-6h4v4H5V5zm8-2v8h8V3h-8zm6 6h-4V5h4v4zM3 21h8v-8H3v8zm2-6h4v4H5v-4zm13-2h-2v2h2v-2zm1 2h2v2h-2v-2zm-1 2h-2v2h2v-2zm1 2h2v2h-2v-2zm1-4h2v2h-2v-2zm-3 0h-2v2h2v-2zm0 4h-2v2h2v-2z"/></svg>
+                        Pembayaran All Payment (QRIS)
+                    </div>
+                    <div class="qris-img-wrapper">
+                        <img src="../source/qris.jpg" alt="QRIS All Payment Marz" class="qris-img">
+                    </div>
+                    <p class="qris-desc">
+                        Scan QRIS di atas via Dana, OVO, GoPay, ShopeePay, BCA, Mandiri, atau E-Wallet/Bank lainnya sesuai <strong>Total Harga</strong>.<br><br>
+                        ⚠️ <strong>PENTING:</strong> Wajib <strong>Simpan Bukti Pembayaran (Screenshot)</strong>! Setelah isi data di samping, klik tombol bawah untuk langsung dialihkan ke WhatsApp Admin dan kirimkan bukti pembayaranmu.
+                    </p>
+                </div>
+            </div>
+
+            <div class="order-card" style="height: fit-content;">
+                <div class="section-heading">
+                    <svg style="width:20px;height:20px;fill:var(--primary-yellow)" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+                    <span>Data Akun & Kontak</span>
+                </div>
+
+                <form id="orderForm" onsubmit="submitOrder(event)" style="display: flex; flex-direction: column; gap: 16px;" novalidate>
+                    <div class="form-group">
+                        <label class="form-label">Username Roblox</label>
+                        <div class="input-wrapper">
+                            <input type="text" class="form-input" id="robloxUsername" placeholder="Contoh: UsernameRoblox123" data-original-placeholder="Contoh: UsernameRoblox123" oninput="clearError(this)">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Password Roblox</label>
+                        <div class="input-wrapper">
+                            <input type="password" class="form-input" id="robloxPassword" placeholder="Masukkan password akun" data-original-placeholder="Masukkan password akun" oninput="clearError(this)" style="padding-right: 48px;">
+                            <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility('robloxPassword', this)" title="Lihat Password">
+                                <svg id="eyeIcon" style="width:20px;height:20px;fill:currentColor" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="info-notice-box">
+                            <span>Kode verifikasi akan diminta via WA saat proses login</span>
+                            <button type="button" class="help-icon-btn" onclick="openRecoveryHelpModal()" title="Informasi Login">!</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email (Aktif)</label>
+                        <div class="input-wrapper">
+                            <input type="email" class="form-input" id="userEmail" placeholder="Contoh: emailkamu@gmail.com" data-original-placeholder="Contoh: emailkamu@gmail.com" oninput="clearError(this)">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary-yellow" style="margin-top: 8px;">
+                        Kirim Order via WhatsApp
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="recoveryHelpModal">
+        <div class="modal-container-box">
+            <div class="modal-top-header">
+                <span class="modal-security-badge">Roblox Account Security</span>
+                <button type="button" class="modal-close-icon-btn" onclick="closeRecoveryHelpModal()">
+                    <svg style="width:18px;height:18px;fill:currentColor" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                </button>
+            </div>
+
+            <div>
+                <h2 class="modal-main-title">Informasi Kode Verifikasi</h2>
+                <p class="modal-subtitle-text" style="margin-top: 8px;">
+                    Saat admin melakukan login ke akun kamu, Roblox akan mengirimkan kode verifikasi sekali pakai ke Gmail kamu.
+                </p>
+            </div>
+
+            <ul class="modal-steps-list">
+                <li class="modal-step-row">
+                    <span class="modal-step-num">1.</span>
+                    <span>Lakukan pemesanan dan isi form dengan benar.</span>
+                </li>
+                <li class="modal-step-row">
+                    <span class="modal-step-num">2.</span>
+                    <span>Admin akan mulai memproses pesanan dan mencoba login ke akun.</span>
+                </li>
+                <li class="modal-step-row">
+                    <span class="modal-step-num">3.</span>
+                    <span>Admin akan meminta kode verifikasi yang masuk ke Gmail kamu di obrolan chat WhatsApp.</span>
+                </li>
+                <li class="modal-step-row">
+                    <span class="modal-step-num">4.</span>
+                    <span>Kirimkan kode verifikasi tersebut melalui chat WhatsApp admin agar proses login dapat dilanjutkan.</span>
+                </li>
+            </ul>
+
+            <div class="modal-alert-box">
+                Kode verifikasi bersifat sementara dan hanya bisa digunakan sekali. Tetap pantau WhatsApp untuk kelancaran proses joki.
+            </div>
+
+            <button type="button" class="modal-btn-close-action" onclick="closeRecoveryHelpModal()">
+                Tutup
+            </button>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="/" class="nav-item">
+            <svg class="svg-nav-icon" viewBox="0 0 24 24">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            <span>Beranda</span>
+        </a>
+        <a href="/joki" class="nav-item">
+            <svg class="svg-nav-icon" viewBox="0 0 24 24">
+                <line x1="8" y1="6" x2="21" y2="6"></line>
+                <line x1="8" y1="12" x2="21" y2="12"></line>
+                <line x1="8" y1="18" x2="21" y2="18"></line>
+                <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                <line x1="3" y1="18" x2="3.01" y2="18"></line>
+            </svg>
+            <span>List Joki</span>
+        </a>
+    </nav>
+
+    <script>
+        function getCart() {
+            return JSON.parse(localStorage.getItem('marz_cart')) || [];
+        }
+
+        function saveCart(cart) {
+            localStorage.setItem('marz_cart', JSON.stringify(cart));
+        }
+
+        function renderCheckoutCart() {
+            let cart = getCart();
+            let container = document.getElementById('checkoutCartList');
+            let totalItemsEl = document.getElementById('summaryTotalItems');
+            let totalPriceEl = document.getElementById('summaryTotalPrice');
+
+            let totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+            let totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+            totalItemsEl.innerText = totalItems + ' item';
+            totalPriceEl.innerText = 'Rp ' + totalPrice.toLocaleString();
+
+            if (cart.length === 0) {
+                container.innerHTML = '<div class="empty-cart-msg">Keranjang kamu masih kosong. Silakan tambah layanan terlebih dahulu.</div>';
+                return;
+            }
+
+            let html = '';
+            cart.forEach((item, index) => {
+                html += `
+                    <div class="cart-item-row">
+                        <div class="cart-item-detail">
+                            <span class="cart-item-name">${item.name}</span>
+                            <span class="cart-item-price">Rp ${(item.price * item.qty).toLocaleString()}</span>
+                        </div>
+                        <div class="cart-item-actions">
+                            <span class="cart-item-qty">${item.qty}x</span>
+                            <button class="cart-remove-btn" onclick="removeCartItem(${index})">&times;</button>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function removeCartItem(index) {
+            let cart = getCart();
+            cart.splice(index, 1);
+            saveCart(cart);
+            renderCheckoutCart();
+        }
+
+        function clearError(inputElement) {
+            if (inputElement.classList.contains('input-error')) {
+                inputElement.classList.remove('input-error');
+                let orig = inputElement.getAttribute('data-original-placeholder');
+                if (orig) inputElement.placeholder = orig;
+            }
+        }
+
+        function togglePasswordVisibility(inputId, btn) {
+            let input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.innerHTML = `<svg style="width:20px;height:20px;fill:currentColor" viewBox="0 0 24 24"><path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.44-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.17c0-1.66-1.34-3-3-3l-.17.02z"/></svg>`;
+            } else {
+                input.type = 'password';
+                btn.innerHTML = `<svg style="width:20px;height:20px;fill:currentColor" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>`;
+            }
+        }
+
+        function openRecoveryHelpModal() {
+            document.getElementById('recoveryHelpModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeRecoveryHelpModal() {
+            document.getElementById('recoveryHelpModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        window.onclick = function(event) {
+            let modal = document.getElementById('recoveryHelpModal');
+            if (event.target === modal) {
+                closeRecoveryHelpModal();
+            }
+        };
+
+        function submitOrder(event) {
+            event.preventDefault();
+            
+            let cart = getCart();
+            if (cart.length === 0) {
+                alert("Keranjang kamu masih kosong!");
+                return;
+            }
+
+            let usernameEl = document.getElementById('robloxUsername');
+            let passwordEl = document.getElementById('robloxPassword');
+            let emailEl = document.getElementById('userEmail');
+
+            let username = usernameEl.value.trim();
+            let password = passwordEl.value.trim();
+            let email = emailEl.value.trim();
+
+            let fieldsToValidate = [
+                { el: usernameEl, val: username, errPlaceholder: "Isi dulu bagian ini!" },
+                { el: passwordEl, val: password, errPlaceholder: "Isi dulu bagian ini!" },
+                { el: emailEl, val: email, errPlaceholder: "Isi dulu bagian ini!" }
+            ];
+
+            let isValid = true;
+
+            fieldsToValidate.forEach(item => {
+                if (!item.val) {
+                    item.el.classList.add('input-error');
+                    item.el.placeholder = item.errPlaceholder;
+                    isValid = false;
+
+                    setTimeout(() => {
+                        clearError(item.el);
+                    }, 3500);
+                }
+            });
+
+            if (!isValid) return;
+
+            let totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            
+            let message = "Halo Admin Marz Joki Blox Fruits, saya ingin memesan layanan berikut:%0A%0A";
+            cart.forEach(item => {
+                message += `- ${item.name} (${item.qty}x) : Rp ${(item.price * item.qty).toLocaleString()}%0A`;
+            });
+            message += `%0A*Total Harga:* Rp ${totalPrice.toLocaleString()}%0A%0A`;
+            message += `*Data Akun:*%0A- Username: ${username}%0A- Password: ${password}%0A- Email: ${email}%0A%0A`;
+            message += `_Saya sudah melakukan transfer via QRIS dan akan menyertakan bukti pembayaran (screenshot) di bawah ini:_`;
+
+            let adminNumber = "6281234567890";
+            let whatsappUrl = `https://wa.me/${adminNumber}?text=${message}`;
+
+            window.open(whatsappUrl, '_blank');
+        }
+
+        renderCheckoutCart();
+    </script>
+
+</body>
+</html>
