@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marz - Halaman Tidak Ditemukan</title>
+    <meta name="description" content="Halaman yang kamu cari tidak ditemukan atau sudah dipindahkan.">
+    
+    <meta property="og:title" content="Marz - 404 Not Found">
+    <meta property="og:description" content="Halaman tidak ditemukan di Marz Store.">
+    <meta property="og:type" content="website">
+
+    <link rel="icon" type="image/png" href="../source/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #0b0b0b;
+            --surface-color: #161616;
+            --surface-alt: #141414;
+            --primary-yellow: #ffcc00;
+            --primary-hover: #e6b800;
+            --text-main: #ffffff;
+            --text-muted: #a3a3a3;
+            --text-dimmed: #737373;
+            --radius-btn: 20px;
+            --radius-card: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            background-color: var(--bg-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-logo {
+            height: 30px;
+            width: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        .desktop-nav {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .desktop-nav-item {
+            color: var(--text-dimmed);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            background: none;
+            border: none;
+        }
+
+        .desktop-nav-item:hover,
+        .desktop-nav-item.active {
+            color: var(--primary-yellow);
+        }
+
+        .main-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            width: 100%;
+        }
+
+        .not-found-card {
+            padding: 40px 24px;
+            max-width: 480px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 20px;
+        }
+
+        .error-code {
+            font-size: 5rem;
+            font-weight: 800;
+            color: var(--primary-yellow);
+            line-height: 1;
+        }
+
+        .error-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .error-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .btn-home {
+            background-color: var(--primary-yellow);
+            color: var(--bg-color);
+            border: none;
+            padding: 14px 28px;
+            border-radius: var(--radius-btn);
+            font-weight: 700;
+            font-size: 0.95rem;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 15px rgba(255, 204, 0, 0.2);
+            text-decoration: none;
+            margin-top: 8px;
+            width: 100%;
+        }
+
+        .btn-home:hover {
+            background-color: var(--primary-hover);
+        }
+
+        @media (max-width: 767px) {
+            .desktop-nav {
+                display: none;
+            }
+            .bottom-nav {
+                position: fixed;
+                bottom: 8px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: calc(100% - 32px);
+                max-width: 380px;
+                background-color: rgba(26, 26, 26, 0.75);
+                border: none;
+                border-radius: 24px;
+                display: flex;
+                justify-content: space-around;
+                padding: 10px 0;
+                z-index: 100;
+            }
+            .nav-item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                color: var(--text-dimmed);
+                text-decoration: none;
+                font-size: 0.75rem;
+                gap: 4px;
+                transition: 0.2s;
+                cursor: pointer;
+                flex: 1;
+                background: none;
+                border: none;
+            }
+            .nav-item .svg-nav-icon {
+                width: 20px;
+                height: 20px;
+                fill: none;
+                stroke: var(--text-dimmed);
+                stroke-width: 2;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                transition: 0.2s;
+            }
+            .nav-item.active {
+                color: var(--primary-yellow);
+            }
+            .nav-item.active .svg-nav-icon {
+                stroke: var(--primary-yellow);
+            }
+            body {
+                padding-bottom: 90px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .bottom-nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="nav-brand">
+            <img src="../source/logo.png" alt="Marz Logo" class="nav-logo">
+        </div>
+        
+        <nav class="desktop-nav">
+            <a href="/" class="desktop-nav-item">Beranda</a>
+            <a href="/jokii" class="desktop-nav-item">List Joki</a>
+        </nav>
+    </header>
+
+    <div class="main-container">
+        <div class="not-found-card">
+            <div class="error-code">404</div>
+            <div>
+                <h1 class="error-title">Halaman Tidak Ditemukan</h1>
+                <p class="error-desc" style="margin-top: 8px;">
+                    Oops! Halaman yang kamu tuju mungkin sudah dihapus, namanya diubah, atau sedang tidak tersedia.
+                </p>
+            </div>
+            <a href="/" class="btn-home">
+                Kembali ke Beranda
+            </a>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="/" class="nav-item">
+            <svg class="svg-nav-icon" viewBox="0 0 24 24">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            <span>Beranda</span>
+        </a>
+        <a href="/joki" class="nav-item">
+            <svg class="svg-nav-icon" viewBox="0 0 24 24">
+                <line x1="8" y1="6" x2="21" y2="6"></line>
+                <line x1="8" y1="12" x2="21" y2="12"></line>
+                <line x1="8" y1="18" x2="21" y2="18"></line>
+                <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                <line x1="3" y1="18" x2="3.01" y2="18"></line>
+            </svg>
+            <span>List Joki</span>
+        </a>
+    </nav>
+
+</body>
+</html>
