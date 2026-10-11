@@ -145,7 +145,6 @@
             color: var(--text-main);
             display: flex;
             align-items: center;
-            gap: 10px;
         }
 
         .cart-items-list {
@@ -229,18 +228,31 @@
         .qris-card {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            text-align: center;
+            align-items: flex-start;
+            text-align: left;
             gap: 16px;
         }
 
         .qris-badge-title {
-            font-size: 0.95rem;
+            font-size: 1.1rem;
             font-weight: 800;
-            color: var(--primary-yellow);
+            color: var(--text-main);
+        }
+
+        .qris-content-wrapper {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 6px;
+            gap: 16px;
+            width: 100%;
+        }
+
+        @media (min-width: 768px) {
+            .qris-content-wrapper {
+                flex-direction: row;
+                align-items: flex-start;
+                gap: 20px;
+            }
         }
 
         .qris-img-wrapper {
@@ -251,14 +263,19 @@
             flex-direction: column;
             align-items: center;
             gap: 12px;
-            margin: 4px auto;
-            max-width: 100%;
-            box-shadow: none;
+            flex-shrink: 0;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 768px) {
+            .qris-img-wrapper {
+                margin: 0;
+            }
         }
 
         .qris-img {
             width: 100%;
-            max-width: 280px;
+            max-width: 160px;
             height: auto;
             object-fit: contain;
             display: block;
@@ -272,18 +289,20 @@
             gap: 8px;
             background-color: rgba(255, 255, 255, 0.08);
             color: var(--text-main);
-            padding: 10px 18px;
-            border-radius: 12px;
-            font-size: 0.85rem;
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 0.78rem;
             font-weight: 700;
             text-decoration: none;
             transition: 0.2s;
+            width: 100%;
         }
 
         .qris-desc {
             font-size: 0.78rem;
             color: var(--text-muted);
             line-height: 1.5;
+            flex: 1;
         }
 
         .qris-desc strong {
@@ -729,7 +748,6 @@
             <div class="left-column">
                 <div class="order-card">
                     <div class="section-heading">
-                        <svg style="width:20px;height:20px;fill:var(--primary-yellow)" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
                         <span>Daftar Layanan Dipilih</span>
                     </div>
                     
@@ -751,26 +769,25 @@
 
                 <div class="order-card qris-card">
                     <div class="qris-badge-title">
-                        <svg style="width:20px;height:20px;fill:var(--primary-yellow)" viewBox="0 0 24 24"><path d="M3 11h8V3H3v8zm2-6h4v4H5V5zm8-2v8h8V3h-8zm6 6h-4V5h4v4zM3 21h8v-8H3v8zm2-6h4v4H5v-4zm13-2h-2v2h2v-2zm1 2h2v2h-2v-2zm-1 2h-2v2h2v-2zm1 2h2v2h-2v-2zm1-4h2v2h-2v-2zm-3 0h-2v2h2v-2zm0 4h-2v2h2v-2z"/></svg>
                         Pembayaran All Payment (QRIS)
                     </div>
-                    <div class="qris-img-wrapper">
-                        <img src="../source/qris.jpg" alt="QRIS All Payment Marz" class="qris-img">
-                        <a href="../source/qris.jpg" download="QRIS-Marz-Store.jpg" class="btn-download-qris">
-                            <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-                            Download QRIS
-                        </a>
+                    <div class="qris-content-wrapper">
+                        <div class="qris-img-wrapper">
+                            <img src="../source/qris.jpg" alt="QRIS All Payment Marz" class="qris-img">
+                            <a href="../source/qris.jpg" download="QRIS-Marz-Store.jpg" class="btn-download-qris">
+                                Download QRIS
+                            </a>
+                        </div>
+                        <p class="qris-desc">
+                            Scan QRIS di atas via Dana, OVO, GoPay, ShopeePay, BCA, Mandiri, atau E-Wallet/Bank lainnya sesuai nominal kesepakatan.<br><br>
+                            ⚠️ <strong>PENTING:</strong> Wajib <strong>Simpan Bukti Pembayaran (Screenshot)</strong>! Setelah isi data di samping, klik tombol bawah untuk langsung dialihkan ke WhatsApp Admin dan kirimkan bukti pembayaranmu.
+                        </p>
                     </div>
-                    <p class="qris-desc">
-                        Scan QRIS di atas via Dana, OVO, GoPay, ShopeePay, BCA, Mandiri, atau E-Wallet/Bank lainnya sesuai nominal kesepakatan.<br><br>
-                        ⚠️ <strong>PENTING:</strong> Wajib <strong>Simpan Bukti Pembayaran (Screenshot)</strong>! Setelah isi data di samping, klik tombol bawah untuk langsung dialihkan ke WhatsApp Admin dan kirimkan bukti pembayaranmu.
-                    </p>
                 </div>
             </div>
 
             <div class="order-card" style="height: fit-content;">
                 <div class="section-heading">
-                    <svg style="width:20px;height:20px;fill:var(--primary-yellow)" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
                     <span>Data Akun & Kontak</span>
                 </div>
 
