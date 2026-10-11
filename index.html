@@ -4,8 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Marz - List Joki & Item Store roblox</title>
-    <meta name="description" content="Jasa joki dan kalkulator leveling Blox Fruits terpercaya di Marz Store.">
-    <link rel="icon" type="image/png" href="/source/logo.png">
+    <meta name="description" content="Jasa joki dan Items roblox.">
+    
+    <meta property="og:title" content="Marz - List Joki & Item Store roblox">
+    <meta property="og:description" content="Jasa joki dan kalkulator leveling Blox Fruits terpercaya di Marz Store.">
+    <meta property="og:type" content="website">
+
+    <link rel="icon" type="image/png" href="source/logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
@@ -278,6 +283,11 @@
             animation: pulseDot 2s infinite;
         }
 
+        .online-dot.offline {
+            background-color: #ef4444;
+            box-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
+        }
+
         @keyframes pulseDot {
             0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
             70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
@@ -482,105 +492,6 @@
             transform: rotate(180deg);
         }
 
-        .testimonial-section {
-            width: 100%;
-            padding: 24px 0 40px 0;
-            overflow: hidden;
-        }
-
-        .marquee-wrapper {
-            width: 100%;
-            overflow: hidden;
-            position: relative;
-            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-            -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-        }
-
-        .marquee-track {
-            display: flex;
-            gap: 16px;
-            width: max-content;
-            animation: scrollMarquee 25s linear infinite;
-        }
-
-        .marquee-track:hover {
-            animation-play-state: paused;
-        }
-
-        @keyframes scrollMarquee {
-            0% {
-                transform: translateX(0);
-            }
-            100% {
-                transform: translateX(-50%);
-            }
-        }
-
-        .testimonial-card {
-            background: var(--surface-alt);
-            border-radius: var(--radius-card);
-            padding: 18px 20px;
-            border: none;
-            width: 280px;
-            flex-shrink: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .testimonial-user-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .user-avatar {
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            background-color: rgba(255, 204, 0, 0.2);
-            color: var(--primary-yellow);
-            font-weight: 700;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .user-details {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .user-name {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--text-main);
-        }
-
-        .user-service {
-            font-size: 0.7rem;
-            color: var(--text-dimmed);
-        }
-
-        .testimonial-stars {
-            color: var(--primary-yellow);
-            font-size: 0.75rem;
-            letter-spacing: 2px;
-        }
-
-        .testimonial-text {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            line-height: 1.4;
-        }
-
-        .testimonial-footer {
-            font-size: 0.68rem;
-            color: var(--text-dimmed);
-            margin-top: 4px;
-        }
-
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -682,7 +593,6 @@
             width: 34px;
             height: 34px;
             border-radius: 50%;
-            background-color: rgba(255, 204, 0, 0.15);
             color: var(--primary-yellow);
             font-weight: 800;
             font-size: 0.85rem;
@@ -829,7 +739,7 @@
         </div>
         
         <nav class="desktop-nav">
-            <a href="/marz" class="desktop-nav-item active">Beranda</a>
+            <a href="" class="desktop-nav-item active">Beranda</a>
             <a href="/joki" class="desktop-nav-item">List Joki</a>
         </nav>
 
@@ -857,8 +767,8 @@
         <section class="hero-section">
             <div class="hero-content">
                 <div class="online-status-bar">
-                    <div class="online-dot"></div>
-                    <span>Admin Online & Siap Proses</span>
+                    <div class="online-dot" id="onlineDot"></div>
+                    <span id="onlineStatusText">Mengecek status...</span>
                 </div>
                 <img src="source/logo.png" alt="Marz Logo Hero" class="hero-logo-large">
                 <h1 class="hero-title">Joki Roblox.<br><span>Murah. Satset.</span></h1>
@@ -934,91 +844,6 @@
                 </div>
             </div>
         </section>
-
-        <section class="testimonial-section">
-            <div class="section-heading">Testimonial Pelanggan</div>
-            <div class="marquee-wrapper">
-                <div class="marquee-track">
-                    <div class="testimonial-card">
-                        <div class="testimonial-user-info">
-                            <div class="user-avatar">A</div>
-                            <div class="user-details">
-                                <span class="user-name">Angga</span>
-                                <span class="user-service">Fragment Raid 1K</span>
-                            </div>
-                        </div>
-                        <div class="testimonial-stars">★★★★★</div>
-                        <p class="testimonial-text">"kerenn"</p>
-                        <div class="testimonial-footer">Pengalaman pelanggan Marz</div>
-                    </div>
-
-                    <div class="testimonial-card">
-                        <div class="testimonial-user-info">
-                            <div class="user-avatar">K</div>
-                            <div class="user-details">
-                                <span class="user-name">kaelza</span>
-                                <span class="user-service">Fragment Raid 1K</span>
-                            </div>
-                        </div>
-                        <div class="testimonial-stars">★★★★★</div>
-                        <p class="testimonial-text">"cihuy"</p>
-                        <div class="testimonial-footer">Pengalaman pelanggan Marz</div>
-                    </div>
-
-                    <div class="testimonial-card">
-                        <div class="testimonial-user-info">
-                            <div class="user-avatar">R</div>
-                            <div class="user-details">
-                                <span class="user-name">Rizky</span>
-                                <span class="user-service">Joki Max Level</span>
-                            </div>
-                        </div>
-                        <div class="testimonial-stars">★★★★★</div>
-                        <p class="testimonial-text">"Mantap cepet banget pengerjaannya!"</p>
-                        <div class="testimonial-footer">Pengalaman pelanggan Marz</div>
-                    </div>
-
-                    <div class="testimonial-card">
-                        <div class="testimonial-user-info">
-                            <div class="user-avatar">A</div>
-                            <div class="user-details">
-                                <span class="user-name">Angga</span>
-                                <span class="user-service">Fragment Raid 1K</span>
-                            </div>
-                        </div>
-                        <div class="testimonial-stars">★★★★★</div>
-                        <p class="testimonial-text">"kerenn"</p>
-                        <div class="testimonial-footer">Pengalaman pelanggan Marz</div>
-                    </div>
-
-                    <div class="testimonial-card">
-                        <div class="testimonial-user-info">
-                            <div class="user-avatar">K</div>
-                            <div class="user-details">
-                                <span class="user-name">kaelza</span>
-                                <span class="user-service">Fragment Raid 1K</span>
-                            </div>
-                        </div>
-                        <div class="testimonial-stars">★★★★★</div>
-                        <p class="testimonial-text">"cihuy"</p>
-                        <div class="testimonial-footer">Pengalaman pelanggan Marz</div>
-                    </div>
-
-                    <div class="testimonial-card">
-                        <div class="testimonial-user-info">
-                            <div class="user-avatar">R</div>
-                            <div class="user-details">
-                                <span class="user-name">Rizky</span>
-                                <span class="user-service">Joki Max Level</span>
-                            </div>
-                        </div>
-                        <div class="testimonial-stars">★★★★★</div>
-                        <p class="testimonial-text">"Mantap cepet banget pengerjaannya!"</p>
-                        <div class="testimonial-footer">Pengalaman pelanggan Marz</div>
-                    </div>
-                </div>
-            </div>
-        </section>
     </div>
 
     <div class="modal-overlay" id="orderModal">
@@ -1051,7 +876,7 @@
                     <div class="step-number">03</div>
                     <div class="step-info">
                         <div class="step-heading">Lengkapi data akun</div>
-                        <div class="step-desc">Buka <strong>Pesanan</strong>, isi username Roblox, password, kode backup, dan nomor WhatsApp sesuai kebutuhan joki.</div>
+                        <div class="step-desc">Buka <strong>Pesanan</strong>, isi username Roblox, password, email sesuai kebutuhan joki.</div>
                     </div>
                 </div>
 
@@ -1059,23 +884,7 @@
                     <div class="step-number">04</div>
                     <div class="step-info">
                         <div class="step-heading">Cek & kirim order</div>
-                        <div class="step-desc">Pastikan item dan total sudah benar, lalu kirim order melalui tombol WhatsApp sesuai checkout.</div>
-                    </div>
-                </div>
-
-                <div class="step-item">
-                    <div class="step-number">05</div>
-                    <div class="step-info">
-                        <div class="step-heading">Pembayaran & proses</div>
-                        <div class="step-desc">Ikuti instruksi pembayaran dari admin. Setelah terkonfirmasi, order masuk antrean dan mulai diproses.</div>
-                    </div>
-                </div>
-
-                <div class="step-item">
-                    <div class="step-number">06</div>
-                    <div class="step-info">
-                        <div class="step-heading">Pantau order</div>
-                        <div class="step-desc">Gunakan <strong>Cek Pesanan</strong> atau akun Marz untuk melihat status dan riwayat pesanan.</div>
+                        <div class="step-desc">Pastikan item dan total sudah benar, lalu kirim order melalui tombol checkout.</div>
                     </div>
                 </div>
             </div>
@@ -1083,7 +892,7 @@
     </div>
 
     <nav class="bottom-nav">
-        <a href="/marz" class="nav-item active">
+        <a href="" class="nav-item active">
             <svg class="svg-nav-icon" viewBox="0 0 24 24">
                 <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                 <polyline points="9 22 9 12 15 12 15 22"></polyline>
@@ -1108,6 +917,32 @@
 
         function toggleFaq(element) {
             element.classList.toggle('active');
+        }
+
+        function checkOperatingStatus() {
+            const now = new Date();
+            const day = now.getDay();
+            const hour = now.getHours();
+            
+            const isWeekend = (day === 0 || day === 6);
+            let isOnline = false;
+
+            if (isWeekend) {
+                isOnline = (hour >= 9 && hour < 23);
+            } else {
+                isOnline = (hour >= 18 || hour < 9);
+            }
+
+            const dotEl = document.getElementById('onlineDot');
+            const textEl = document.getElementById('onlineStatusText');
+
+            if (isOnline) {
+                dotEl.classList.remove('offline');
+                textEl.innerText = 'Admin Online & Siap Proses';
+            } else {
+                dotEl.classList.add('offline');
+                textEl.innerText = 'Admin Offline (Buka Jam 18:00)';
+            }
         }
 
         function getCart() {
@@ -1154,11 +989,12 @@
 
             let html = '';
             cart.forEach((item, index) => {
+                let priceText = item.price > 0 ? `Rp ${(item.price * item.qty).toLocaleString()}` : 'Harga via WA';
                 html += `
                     <div class="cart-tooltip-item">
                         <div class="cart-tooltip-item-info">
                             <span>${item.name} (${item.qty}x)</span>
-                            <span style="font-size: 0.7rem; color: var(--primary-yellow);">Rp ${(item.price * item.qty).toLocaleString()}</span>
+                            <span style="font-size: 0.7rem; color: var(--primary-yellow);">${priceText}</span>
                         </div>
                         <button class="cart-remove-btn" onclick="removeFromCart(${index})">&times;</button>
                     </div>
@@ -1205,6 +1041,8 @@
             }
         };
 
+        checkOperatingStatus();
+        setInterval(checkOperatingStatus, 60000);
         updateCartTooltipUI();
     </script>
 
