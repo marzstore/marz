@@ -500,11 +500,16 @@
             min-width: 200px;
             background-color: var(--surface-alt);
             border: none;
-            padding: 12px 16px;
-            border-radius: 12px;
+            padding: 12px 18px;
+            border-radius: 24px;
             color: var(--text-main);
             font-size: 0.85rem;
             outline: none;
+            transition: background-color 0.2s;
+        }
+
+        .search-input:focus {
+            background-color: #1d1d1d;
         }
 
         .custom-dropdown-wrapper {
@@ -513,13 +518,13 @@
         }
 
         .custom-dropdown-btn {
-            background-color: var(--surface-alt);
+            background-color: var(--primary-yellow);
             border: none;
-            color: var(--text-main);
-            padding: 12px 16px;
-            border-radius: 12px;
+            color: #000000;
+            padding: 12px 18px;
+            border-radius: 24px;
             font-size: 0.85rem;
-            font-weight: 600;
+            font-weight: 700;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -528,13 +533,13 @@
         }
 
         .custom-dropdown-btn:hover {
-            background-color: #1a1a1a;
+            background-color: var(--primary-hover);
         }
 
         .custom-dropdown-btn svg {
             width: 16px;
             height: 16px;
-            fill: var(--text-dimmed);
+            fill: #000000;
             transition: transform 0.2s ease;
         }
 
@@ -547,10 +552,10 @@
             top: calc(100% + 6px);
             right: 0;
             width: 100%;
-            background-color: var(--surface-alt);
-            border-radius: 12px;
+            background-color: #333;
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+            border: none;
             z-index: 50;
             opacity: 0;
             visibility: hidden;
@@ -572,10 +577,10 @@
             transition: 0.15s;
         }
 
-        .custom-dropdown-item:hover,
+        .custom-dropdown-item:active,
         .custom-dropdown-item.selected {
-            background-color: rgba(255, 204, 0, 0.1);
-            color: var(--primary-yellow);
+            background-color: #fff;
+            color: var(--bg-color);
         }
 
         .filter-tags {
@@ -645,9 +650,12 @@
         }
 
         .product-category-badge {
-            font-size: 0.7rem;
-            color: var(--text-dimmed);
-            margin-bottom: 4px;
+            background-color: var(--primary-yellow);
+            color: #000000;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 12px;
         }
 
         .product-title {
@@ -1060,7 +1068,8 @@
 
             let html = '';
             filtered.forEach(item => {
-                let badge = item.badge || item.category || 'Layanan';
+                let badgeText = item.badge || item.category || 'Layanan';
+                let formattedBadge = badgeText.charAt(0).toUpperCase() + badgeText.slice(1);
                 let title = item.title || 'Tanpa Nama';
                 let desc = item.description || 'Layanan siap dipesan.';
                 let price = item.price || 0;
@@ -1082,12 +1091,12 @@
                     <div class="product-card" data-category="${category}" data-tags="${tags}">
                         <div>
                             <div class="product-card-top">
-                                <span class="product-category-badge">${badge}</span>
+                                <span class="product-category-badge">${formattedBadge}</span>
                                 <div class="product-tags-container" style="margin-top: 0;">
                                     ${tagsHtml}
                                 </div>
                             </div>
-                            <div class="product-title">${title}</div>
+                            <div class="product-title" style="margin-top: 10px;">${title}</div>
                             <div class="product-desc">${desc}</div>
                         </div>
                         <div class="product-price-row">
