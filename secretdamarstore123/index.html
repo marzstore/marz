@@ -183,7 +183,6 @@
             color: var(--text-main);
             display: flex;
             align-items: center;
-            gap: 10px;
         }
 
         .form-group {
@@ -284,13 +283,24 @@
             gap: 12px;
         }
 
+        .admin-category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 8px;
+        }
+
         .admin-category-title {
             font-size: 0.9rem;
             font-weight: 800;
             color: var(--primary-yellow);
             text-transform: capitalize;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            padding-bottom: 8px;
+        }
+
+        .admin-category-actions {
+            display: flex;
+            gap: 4px;
         }
 
         .admin-category-items {
@@ -326,7 +336,7 @@
             font-size: 0.75rem;
             color: var(--text-muted);
             display: flex;
-            gap: 16px;
+            gap: 12px;
             align-items: center;
             flex-wrap: wrap;
         }
@@ -334,6 +344,14 @@
         .admin-product-price {
             color: var(--primary-yellow);
             font-weight: 700;
+        }
+
+        .admin-product-tags {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
         }
 
         .admin-action-buttons {
@@ -422,7 +440,6 @@
             <div class="admin-layout">
                 <div class="admin-card">
                     <div class="section-heading">
-                        <svg style="width:20px;height:20px;fill:var(--primary-yellow)" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
                         <span id="formTitleText">Tambah Produk Baru</span>
                     </div>
 
@@ -474,7 +491,6 @@
 
                 <div class="admin-card">
                     <div class="section-heading">
-                        <svg style="width:20px;height:20px;fill:var(--primary-yellow)" viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>
                         <span>Daftar Produk Database</span>
                     </div>
 
@@ -623,6 +639,7 @@
                 const productsRef = ref(db, 'produk');
                 let newProductRef = push(productsRef);
                 let orderValue = Date.now();
+                let catOrderValue = Date.now();
                 set(newProductRef, {
                     title: title,
                     category: category,
@@ -630,7 +647,8 @@
                     price: price,
                     description: description,
                     badge: badge,
-                    order: orderValue
+                    order: orderValue,
+                    catOrder: catOrderValue
                 }).then(() => {
                     resetForm();
                 }).catch((error) => {
@@ -656,10 +674,14 @@
                 if (!groupedByCategory[catKey]) {
                     groupedByCategory[catKey] = {
                         name: cat,
+                        catOrder: item.catOrder !== undefined ? item.catOrder : 0,
                         items: []
                     };
                 }
                 groupedByCategory[catKey].items.push({ id: key, ...item });
+                if (item.catOrder !== undefined && item.catOrder < groupedByCategory[catKey].catOrder) {
+                    groupedByCategory[catKey].catOrder = item.catOrder;
+                }
             });
 
             Object.keys(groupedByCategory).forEach(catKey => {
@@ -670,16 +692,32 @@
                 });
             });
 
-            let sortedCatKeys = Object.keys(groupedByCategory).sort((a, b) => a.localeCompare(b));
+            let sortedCatKeys = Object.keys(groupedByCategory).sort((a, b) => {
+                let orderA = groupedByCategory[a].catOrder;
+                let orderB = groupedByCategory[b].catOrder;
+                return orderA - orderB;
+            });
 
             let html = '';
-            sortedCatKeys.forEach(catKey => {
+            sortedCatKeys.forEach((catKey, catIndex) => {
                 let catGroup = groupedByCategory[catKey];
                 let items = catGroup.items;
+                let isFirstCat = catIndex === 0;
+                let isLastCat = catIndex === sortedCatKeys.length - 1;
 
                 html += `
                     <div class="admin-category-group">
-                        <div class="admin-category-title">${catGroup.name}</div>
+                        <div class="admin-category-header">
+                            <div class="admin-category-title">${catGroup.name}</div>
+                            <div class="admin-category-actions">
+                                <button class="admin-btn-icon" ${isFirstCat ? 'style="opacity: 0.3; cursor: not-allowed;"' : `onclick="moveCategory('${catKey}', 'up')"`} title="Pindah Kategori ke Atas">
+                                    <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>
+                                </button>
+                                <button class="admin-btn-icon" ${isLastCat ? 'style="opacity: 0.3; cursor: not-allowed;"' : `onclick="moveCategory('${catKey}', 'down')"`} title="Pindah Kategori ke Bawah">
+                                    <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+                                </button>
+                            </div>
+                        </div>
                         <div class="admin-category-items">
                 `;
 
@@ -693,6 +731,7 @@
                                 <span class="admin-product-title">${item.title}</span>
                                 <div class="admin-product-meta">
                                     <span class="admin-product-price">Rp ${Number(item.price).toLocaleString()}</span>
+                                    ${item.tags ? `<span class="admin-product-tags">Tags: ${item.tags}</span>` : ''}
                                 </div>
                             </div>
                             <div class="admin-action-buttons">
@@ -755,6 +794,58 @@
 
             update(ref(db), updates).catch((error) => {
                 alert("Gagal mengubah urutan: " + error.message);
+            });
+        };
+
+        window.moveCategory = function(catKey, direction) {
+            let groupedByCategory = {};
+            Object.keys(productsData).forEach(key => {
+                let item = productsData[key];
+                let cat = (item.category || 'Lainnya').trim();
+                let currentCatKey = cat.toLowerCase();
+                if (!groupedByCategory[currentCatKey]) {
+                    groupedByCategory[currentCatKey] = {
+                        name: cat,
+                        catOrder: item.catOrder !== undefined ? item.catOrder : 0,
+                        itemIds: []
+                    };
+                }
+                groupedByCategory[currentCatKey].itemIds.push(key);
+                if (item.catOrder !== undefined && item.catOrder < groupedByCategory[currentCatKey].catOrder) {
+                    groupedByCategory[currentCatKey].catOrder = item.catOrder;
+                }
+            });
+
+            let sortedCatKeys = Object.keys(groupedByCategory).sort((a, b) => {
+                let orderA = groupedByCategory[a].catOrder;
+                let orderB = groupedByCategory[b].catOrder;
+                return orderA - orderB;
+            });
+
+            let currentIndex = sortedCatKeys.indexOf(catKey);
+            if (currentIndex === -1) return;
+
+            let swapIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
+            if (swapIndex < 0 || swapIndex >= sortedCatKeys.length) return;
+
+            let targetCatKey = sortedCatKeys[swapIndex];
+
+            let currentCatData = groupedByCategory[catKey];
+            let targetCatData = groupedByCategory[targetCatKey];
+
+            let tempCatOrder = currentCatData.catOrder;
+            let newCatOrder = targetCatData.catOrder;
+
+            let updates = {};
+            currentCatData.itemIds.forEach(id => {
+                updates['produk/' + id + '/catOrder'] = newCatOrder;
+            });
+            targetCatData.itemIds.forEach(id => {
+                updates['produk/' + id + '/catOrder'] = tempCatOrder;
+            });
+
+            update(ref(db), updates).catch((error) => {
+                alert("Gagal mengubah urutan kategori: " + error.message);
             });
         };
 
