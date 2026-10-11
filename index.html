@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marz - Joki Blox Fruits</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #0b0b0b;
+            --surface-color: #161616;
+            --surface-alt: #141414;
+            --primary-yellow: #ffcc00;
+            --primary-hover: #e6b800;
+            --text-main: #ffffff;
+            --text-muted: #a3a3a3;
+            --text-dimmed: #737373;
+            --radius-btn: 20px;
+            --radius-card: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding-bottom: 40px;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            background-color: var(--bg-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: none;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-logo {
+            height: 30px;
+            width: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        .desktop-nav {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .desktop-nav-item {
+            color: var(--text-dimmed);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            background: none;
+            border: none;
+        }
+
+        .desktop-nav-item:hover,
+        .desktop-nav-item.active {
+            color: var(--primary-yellow);
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            position: relative;
+        }
+
+        .cart-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .cart-icon-container {
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .svg-icon {
+            width: 22px;
+            height: 22px;
+            fill: var(--text-main);
+            transition: 0.2s;
+        }
+
+        .svg-icon:hover {
+            fill: var(--primary-yellow);
+        }
+
+        .cart-dot {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 8px;
+            height: 8px;
+            background-color: #ff3b30;
+            border-radius: 50%;
+            display: none;
+        }
+
+        .cart-dot.show {
+            display: block;
+        }
+
+        .cart-tooltip {
+            position: absolute;
+            top: 36px;
+            right: 0;
+            width: 260px;
+            background-color: #161616;
+            border-radius: 14px;
+            padding: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+            z-index: 200;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-8px);
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+        }
+
+        .cart-tooltip::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            right: 12px;
+            width: 12px;
+            height: 12px;
+            background-color: #161616;
+            transform: rotate(45deg);
+        }
+
+        .cart-tooltip.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .cart-tooltip-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary-yellow);
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-tooltip-items {
+            max-height: 140px;
+            overflow-y: auto;
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .cart-tooltip-item {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cart-tooltip-item-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            flex: 1;
+        }
+
+        .cart-tooltip-item-info span {
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .cart-remove-btn {
+            background: none;
+            border: none;
+            color: var(--text-dimmed);
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 800;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: 0.2s;
+        }
+
+        .cart-remove-btn:hover {
+            background-color: rgba(255, 59, 48, 0.2);
+            color: #ff3b30;
+        }
+
+        .cart-tooltip-desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+
+        .btn-order-cart {
+            display: block;
+            width: 100%;
+            background-color: var(--primary-yellow);
+            color: var(--bg-color);
+            text-align: center;
+            padding: 10px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .btn-order-cart:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .online-status-bar {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--surface-alt);
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            border: none;
+        }
+
+        .online-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #22c55e;
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+            animation: pulseDot 2s infinite;
+        }
+
+        @keyframes pulseDot {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+
+        .hero-section {
+            padding: 20px 0 32px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hero-logo-large {
+            width: 200px;
+            height: 150px;
+            object-fit: contain;
+            margin-bottom: 0;
+            display: block;
+        }
+
+        .hero-title {
+            font-size: 2.3rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+
+        .hero-title span {
+            color: var(--primary-yellow);
+        }
+
+        .hero-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            max-width: 560px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .action-buttons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 24px;
+        }
+
+        .btn-primary-yellow {
+            background-color: var(--primary-yellow);
+            color: var(--bg-color);
+            border: none;
+            padding: 16px 20px;
+            border-radius: var(--radius-btn);
+            font-weight: 700;
+            font-size: 0.95rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 15px rgba(255, 204, 0, 0.2);
+            text-decoration: none;
+        }
+
+        .btn-primary-yellow:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-dark-solid {
+            background-color: var(--surface-color);
+            color: var(--text-main);
+            border: none;
+            padding: 16px 20px;
+            border-radius: var(--radius-btn);
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            width: 100%;
+            text-decoration: none;
+            display: block;
+        }
+
+        .btn-dark-solid:hover {
+            background-color: #222222;
+        }
+
+        .security-note {
+            font-size: 0.75rem;
+            color: var(--text-dimmed);
+            text-align: center;
+            max-width: 460px;
+            line-height: 1.4;
+            border-top: 1px solid #1f1f1f;
+            padding-top: 16px;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .section-heading {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: var(--text-main);
+            text-align: center;
+        }
+
+        .about-section {
+            width: 100%;
+            padding: 24px 0;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        .about-card {
+            background: var(--surface-alt);
+            border-radius: var(--radius-card);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            border: none;
+        }
+
+        .about-card-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--primary-yellow);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .about-card-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .faq-section {
+            width: 100%;
+            padding: 24px 0;
+        }
+
+        .faq-item {
+            background: var(--surface-alt);
+            border-radius: var(--radius-card);
+            margin-bottom: 12px;
+            overflow: hidden;
+            transition: background 0.2s;
+            border: none;
+        }
+
+        .faq-question {
+            padding: 16px 20px;
+            font-size: 0.9rem;
+            color: #ccc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .faq-question svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--text-dimmed);
+            transition: transform 0.3s ease;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            font-size: 0.82rem;
+            color: #999;
+            padding: 0 20px;
+            line-height: 1.5;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 150px;
+            padding: 0 20px 16px 20px;
+        }
+
+        .faq-item.active .faq-question svg {
+            transform: rotate(180deg);
+        }
+
+        .testimonial-section {
+            width: 100%;
+            padding: 24px 0 40px 0;
+            overflow: hidden;
+        }
+
+        .marquee-wrapper {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        }
+
+        .marquee-track {
+            display: flex;
+            gap: 16px;
+            width: max-content;
+            animation: scrollMarquee 25s linear infinite;
+        }
+
+        .marquee-track:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes scrollMarquee {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .testimonial-card {
+            background: var(--surface-alt);
+            border-radius: var(--radius-card);
+            padding: 18px 20px;
+            border: none;
+            width: 280px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .testimonial-user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background-color: rgba(255, 204, 0, 0.2);
+            color: var(--primary-yellow);
+            font-weight: 700;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .user-service {
+            font-size: 0.7rem;
+            color: var(--text-dimmed);
+        }
+
+        .testimonial-stars {
+            color: var(--primary-yellow);
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+        }
+
+        .testimonial-text {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .testimonial-footer {
+            font-size: 0.68rem;
+            color: var(--text-dimmed);
+            margin-top: 4px;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 300;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: #0d0d0d;
+            width: 100vw;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 32px 24px;
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+            max-width: 900px;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .modal-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .modal-close-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .modal-close-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--primary-yellow);
+        }
+
+        .modal-close-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        .order-steps-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .step-number {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background-color: rgba(255, 204, 0, 0.15);
+            color: var(--primary-yellow);
+            font-weight: 800;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .step-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .step-heading {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .step-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .step-desc strong {
+            color: var(--text-main);
+        }
+
+        @media (max-width: 767px) {
+            .desktop-nav {
+                display: none;
+            }
+            .bottom-nav {
+                position: fixed;
+                bottom: 8px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: calc(100% - 32px);
+                max-width: 380px;
+                background-color: rgba(26, 26, 26, 0.75);
+                border: none;
+                border-radius: 24px;
+                display: flex;
+                justify-content: space-around;
+                padding: 10px 0;
+                z-index: 100;
+            }
+            .nav-item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                color: var(--text-dimmed);
+                text-decoration: none;
+                font-size: 0.75rem;
+                gap: 4px;
+                transition: 0.2s;
+                cursor: pointer;
+                flex: 1;
+                background: none;
+                border: none;
+            }
+            .nav-item .svg-nav-icon {
+                width: 20px;
+                height: 20px;
+                fill: none;
+                stroke: var(--text-dimmed);
+                stroke-width: 2;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                transition: 0.2s;
+            }
+            .nav-item.active {
+                color: var(--primary-yellow);
+            }
+            .nav-item.active .svg-nav-icon {
+                stroke: var(--primary-yellow);
+            }
+            body {
+                padding-bottom: 90px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .bottom-nav {
+                display: none;
+            }
+            .hero-section {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 40px;
+                text-align: left;
+                align-items: center;
+                padding: 40px 0 40px 0;
+            }
+            .hero-content {
+                align-items: flex-start;
+            }
+            .hero-logo-large {
+                margin-left: 0;
+                margin-right: auto;
+            }
+            .hero-title {
+                font-size: 3.2rem;
+                margin-bottom: 20px;
+            }
+            .hero-desc {
+                font-size: 1.1rem;
+                text-align: left;
+                max-width: 100%;
+                margin-bottom: 0;
+            }
+            .action-buttons-container {
+                max-width: 100%;
+                margin-bottom: 0;
+            }
+            .btn-primary-yellow, 
+            .btn-dark-solid {
+                padding: 18px 24px;
+                font-size: 1.05rem;
+            }
+            .security-note {
+                grid-column: span 2;
+                max-width: 100%;
+                font-size: 0.85rem;
+                margin-top: 20px;
+            }
+            .about-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .order-steps-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="nav-brand">
+            <img src="source/logo.png" alt="Marz Logo" class="nav-logo">
+        </div>
+        
+        <nav class="desktop-nav">
+            <a href="index.html" class="desktop-nav-item active">Beranda</a>
+            <a href="joki.html" class="desktop-nav-item">List Joki</a>
+        </nav>
+
+        <div class="nav-icons">
+            <div class="cart-wrapper">
+                <div class="cart-icon-container" onclick="toggleCartTooltip(event)">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                    <div class="cart-dot" id="cartDot"></div>
+                </div>
+                <div class="cart-tooltip" id="cartTooltip">
+                    <div class="cart-tooltip-title">
+                        <span>Keranjang Belanja</span>
+                        <span id="cartCountBadge" style="font-size: 0.75rem; color: var(--text-dimmed);">0 item</span>
+                    </div>
+                    <div class="cart-tooltip-items" id="cartTooltipItems">
+                        <div class="cart-tooltip-desc">Keranjang kamu masih kosong.</div>
+                    </div>
+                    <a href="order.html" class="btn-order-cart">Order Sekarang</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <section class="hero-section">
+            <div class="hero-content">
+                <div class="online-status-bar">
+                    <div class="online-dot"></div>
+                    <span>Admin Online & Siap Proses</span>
+                </div>
+                <img src="logo.png" alt="Marz Logo Hero" class="hero-logo-large">
+                <h1 class="hero-title">Joki Roblox.<br><span>Murah. Satset.</span></h1>
+                <p class="hero-desc">
+                    Layanan joki Roblox terpercaya, proses kilat, dan terjamin 100% aman.
+                </p>
+            </div>
+
+            <div class="action-buttons-container">
+                <a href="joki.html" class="btn-primary-yellow">
+                    <span>Pilih layanan joki</span>
+                    <svg style="width:20px;height:20px;fill:#0b0b0b;" viewBox="0 0 24 24"><path d="M5 13h11.86l-5.43 5.43 1.42 1.42L21.71 12l-7.86-7.86-1.42 1.42L16.86 11H5v2z"/></svg>
+                </a>
+
+                <button class="btn-dark-solid" onclick="openOrderModal()">
+                    Cara Order
+                </button>
+
+                <a href="https://wa.me/6288211975711" target="_blank" class="btn-dark-solid">
+                    Chat admin
+                </a>
+            </div>
+
+            <div class="security-note">
+                Jangan kirim password / OTP / backup code lewat chat bot atau URL. Penyerahan akses dilakukan lewat alur aman.
+            </div>
+        </section>
+
+        <section class="about-section">
+            <div class="section-heading">Keamanan & Garansi</div>
+            <div class="about-grid">
+                <div class="about-card">
+                    <div class="about-card-title">
+                        <svg style="width:20px;height:20px;fill:var(--primary-yellow)" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+                        <span>Keamanan 100% Terjamin</span>
+                    </div>
+                    <p class="about-card-desc">
+                        Semua proses joki dikerjakan secara manual oleh tim profesional tanpa menggunakan script, cheat, atau program ilegal sehingga akun kamu tetap aman dari risiko banned.
+                    </p>
+                </div>
+                <div class="about-card">
+                    <div class="about-card-title">
+                        <svg style="width:20px;height:20px;fill:var(--primary-yellow)" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        <span>Garansi Selesai Tepat Waktu</span>
+                    </div>
+                    <p class="about-card-desc">
+                        Kami menjamin pengerjaan penuhan order sesuai estimasi. Jika terjadi kendala sistem atau keterlambatan, garansi uang kembali atau kompensasi siap diberikan.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq-section">
+            <div class="section-heading">FAQ (Pertanyaan Umum)</div>
+            
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-question">
+                    <span>Berapa lama proses joki level?</span>
+                    <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                </div>
+                <div class="faq-answer">
+                    Proses pengerjaan tergantung dari paket yang diambil, rata-rata memakan waktu hitungan jam hingga 1-2 hari saja secara cepat dan aman (satset).
+                </div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-question">
+                    <span>Apakah aman dari banned?</span>
+                    <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                </div>
+                <div class="faq-answer">
+                    100% aman karena kami menggunakan metode pengerjaan manual tanpa menggunakan program ilegal atau cheat pihak ketiga.
+                </div>
+            </div>
+        </section>
+
+        <section class="testimonial-section">
+            <div class="section-heading">Testimonial Pelanggan</div>
+            <div class="marquee-wrapper">
+                <div class="marquee-track">
+                    <div class="testimonial-card">
+                        <div class="testimonial-user-info">
+                            <div class="user-avatar">A</div>
+                            <div class="user-details">
+                                <span class="user-name">Angga</span>
+                                <span class="user-service">Fragment Raid 1K</span>
+                            </div>
+                        </div>
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-text">"kerenn"</p>
+                        <div class="testimonial-footer">Pengalaman pelanggan Marz</div>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-user-info">
+                            <div class="user-avatar">K</div>
+                            <div class="user-details">
+                                <span class="user-name">kaelza</span>
+                                <span class="user-service">Fragment Raid 1K</span>
+                            </div>
+                        </div>
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-text">"cihuy"</p>
+                        <div class="testimonial-footer">Pengalaman pelanggan Marz</div>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-user-info">
+                            <div class="user-avatar">R</div>
+                            <div class="user-details">
+                                <span class="user-name">Rizky</span>
+                                <span class="user-service">Joki Max Level</span>
+                            </div>
+                        </div>
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-text">"Mantap cepet banget pengerjaannya!"</p>
+                        <div class="testimonial-footer">Pengalaman pelanggan Marz</div>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-user-info">
+                            <div class="user-avatar">A</div>
+                            <div class="user-details">
+                                <span class="user-name">Angga</span>
+                                <span class="user-service">Fragment Raid 1K</span>
+                            </div>
+                        </div>
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-text">"kerenn"</p>
+                        <div class="testimonial-footer">Pengalaman pelanggan Marz</div>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-user-info">
+                            <div class="user-avatar">K</div>
+                            <div class="user-details">
+                                <span class="user-name">kaelza</span>
+                                <span class="user-service">Fragment Raid 1K</span>
+                            </div>
+                        </div>
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-text">"cihuy"</p>
+                        <div class="testimonial-footer">Pengalaman pelanggan Marz</div>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-user-info">
+                            <div class="user-avatar">R</div>
+                            <div class="user-details">
+                                <span class="user-name">Rizky</span>
+                                <span class="user-service">Joki Max Level</span>
+                            </div>
+                        </div>
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-text">"Mantap cepet banget pengerjaannya!"</p>
+                        <div class="testimonial-footer">Pengalaman pelanggan Marz</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="modal-overlay" id="orderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Cara Order</div>
+                <button class="modal-close-btn" onclick="triggerCloseOrderModal()">
+                    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                </button>
+            </div>
+
+            <div class="order-steps-grid">
+                <div class="step-item">
+                    <div class="step-number">01</div>
+                    <div class="step-info">
+                        <div class="step-heading">Pilih layanan</div>
+                        <div class="step-desc">Buka <strong>List Joki</strong>, pilih layanan yang kamu butuhkan, lalu atur jumlah jika tersedia.</div>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-number">02</div>
+                    <div class="step-info">
+                        <div class="step-heading">Masukkan ke keranjang</div>
+                        <div class="step-desc">Tambahkan layanan ke keranjang. Keranjang bisa dibuka dari ikon keranjang di navbar.</div>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-number">03</div>
+                    <div class="step-info">
+                        <div class="step-heading">Lengkapi data akun</div>
+                        <div class="step-desc">Buka <strong>Pesanan</strong>, isi username Roblox, password, kode backup, dan nomor WhatsApp sesuai kebutuhan joki.</div>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-number">04</div>
+                    <div class="step-info">
+                        <div class="step-heading">Cek & kirim order</div>
+                        <div class="step-desc">Pastikan item dan total sudah benar, lalu kirim order melalui tombol WhatsApp sesuai checkout.</div>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-number">05</div>
+                    <div class="step-info">
+                        <div class="step-heading">Pembayaran & proses</div>
+                        <div class="step-desc">Ikuti instruksi pembayaran dari admin. Setelah terkonfirmasi, order masuk antrean dan mulai diproses.</div>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-number">06</div>
+                    <div class="step-info">
+                        <div class="step-heading">Pantau order</div>
+                        <div class="step-desc">Gunakan <strong>Cek Pesanan</strong> atau akun Marz untuk melihat status dan riwayat pesanan.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item active">
+            <svg class="svg-nav-icon" viewBox="0 0 24 24">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            <span>Beranda</span>
+        </a>
+        <a href="joki.html" class="nav-item">
+            <svg class="svg-nav-icon" viewBox="0 0 24 24">
+                <line x1="8" y1="6" x2="21" y2="6"></line>
+                <line x1="8" y1="12" x2="21" y2="12"></line>
+                <line x1="8" y1="18" x2="21" y2="18"></line>
+                <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                <line x1="3" y1="18" x2="3.01" y2="18"></line>
+            </svg>
+            <span>List Joki</span>
+        </a>
+    </nav>
+
+    <script>
+        let isModalOpen = false;
+
+        function toggleFaq(element) {
+            element.classList.toggle('active');
+        }
+
+        function getCart() {
+            return JSON.parse(localStorage.getItem('marz_cart')) || [];
+        }
+
+        function saveCart(cart) {
+            localStorage.setItem('marz_cart', JSON.stringify(cart));
+        }
+
+        function toggleCartTooltip(event) {
+            event.stopPropagation();
+            const tooltip = document.getElementById('cartTooltip');
+            tooltip.classList.toggle('show');
+            updateCartTooltipUI();
+        }
+
+        function removeFromCart(index) {
+            let cart = getCart();
+            cart.splice(index, 1);
+            saveCart(cart);
+            updateCartTooltipUI();
+        }
+
+        function updateCartTooltipUI() {
+            let cart = getCart();
+            let itemsContainer = document.getElementById('cartTooltipItems');
+            let countBadge = document.getElementById('cartCountBadge');
+            let cartDot = document.getElementById('cartDot');
+
+            let totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+            countBadge.innerText = totalItems + ' item';
+
+            if (totalItems > 0) {
+                cartDot.classList.add('show');
+            } else {
+                cartDot.classList.remove('show');
+            }
+
+            if (cart.length === 0) {
+                itemsContainer.innerHTML = '<div class="cart-tooltip-desc">Keranjang kamu masih kosong.</div>';
+                return;
+            }
+
+            let html = '';
+            cart.forEach((item, index) => {
+                html += `
+                    <div class="cart-tooltip-item">
+                        <div class="cart-tooltip-item-info">
+                            <span>${item.name} (${item.qty}x)</span>
+                            <span style="font-size: 0.7rem; color: var(--primary-yellow);">Rp ${(item.price * item.qty).toLocaleString()}</span>
+                        </div>
+                        <button class="cart-remove-btn" onclick="removeFromCart(${index})">&times;</button>
+                    </div>
+                `;
+            });
+            itemsContainer.innerHTML = html;
+        }
+
+        function openOrderModal() {
+            const modal = document.getElementById('orderModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            if (!isModalOpen) {
+                history.pushState({ modalOpen: true }, '');
+                isModalOpen = true;
+            }
+        }
+
+        function closeOrderModalUI() {
+            const modal = document.getElementById('orderModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+            isModalOpen = false;
+        }
+
+        function triggerCloseOrderModal() {
+            if (isModalOpen) {
+                history.back();
+            } else {
+                closeOrderModalUI();
+            }
+        }
+
+        window.addEventListener('popstate', function(event) {
+            if (isModalOpen) {
+                closeOrderModalUI();
+            }
+        });
+
+        window.onclick = function(event) {
+            const tooltip = document.getElementById('cartTooltip');
+            if (tooltip && !event.target.closest('.cart-wrapper')) {
+                tooltip.classList.remove('show');
+            }
+        };
+
+        updateCartTooltipUI();
+    </script>
+
+</body>
+</html>
