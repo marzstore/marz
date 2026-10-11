@@ -660,6 +660,23 @@
         .product-desc {
             font-size: 0.75rem;
             color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .product-tags-container {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+
+        .product-tag-pill {
+            background-color: var(--primary-yellow);
+            color: #000000;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 12px;
         }
 
         .product-price-row {
@@ -983,19 +1000,22 @@
             let tagsSet = new Set();
 
             allProducts.forEach(item => {
-                if (item.category) categoriesSet.add(item.category.trim());
+                if (item.category) categoriesSet.add(item.category.trim().toLowerCase());
                 if (item.tags) {
                     item.tags.split(',').forEach(tag => {
-                        let t = tag.trim();
+                        let t = tag.trim().toLowerCase();
                         if (t) tagsSet.add(t);
                     });
                 }
             });
 
+            let sortedCategories = Array.from(categoriesSet).sort();
+            let sortedTags = Array.from(tagsSet).sort();
+
             let dropdownList = document.getElementById('categoryDropdownList');
             let dropdownHtml = `<div class="custom-dropdown-item ${currentSelectedCategory === 'semua' ? 'selected' : ''}" onclick="selectCategory('semua', 'Semua kategori')">Semua kategori</div>`;
             
-            categoriesSet.forEach(cat => {
+            sortedCategories.forEach(cat => {
                 let formattedLabel = cat.charAt(0).toUpperCase() + cat.slice(1);
                 let isSel = currentSelectedCategory === cat ? 'selected' : '';
                 dropdownHtml += `<div class="custom-dropdown-item ${isSel}" onclick="selectCategory('${cat}', '${formattedLabel}')">${formattedLabel}</div>`;
@@ -1005,7 +1025,7 @@
             let tagsContainer = document.getElementById('filterTagsContainer');
             let tagsHtml = `<button class="filter-tag ${currentFilterTag === 'semua' ? 'active' : ''}" onclick="setFilterTag(this, 'semua')">Semua</button>`;
 
-            tagsSet.forEach(tag => {
+            sortedTags.forEach(tag => {
                 let formattedTagLabel = tag.charAt(0).toUpperCase() + tag.slice(1);
                 let isAct = currentFilterTag === tag ? 'active' : '';
                 tagsHtml += `<button class="filter-tag ${isAct}" onclick="setFilterTag(this, '${tag}')">${formattedTagLabel}</button>`;
@@ -1026,7 +1046,7 @@
                 
                 let matchQuery = title.includes(query) || tags.includes(query);
                 let matchCat = (currentSelectedCategory === 'semua' || category === currentSelectedCategory);
-                let matchTag = (currentFilterTag === 'semua' || tags.includes(currentFilterTag));
+                let matchTag = (currentFilterTag === 'semua' || tags.split(',').map(t => t.trim().toLowerCase()).includes(currentFilterTag));
 
                 return matchQuery && matchCat && matchTag;
             });
@@ -1047,11 +1067,25 @@
                 let tags = item.tags || '';
                 let category = item.category || 'semua';
 
+                let tagsHtml = '';
+                if (tags) {
+                    tags.split(',').forEach(t => {
+                        let trimmedTag = t.trim();
+                        if (trimmedTag) {
+                            let formattedTag = trimmedTag.charAt(0).toUpperCase() + trimmedTag.slice(1);
+                            tagsHtml += `<span class="product-tag-pill">${formattedTag}</span>`;
+                        }
+                    });
+                }
+
                 html += `
                     <div class="product-card" data-category="${category}" data-tags="${tags}">
                         <div>
                             <div class="product-card-top">
                                 <span class="product-category-badge">${badge}</span>
+                                <div class="product-tags-container" style="margin-top: 0;">
+                                    ${tagsHtml}
+                                </div>
                             </div>
                             <div class="product-title">${title}</div>
                             <div class="product-desc">${desc}</div>
