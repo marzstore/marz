@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marz - Admin Dashboard Produk</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #0b0b0b;
+            --surface-color: #161616;
+            --surface-alt: #141414;
+            --primary-yellow: #ffcc00;
+            --primary-hover: #e6b800;
+            --text-main: #ffffff;
+            --text-muted: #a3a3a3;
+            --text-dimmed: #737373;
+            --danger-color: #ff3b30;
+            --danger-hover: #e0322b;
+            --radius-btn: 20px;
+            --radius-card: 16px;
+            --radius-input: 20px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding-bottom: 40px;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            background-color: var(--bg-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-logo {
+            height: 30px;
+            width: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        .desktop-nav {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .desktop-nav-item {
+            color: var(--text-dimmed);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            background: none;
+            border: none;
+        }
+
+        .desktop-nav-item:hover,
+        .desktop-nav-item.active {
+            color: var(--primary-yellow);
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .page-header {
+            margin-bottom: 24px;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .auth-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+            gap: 20px;
+            text-align: center;
+        }
+
+        .auth-card {
+            background-color: var(--surface-alt);
+            border-radius: var(--radius-card);
+            padding: 32px;
+            max-width: 400px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .btn-google {
+            background-color: #ffffff;
+            color: #0b0b0b;
+            border: none;
+            padding: 14px 20px;
+            border-radius: var(--radius-btn);
+            font-weight: 700;
+            font-size: 0.95rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            width: 100%;
+        }
+
+        .btn-google:hover {
+            background-color: #e6e6e6;
+        }
+
+        .admin-content {
+            display: none;
+        }
+
+        .admin-content.active {
+            display: grid;
+        }
+
+        .admin-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+
+        @media (min-width: 900px) {
+            .admin-layout {
+                grid-template-columns: 1fr 1.2fr;
+            }
+        }
+
+        .admin-card {
+            background-color: var(--surface-alt);
+            border-radius: var(--radius-card);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            height: fit-content;
+        }
+
+        .section-heading {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .form-input, .form-textarea {
+            width: 100%;
+            background-color: var(--surface-color);
+            border: 1.5px solid transparent;
+            padding: 14px 20px;
+            border-radius: var(--radius-input);
+            color: var(--text-main);
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-input:focus, .form-textarea:focus {
+            background-color: #1f1f1f;
+            border-color: rgba(255, 204, 0, 0.4);
+        }
+
+        .btn-primary-yellow {
+            background-color: var(--primary-yellow);
+            color: var(--bg-color);
+            border: none;
+            padding: 16px 20px;
+            border-radius: var(--radius-btn);
+            font-weight: 700;
+            font-size: 0.95rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 15px rgba(255, 204, 0, 0.2);
+            width: 100%;
+        }
+
+        .btn-primary-yellow:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.08);
+            color: var(--text-main);
+            border: none;
+            padding: 12px 20px;
+            border-radius: var(--radius-btn);
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .product-list-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .admin-product-item {
+            background-color: var(--surface-color);
+            padding: 16px;
+            border-radius: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .admin-product-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+        }
+
+        .admin-product-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .admin-product-meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            gap: 12px;
+        }
+
+        .admin-product-price {
+            color: var(--primary-yellow);
+            font-weight: 700;
+        }
+
+        .admin-action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .admin-btn-icon {
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
+            color: var(--text-main);
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .admin-btn-icon:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--primary-yellow);
+        }
+
+        .admin-btn-icon.delete:hover {
+            background-color: rgba(255, 59, 48, 0.2);
+            color: var(--danger-color);
+        }
+
+        .empty-admin-msg {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            padding: 30px 0;
+        }
+
+        .unauthorized-view {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+            text-align: center;
+            gap: 16px;
+        }
+
+        .unauthorized-view.active {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="nav-brand">
+            <img src="../source/logo.png" alt="Marz Logo" class="nav-logo">
+        </div>
+        
+        <nav class="desktop-nav">
+            <a href="admin.html" class="desktop-nav-item active">Admin Panel</a>
+            <button class="desktop-nav-item" id="logoutBtn" style="display: none;" onclick="logoutAdmin()">Keluar</button>
+        </nav>
+    </header>
+
+    <div class="main-container">
+        <div id="authScreen" class="auth-container">
+            <div class="auth-card">
+                <h2 style="font-size: 1.4rem; font-weight: 800;">Login Admin Marz</h2>
+                <p style="font-size: 0.85rem; color: var(--text-muted);">Silakan masuk menggunakan akun Google resmi untuk mengakses dashboard admin.</p>
+                <button class="btn-google" onclick="loginWithGoogle()">
+                    <svg style="width:18px;height:18px;" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.11-6.72-4.95H1.19v3.15C3.17 21.36 7.24 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.25c-.25-.72-.38-1.49-.38-2.25s.13-1.53.38-2.25V6.6H1.19C.43 8.13 0 9.87 0 12s.43 3.87 1.19 5.4l4.09-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.24 0 3.17 2.64 1.19 6.6l4.09 3.15c.95-2.84 3.6-4.95 6.72-4.95z"/></svg>
+                    Masuk dengan Google
+                </button>
+            </div>
+        </div>
+
+        <div id="adminDashboard" class="admin-content">
+            <div class="page-header">
+                <h1 class="page-title">Admin Dashboard</h1>
+                <p class="page-subtitle">Kelola daftar layanan produk joki yang tersimpan secara real-time di database Firebase.</p>
+            </div>
+
+            <div class="admin-layout">
+                <div class="admin-card">
+                    <div class="section-heading">
+                        <svg style="width:20px;height:20px;fill:var(--primary-yellow)" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                        <span id="formTitleText">Tambah Produk Baru</span>
+                    </div>
+
+                    <form id="productForm" onsubmit="handleFormSubmit(event)" style="display: flex; flex-direction: column; gap: 16px;">
+                        <input type="hidden" id="editingProductId">
+
+                        <div class="form-group">
+                            <label class="form-label">Judul Layanan</label>
+                            <div class="input-wrapper">
+                                <input type="text" class="form-input" id="prodTitle" placeholder="Contoh: Trial V4 Full Gear" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Kategori</label>
+                            <div class="input-wrapper">
+                                <input type="text" class="form-input" id="prodCategory" placeholder="Contoh: gear, boss, atau paket" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Tags / Kata Kunci Pencarian</label>
+                            <div class="input-wrapper">
+                                <input type="text" class="form-input" id="prodTags" placeholder="Contoh: trial, v4, gear (pisahkan koma)" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Harga (Rp)</label>
+                            <div class="input-wrapper">
+                                <input type="number" class="form-input" id="prodPrice" placeholder="Contoh: 50000" required min="0">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Deskripsi Layanan</label>
+                            <div class="input-wrapper">
+                                <textarea class="form-textarea" id="prodDesc" placeholder="Tuliskan keterangan singkat layanan..."></textarea>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 10px;">
+                            <button type="submit" class="btn-primary-yellow" id="submitBtn" style="flex: 1;">Simpan Produk</button>
+                            <button type="button" class="btn-secondary" id="cancelEditBtn" onclick="resetForm()">Batal</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="admin-card">
+                    <div class="section-heading">
+                        <svg style="width:20px;height:20px;fill:var(--primary-yellow)" viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>
+                        <span>Daftar Produk Database</span>
+                    </div>
+
+                    <div class="product-list-container" id="adminProductList">
+                        <div class="empty-admin-msg">Memuat data produk...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="unauthorizedScreen" class="unauthorized-view">
+            <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--danger-color);">Akses Ditolak</h2>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">Akun Google yang kamu gunakan tidak memiliki izin sebagai admin.</p>
+            <button class="btn-secondary" style="display: block; width: 200px; margin-top: 10px;" onclick="logoutAdmin()">Coba Akun Lain</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+        import { getDatabase, ref, onValue, push, set, remove, update } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA8Z6G-o0lVdLvCWWRot3IZg5Od83noBTc",
+            authDomain: "marz-4cbdb.firebaseapp.com",
+            databaseURL: "https://marz-4cbdb-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "marz-4cbdb",
+            storageBucket: "marz-4cbdb.firebasestorage.app",
+            messagingSenderId: "45132763836",
+            appId: "1:45132763836:web:b912af825ac0275f79b6b9",
+            measurementId: "G-YDH5G3EWR5"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        const allowedAdminEmails = ["marzstore027@gmail.com", "muhammaddamarsobari@gmail.com"];
+        let productsData = {};
+
+        onAuthStateChanged(auth, (user) => {
+            const authScreen = document.getElementById('authScreen');
+            const adminDashboard = document.getElementById('adminDashboard');
+            const unauthorizedScreen = document.getElementById('unauthorizedScreen');
+            const logoutBtn = document.getElementById('logoutBtn');
+
+            if (user) {
+                authScreen.style.display = 'none';
+                if (allowedAdminEmails.includes(user.email)) {
+                    adminDashboard.classList.add('active');
+                    unauthorizedScreen.classList.remove('active');
+                    logoutBtn.style.display = 'block';
+                    loadProductsDatabase();
+                } else {
+                    adminDashboard.classList.remove('active');
+                    unauthorizedScreen.classList.add('active');
+                    logoutBtn.style.display = 'block';
+                }
+            } else {
+                authScreen.style.display = 'flex';
+                adminDashboard.classList.remove('active');
+                unauthorizedScreen.classList.remove('active');
+                logoutBtn.style.display = 'none';
+            }
+        });
+
+        window.loginWithGoogle = function() {
+            const provider = new GoogleAuthProvider();
+            signInWithPopup(auth, provider).catch((error) => {
+                alert("Gagal Login: " + error.message);
+            });
+        };
+
+        window.logoutAdmin = function() {
+            signOut(auth).catch((error) => {
+                alert("Gagal Keluar: " + error.message);
+            });
+        };
+
+        function loadProductsDatabase() {
+            const productsRef = ref(db, 'produk');
+            onValue(productsRef, (snapshot) => {
+                const data = snapshot.val();
+                productsData = data || {};
+                renderAdminProductList();
+            }, (error) => {
+                document.getElementById('adminProductList').innerHTML = '<div class="empty-admin-msg">Gagal memuat data dari database. Periksa Firebase Rules.</div>';
+            });
+        }
+
+        window.handleFormSubmit = function(event) {
+            event.preventDefault();
+
+            let editId = document.getElementById('editingProductId').value;
+            let title = document.getElementById('prodTitle').value.trim();
+            let category = document.getElementById('prodCategory').value.trim().toLowerCase();
+            let tags = document.getElementById('prodTags').value.trim().toLowerCase();
+            let price = parseInt(document.getElementById('prodPrice').value) || 0;
+            let description = document.getElementById('prodDesc').value.trim();
+            let badge = category.charAt(0).toUpperCase() + category.slice(1);
+
+            if (!title || !category || !price) {
+                alert("Harap isi field yang wajib!");
+                return;
+            }
+
+            if (editId) {
+                let productRef = ref(db, 'produk/' + editId);
+                update(productRef, {
+                    title: title,
+                    category: category,
+                    tags: tags,
+                    price: price,
+                    description: description,
+                    badge: badge
+                }).then(() => {
+                    resetForm();
+                }).catch((error) => {
+                    alert("Gagal memperbarui produk: " + error.message);
+                });
+            } else {
+                const productsRef = ref(db, 'produk');
+                let newProductRef = push(productsRef);
+                set(newProductRef, {
+                    title: title,
+                    category: category,
+                    tags: tags,
+                    price: price,
+                    description: description,
+                    badge: badge
+                }).then(() => {
+                    resetForm();
+                }).catch((error) => {
+                    alert("Gagal menambah produk: " + error.message);
+                });
+            }
+        };
+
+        window.renderAdminProductList = function() {
+            let container = document.getElementById('adminProductList');
+            let keys = Object.keys(productsData);
+
+            if (keys.length === 0) {
+                container.innerHTML = '<div class="empty-admin-msg">Belum ada produk di database.</div>';
+                return;
+            }
+
+            let html = '';
+            keys.forEach(key => {
+                let item = productsData[key];
+                html += `
+                    <div class="admin-product-item">
+                        <div class="admin-product-info">
+                            <span class="admin-product-title">${item.title}</span>
+                            <div class="admin-product-meta">
+                                <span>Kategori: <strong>${item.category}</strong></span>
+                                <span class="admin-product-price">Rp ${Number(item.price).toLocaleString()}</span>
+                            </div>
+                        </div>
+                        <div class="admin-action-buttons">
+                            <button class="admin-btn-icon" onclick="editProduct('${key}')" title="Edit">
+                                <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                            </button>
+                            <button class="admin-btn-icon delete" onclick="deleteProduct('${key}')" title="Hapus">
+                                <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        };
+
+        window.editProduct = function(id) {
+            let item = productsData[id];
+            if (!item) return;
+
+            document.getElementById('editingProductId').value = id;
+            document.getElementById('prodTitle').value = item.title || '';
+            document.getElementById('prodCategory').value = item.category || '';
+            document.getElementById('prodTags').value = item.tags || '';
+            document.getElementById('prodPrice').value = item.price || 0;
+            document.getElementById('prodDesc').value = item.description || '';
+
+            document.getElementById('formTitleText').innerText = 'Edit Produk Layanan';
+            document.getElementById('submitBtn').innerText = 'Update Produk';
+            document.getElementById('cancelEditBtn').style.display = 'block';
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        window.deleteProduct = function(id) {
+            if (confirm("Apakah kamu yakin ingin menghapus produk ini?")) {
+                let productRef = ref(db, 'produk/' + id);
+                remove(productRef).catch((error) => {
+                    alert("Gagal menghapus produk: " + error.message);
+                });
+            }
+        };
+
+        window.resetForm = function() {
+            document.getElementById('productForm').reset();
+            document.getElementById('editingProductId').value = '';
+            document.getElementById('formTitleText').innerText = 'Tambah Produk Baru';
+            document.getElementById('submitBtn').innerText = 'Simpan Produk';
+            document.getElementById('cancelEditBtn').style.display = 'none';
+        };
+    </script>
+
+</body>
+</html>
