@@ -215,6 +215,7 @@
             font-size: 0.9rem;
             outline: none;
             transition: all 0.2s ease;
+            text-transform: none;
         }
 
         .form-textarea {
@@ -268,16 +269,40 @@
         .product-list-container {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 16px;
             max-height: 520px;
             overflow-y: auto;
             padding-right: 4px;
         }
 
-        .admin-product-item {
+        .admin-category-group {
             background-color: var(--surface-color);
-            padding: 16px 20px;
             border-radius: 14px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .admin-category-title {
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: var(--primary-yellow);
+            text-transform: capitalize;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 8px;
+        }
+
+        .admin-category-items {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .admin-product-item {
+            background-color: var(--surface-alt);
+            padding: 14px 16px;
+            border-radius: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -406,21 +431,21 @@
                         <div class="form-group">
                             <label class="form-label">Judul Layanan</label>
                             <div class="input-wrapper">
-                                <input type="text" class="form-input" id="prodTitle" placeholder="Contoh: Trial V4 Full Gear" required>
+                                <input type="text" class="form-input" id="prodTitle" placeholder="Contoh: Trial V4 Full Gear" required autocomplete="off">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label">Kategori</label>
                             <div class="input-wrapper">
-                                <input type="text" class="form-input" id="prodCategory" placeholder="Contoh: gear, boss, atau paket" required>
+                                <input type="text" class="form-input" id="prodCategory" placeholder="Contoh: gear, boss, atau paket" required autocomplete="off">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label">Tags / Kata Kunci Pencarian</label>
                             <div class="input-wrapper">
-                                <input type="text" class="form-input" id="prodTags" placeholder="Contoh: trial, v4, gear (pisahkan koma)" required>
+                                <input type="text" class="form-input" id="prodTags" placeholder="Contoh: trial, v4, gear (pisahkan koma)" required autocomplete="off">
                             </div>
                         </div>
 
@@ -434,7 +459,7 @@
                         <div class="form-group">
                             <label class="form-label">Deskripsi Layanan</label>
                             <div class="input-wrapper">
-                                <textarea class="form-textarea" id="prodDesc" placeholder="Tuliskan keterangan singkat layanan..."></textarea>
+                                <textarea class="form-textarea" id="prodDesc" placeholder="Tuliskan keterangan singkat layanan..." autocomplete="off"></textarea>
                             </div>
                         </div>
 
@@ -595,29 +620,54 @@
                 return;
             }
 
-            let html = '';
+            let groupedByCategory = {};
             keys.forEach(key => {
                 let item = productsData[key];
+                let cat = (item.category || 'Lainnya').trim().toLowerCase();
+                if (!groupedByCategory[cat]) {
+                    groupedByCategory[cat] = [];
+                }
+                groupedByCategory[cat].push({ id: key, ...item });
+            });
+
+            let sortedCategories = Object.keys(groupedByCategory).sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
+
+            let html = '';
+            sortedCategories.forEach(cat => {
+                let formattedCatName = cat.charAt(0).toUpperCase() + cat.slice(1);
                 html += `
-                    <div class="admin-product-item">
-                        <div class="admin-product-info">
-                            <span class="admin-product-title">${item.title}</span>
-                            <div class="admin-product-meta">
-                                <span>Kategori: <strong>${item.category}</strong></span>
-                                <span class="admin-product-price">Rp ${Number(item.price).toLocaleString()}</span>
+                    <div class="admin-category-group">
+                        <div class="admin-category-title">${formattedCatName}</div>
+                        <div class="admin-category-items">
+                `;
+
+                groupedByCategory[cat].forEach(item => {
+                    html += `
+                        <div class="admin-product-item">
+                            <div class="admin-product-info">
+                                <span class="admin-product-title">${item.title}</span>
+                                <div class="admin-product-meta">
+                                    <span class="admin-product-price">Rp ${Number(item.price).toLocaleString()}</span>
+                                </div>
+                            </div>
+                            <div class="admin-action-buttons">
+                                <button class="admin-btn-icon" onclick="editProduct('${item.id}')" title="Edit">
+                                    <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                                </button>
+                                <button class="admin-btn-icon delete" onclick="deleteProduct('${item.id}')" title="Hapus">
+                                    <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                                </button>
                             </div>
                         </div>
-                        <div class="admin-action-buttons">
-                            <button class="admin-btn-icon" onclick="editProduct('${key}')" title="Edit">
-                                <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
-                            </button>
-                            <button class="admin-btn-icon delete" onclick="deleteProduct('${key}')" title="Hapus">
-                                <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-                            </button>
+                    `;
+                });
+
+                html += `
                         </div>
                     </div>
                 `;
             });
+
             container.innerHTML = html;
         };
 
