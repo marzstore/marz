@@ -91,13 +91,13 @@
         }
 
         .page-header {
-            margin-bottom: 24px;
+            margin-bottom: 28px;
         }
 
         .page-title {
             font-size: 1.8rem;
             font-weight: 800;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .page-subtitle {
@@ -152,13 +152,14 @@
         }
 
         .admin-content.active {
-            display: grid;
+            display: block;
         }
 
         .admin-layout {
             display: grid;
             grid-template-columns: 1fr;
             gap: 24px;
+            align-items: start;
         }
 
         @media (min-width: 900px) {
@@ -170,15 +171,14 @@
         .admin-card {
             background-color: var(--surface-alt);
             border-radius: var(--radius-card);
-            padding: 24px;
+            padding: 28px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            height: fit-content;
+            gap: 24px;
         }
 
         .section-heading {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             font-weight: 800;
             color: var(--text-main);
             display: flex;
@@ -219,7 +219,7 @@
 
         .form-textarea {
             resize: vertical;
-            min-height: 100px;
+            min-height: 110px;
         }
 
         .form-input:focus, .form-textarea:focus {
@@ -252,10 +252,10 @@
             background-color: rgba(255, 255, 255, 0.08);
             color: var(--text-main);
             border: none;
-            padding: 12px 20px;
+            padding: 16px 20px;
             border-radius: var(--radius-btn);
             font-weight: 700;
-            font-size: 0.85rem;
+            font-size: 0.95rem;
             cursor: pointer;
             transition: 0.2s;
             display: none;
@@ -269,25 +269,25 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
-            max-height: 500px;
+            max-height: 520px;
             overflow-y: auto;
             padding-right: 4px;
         }
 
         .admin-product-item {
             background-color: var(--surface-color);
-            padding: 16px;
+            padding: 16px 20px;
             border-radius: 14px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 12px;
+            gap: 16px;
         }
 
         .admin-product-info {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 6px;
             flex: 1;
         }
 
@@ -301,7 +301,9 @@
             font-size: 0.75rem;
             color: var(--text-muted);
             display: flex;
-            gap: 12px;
+            gap: 16px;
+            align-items: center;
+            flex-wrap: wrap;
         }
 
         .admin-product-price {
@@ -318,8 +320,8 @@
             background: rgba(255, 255, 255, 0.08);
             border: none;
             color: var(--text-main);
-            width: 32px;
-            height: 32px;
+            width: 34px;
+            height: 34px;
             border-radius: 10px;
             display: flex;
             align-items: center;
@@ -342,7 +344,7 @@
             text-align: center;
             font-size: 0.85rem;
             color: var(--text-muted);
-            padding: 30px 0;
+            padding: 40px 0;
         }
 
         .unauthorized-view {
@@ -398,7 +400,7 @@
                         <span id="formTitleText">Tambah Produk Baru</span>
                     </div>
 
-                    <form id="productForm" onsubmit="handleFormSubmit(event)" style="display: flex; flex-direction: column; gap: 16px;">
+                    <form id="productForm" onsubmit="handleFormSubmit(event)" style="display: flex; flex-direction: column; gap: 20px;">
                         <input type="hidden" id="editingProductId">
 
                         <div class="form-group">
@@ -436,7 +438,7 @@
                             </div>
                         </div>
 
-                        <div style="display: flex; gap: 10px;">
+                        <div style="display: flex; gap: 12px; margin-top: 4px;">
                             <button type="submit" class="btn-primary-yellow" id="submitBtn" style="flex: 1;">Simpan Produk</button>
                             <button type="button" class="btn-secondary" id="cancelEditBtn" onclick="resetForm()">Batal</button>
                         </div>
@@ -541,11 +543,11 @@
 
             let editId = document.getElementById('editingProductId').value;
             let title = document.getElementById('prodTitle').value.trim();
-            let category = document.getElementById('prodCategory').value.trim().toLowerCase();
-            let tags = document.getElementById('prodTags').value.trim().toLowerCase();
+            let category = document.getElementById('prodCategory').value.trim();
+            let tags = document.getElementById('prodTags').value.trim();
             let price = parseInt(document.getElementById('prodPrice').value) || 0;
             let description = document.getElementById('prodDesc').value.trim();
-            let badge = category.charAt(0).toUpperCase() + category.slice(1);
+            let badge = category;
 
             if (!title || !category || !price) {
                 alert("Harap isi field yang wajib!");
