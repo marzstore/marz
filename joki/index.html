@@ -924,11 +924,11 @@
                 
                 <div class="custom-dropdown-wrapper" id="categoryDropdown">
                     <div class="custom-dropdown-btn" onclick="toggleCategoryDropdown()">
-                        <span id="selectedCategoryLabel">Semua kategori</span>
+                        <span id="selectedCategoryLabel">Semua Kategori</span>
                         <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
                     </div>
                     <div class="custom-dropdown-list" id="categoryDropdownList">
-                        <div class="custom-dropdown-item selected" onclick="selectCategory('semua', 'Semua kategori')">Semua kategori</div>
+                        <div class="custom-dropdown-item selected" onclick="selectCategory('semua', 'Semua Kategori')">Semua Kategori</div>
                     </div>
                 </div>
             </div>
@@ -1003,6 +1003,11 @@
             renderProducts();
         });
 
+        function formatCapitalize(str) {
+            if (!str) return '';
+            return str.trim().split(' ').map(word => word ? word.charAt(0).toUpperCase() + word.slice(1).toLowerCase() : '').join(' ');
+        }
+
         function buildDynamicFilters() {
             let categoriesSet = new Set();
             let tagsSet = new Set();
@@ -1021,10 +1026,10 @@
             let sortedTags = Array.from(tagsSet).sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
 
             let dropdownList = document.getElementById('categoryDropdownList');
-            let dropdownHtml = `<div class="custom-dropdown-item ${currentSelectedCategory === 'semua' ? 'selected' : ''}" onclick="selectCategory('semua', 'Semua kategori')">Semua kategori</div>`;
+            let dropdownHtml = `<div class="custom-dropdown-item ${currentSelectedCategory === 'semua' ? 'selected' : ''}" onclick="selectCategory('semua', 'Semua Kategori')">Semua Kategori</div>`;
             
             sortedCategories.forEach(cat => {
-                let formattedLabel = cat.charAt(0).toUpperCase() + cat.slice(1);
+                let formattedLabel = formatCapitalize(cat);
                 let isSel = currentSelectedCategory === cat ? 'selected' : '';
                 dropdownHtml += `<div class="custom-dropdown-item ${isSel}" onclick="selectCategory('${cat}', '${formattedLabel}')">${formattedLabel}</div>`;
             });
@@ -1034,7 +1039,7 @@
             let tagsHtml = `<button class="filter-tag ${currentFilterTag === 'semua' ? 'active' : ''}" onclick="setFilterTag(this, 'semua')">Semua</button>`;
 
             sortedTags.forEach(tag => {
-                let formattedTagLabel = tag.charAt(0).toUpperCase() + tag.slice(1);
+                let formattedTagLabel = formatCapitalize(tag);
                 let isAct = currentFilterTag === tag ? 'active' : '';
                 tagsHtml += `<button class="filter-tag ${isAct}" onclick="setFilterTag(this, '${tag}')">${formattedTagLabel}</button>`;
             });
@@ -1069,7 +1074,7 @@
             let html = '';
             filtered.forEach(item => {
                 let badgeText = item.badge || item.category || 'Layanan';
-                let formattedBadge = badgeText.charAt(0).toUpperCase() + badgeText.slice(1);
+                let formattedBadge = formatCapitalize(badgeText);
                 let title = item.title || 'Tanpa Nama';
                 let desc = item.description || 'Layanan siap dipesan.';
                 let price = item.price || 0;
@@ -1081,7 +1086,7 @@
                     tags.split(',').forEach(t => {
                         let trimmedTag = t.trim();
                         if (trimmedTag) {
-                            let formattedTag = trimmedTag.charAt(0).toUpperCase() + trimmedTag.slice(1);
+                            let formattedTag = formatCapitalize(trimmedTag);
                             tagsHtml += `<span class="product-tag-pill">${formattedTag}</span>`;
                         }
                     });
@@ -1132,6 +1137,8 @@
             document.getElementById('selectedCategoryLabel').innerText = label;
             document.getElementById('categoryDropdown').classList.remove('open');
             
+            currentFilterTag = 'semua';
+
             const items = document.querySelectorAll('.custom-dropdown-list .custom-dropdown-item');
             items.forEach(item => {
                 item.classList.remove('selected');
@@ -1140,6 +1147,7 @@
                 }
             });
 
+            buildDynamicFilters();
             renderProducts();
         };
 
