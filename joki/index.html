@@ -57,6 +57,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            cursor: pointer;
         }
 
         .nav-logo {
@@ -821,7 +822,7 @@
 <body>
 
     <header class="navbar">
-        <div class="nav-brand">
+        <div class="nav-brand" onclick="window.location.href='/'">
             <img src="../source/logo.png" alt="Marz Logo" class="nav-logo">
         </div>
         
@@ -1023,7 +1024,12 @@
             });
 
             let sortedCategories = Array.from(categoriesSet).sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
-            let sortedTags = Array.from(tagsSet).sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
+            
+            let sortedTags = Array.from(tagsSet).sort((a, b) => {
+                if (a === 'termurah' && b === 'termahal') return -1;
+                if (a === 'termahal' && b === 'termurah') return 1;
+                return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
+            });
 
             let dropdownList = document.getElementById('categoryDropdownList');
             let dropdownHtml = `<div class="custom-dropdown-item ${currentSelectedCategory === 'semua' ? 'selected' : ''}" onclick="selectCategory('semua', 'Semua Kategori')">Semua Kategori</div>`;
