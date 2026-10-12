@@ -59,6 +59,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            cursor: pointer;
         }
 
         .nav-logo {
@@ -145,6 +146,57 @@
             color: var(--text-main);
             display: flex;
             align-items: center;
+        }
+
+        .login-tabs-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background-color: #222222;
+            padding: 6px;
+            border-radius: 20px;
+            gap: 6px;
+        }
+
+        .login-tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 12px;
+            border-radius: 14px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .login-tab-btn:hover:not(.active) {
+            color: var(--text-main);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .login-tab-btn.active {
+            background-color: var(--primary-yellow);
+            color: var(--bg-color);
+        }
+
+        .login-method-section {
+            display: none;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .login-method-section.active {
+            display: flex;
+        }
+
+        .tab-content-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+            background-color: var(--surface-color);
+            padding: 12px 16px;
+            border-radius: 16px;
         }
 
         .cart-items-list {
@@ -319,6 +371,9 @@
             font-size: 0.85rem;
             font-weight: 700;
             color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .help-icon-btn {
@@ -394,17 +449,6 @@
             color: var(--text-main);
         }
 
-        .info-notice-box {
-            background-color: var(--surface-color);
-            border-radius: var(--radius-input);
-            padding: 12px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
         .order-summary-box {
             background-color: var(--surface-color);
             padding: 16px 20px;
@@ -443,7 +487,6 @@
             align-items: center;
             cursor: pointer;
             transition: 0.2s;
-            box-shadow: 0 4px 15px rgba(255, 204, 0, 0.2);
             text-decoration: none;
             width: 100%;
         }
@@ -728,7 +771,7 @@
 <body>
 
     <header class="navbar">
-        <div class="nav-brand">
+        <div class="nav-brand" onclick="window.location.href='/'">
             <img src="../source/logo.png" alt="Marz Logo" class="nav-logo">
         </div>
         
@@ -793,33 +836,47 @@
 
                 <form id="orderForm" onsubmit="submitOrder(event)" style="display: flex; flex-direction: column; gap: 16px;" novalidate>
                     <div class="form-group">
-                        <label class="form-label">Username Roblox</label>
-                        <div class="input-wrapper">
-                            <input type="text" class="form-input" id="robloxUsername" placeholder="Contoh: UsernameRoblox123" data-original-placeholder="Contoh: UsernameRoblox123" oninput="clearError(this)">
+                        <label class="form-label">Opsi Login</label>
+                        <div class="login-tabs-container">
+                            <button type="button" class="login-tab-btn active" id="tabUsername" onclick="switchLoginMethod('username')">Username & PW</button>
+                            <button type="button" class="login-tab-btn" id="tabEmail" onclick="switchLoginMethod('email')">Email Verifikasi</button>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label class="form-label">Password Roblox</label>
-                        <div class="input-wrapper">
-                            <input type="password" class="form-input" id="robloxPassword" placeholder="Masukkan password akun" data-original-placeholder="Masukkan password akun" oninput="clearError(this)" style="padding-right: 48px;">
-                            <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility('robloxPassword', this)" title="Lihat Password">
-                                <svg id="eyeIcon" style="width:20px;height:20px;fill:currentColor" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
-                            </button>
+                    <div class="login-method-section active" id="sectionUsernamePW">
+                        <div class="tab-content-desc">
+                            Gunakan opsi ini jika kamu ingin memasukkan Username dan Password akun Roblox secara langsung agar admin bisa langsung login.
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Username Roblox</label>
+                            <div class="input-wrapper">
+                                <input type="text" class="form-input" id="robloxUsername" placeholder="Contoh: UsernameRoblox123" data-original-placeholder="Contoh: UsernameRoblox123" oninput="clearError(this)">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Password Roblox</label>
+                            <div class="input-wrapper">
+                                <input type="password" class="form-input" id="robloxPassword" placeholder="Masukkan password akun" data-original-placeholder="Masukkan password akun" oninput="clearError(this)" style="padding-right: 48px;">
+                                <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility('robloxPassword', this)" title="Lihat Password">
+                                    <svg style="width:20px;height:20px;fill:currentColor" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <div class="info-notice-box">
-                            <span>Kode verifikasi akan diminta via WA saat proses login</span>
-                            <button type="button" class="help-icon-btn" onclick="openRecoveryHelpModal()" title="Informasi Login">!</button>
+                    <div class="login-method-section" id="sectionEmailVerif">
+                        <div class="tab-content-desc">
+                            Gunakan opsi ini jika login menggunakan verifikasi email akun Roblox kamu untuk keamanan tambahan.
                         </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Email (Aktif)</label>
-                        <div class="input-wrapper">
-                            <input type="email" class="form-input" id="userEmail" placeholder="Contoh: emailkamu@gmail.com" data-original-placeholder="Contoh: emailkamu@gmail.com" oninput="clearError(this)">
+                        <div class="form-group">
+                            <label class="form-label">
+                                <span>Email Akun Roblox</span>
+                                <button type="button" class="help-icon-btn" onclick="openRecoveryHelpModal()" title="Informasi Email Verifikasi">!</button>
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="email" class="form-input" id="robloxEmailVerif" placeholder="Contoh: emailkamu@gmail.com" data-original-placeholder="Contoh: emailkamu@gmail.com" oninput="clearError(this)">
+                            </div>
                         </div>
                     </div>
 
@@ -834,40 +891,36 @@
     <div class="modal-overlay" id="recoveryHelpModal">
         <div class="modal-container-box">
             <div class="modal-top-header">
-                <span class="modal-security-badge">Roblox Account Security</span>
+                <span class="modal-security-badge">Informasi Email Verifikasi</span>
                 <button type="button" class="modal-close-icon-btn" onclick="closeRecoveryHelpModal()">
                     <svg style="width:18px;height:18px;fill:currentColor" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
                 </button>
             </div>
 
             <div>
-                <h2 class="modal-main-title">Informasi Kode Verifikasi</h2>
+                <h2 class="modal-main-title">Panduan Email Verifikasi Roblox</h2>
                 <p class="modal-subtitle-text" style="margin-top: 8px;">
-                    Saat admin melakukan login ke akun kamu, Roblox akan mengirimkan kode verifikasi sekali pakai ke Gmail kamu.
+                    Pastikan email yang kamu masukkan sudah benar dan valid agar proses verifikasi berjalan lancar.
                 </p>
             </div>
 
             <ul class="modal-steps-list">
                 <li class="modal-step-row">
                     <span class="modal-step-num">1.</span>
-                    <span>Lakukan pemesanan dan isi form dengan benar.</span>
+                    <span>Masukkan alamat email aktif yang terdaftar pada akun Roblox kamu.</span>
                 </li>
                 <li class="modal-step-row">
                     <span class="modal-step-num">2.</span>
-                    <span>Admin akan mulai memproses pesanan dan mencoba login ke akun.</span>
+                    <span>Admin akan mengirimkan permintaan akses atau login yang memicu pengiriman kode verifikasi satu kali (OTP) ke inbox email tersebut.</span>
                 </li>
                 <li class="modal-step-row">
                     <span class="modal-step-num">3.</span>
-                    <span>Admin akan meminta kode verifikasi yang masuk ke Gmail kamu di obrolan chat WhatsApp.</span>
-                </li>
-                <li class="modal-step-row">
-                    <span class="modal-step-num">4.</span>
-                    <span>Kirimkan kode verifikasi tersebut melalui chat WhatsApp admin agar proses login dapat dilanjutkan.</span>
+                    <span>Koordinasikan kode verifikasi yang masuk ke email kamu melalui chat WhatsApp admin secara cepat.</span>
                 </li>
             </ul>
 
             <div class="modal-alert-box">
-                Kode verifikasi bersifat sementara dan hanya bisa digunakan sekali. Tetap pantau WhatsApp untuk kelancaran proses joki.
+                Jangan bagikan kode verifikasi kepada siapapun selain admin resmi Marz Store demi keamanan akun Roblox kamu.
             </div>
 
             <button type="button" class="modal-btn-close-action" onclick="closeRecoveryHelpModal()">
@@ -906,6 +959,8 @@
     </nav>
 
     <script>
+        let currentLoginMode = 'username';
+
         function getCart() {
             return JSON.parse(localStorage.getItem('marz_cart')) || [];
         }
@@ -922,6 +977,26 @@
         function closeCustomAlert() {
             document.getElementById('customAlertOverlay').classList.remove('active');
             document.body.style.overflow = '';
+        }
+
+        function switchLoginMethod(mode) {
+            currentLoginMode = mode;
+            let tabUser = document.getElementById('tabUsername');
+            let tabEmail = document.getElementById('tabEmail');
+            let secUserPW = document.getElementById('sectionUsernamePW');
+            let secEmailVerif = document.getElementById('sectionEmailVerif');
+
+            if (mode === 'username') {
+                tabUser.classList.add('active');
+                tabEmail.classList.remove('active');
+                secUserPW.classList.add('active');
+                secEmailVerif.classList.remove('active');
+            } else {
+                tabEmail.classList.add('active');
+                tabUser.classList.remove('active');
+                secEmailVerif.classList.add('active');
+                secUserPW.classList.remove('active');
+            }
         }
 
         function renderCheckoutCart() {
@@ -1014,6 +1089,11 @@
             }
         };
 
+        function validateEmail(email) {
+            let re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
         function submitOrder(event) {
             event.preventDefault();
             
@@ -1023,35 +1103,45 @@
                 return;
             }
 
-            let usernameEl = document.getElementById('robloxUsername');
-            let passwordEl = document.getElementById('robloxPassword');
-            let emailEl = document.getElementById('userEmail');
-
-            let username = usernameEl.value.trim();
-            let password = passwordEl.value.trim();
-            let email = emailEl.value.trim();
-
-            let fieldsToValidate = [
-                { el: usernameEl, val: username, errPlaceholder: "Isi dulu bagian ini!" },
-                { el: passwordEl, val: password, errPlaceholder: "Isi dulu bagian ini!" },
-                { el: emailEl, val: email, errPlaceholder: "Isi dulu bagian ini!" }
-            ];
-
             let isValid = true;
+            let accountDetailsText = "";
 
-            fieldsToValidate.forEach(item => {
-                if (!item.val) {
-                    item.el.classList.add('input-error');
-                    item.el.placeholder = item.errPlaceholder;
+            if (currentLoginMode === 'username') {
+                let usernameEl = document.getElementById('robloxUsername');
+                let passwordEl = document.getElementById('robloxPassword');
+                let username = usernameEl.value.trim();
+                let password = passwordEl.value.trim();
+
+                let fields = [
+                    { el: usernameEl, val: username },
+                    { el: passwordEl, val: password }
+                ];
+
+                fields.forEach(item => {
+                    if (!item.val) {
+                        item.el.classList.add('input-error');
+                        item.el.placeholder = "Isi dulu bagian ini!";
+                        isValid = false;
+                        setTimeout(() => { clearError(item.el); }, 3500);
+                    }
+                });
+
+                if (!isValid) return;
+                accountDetailsText = `- Opsi Login: Username & Password%0A- Username: ${username}%0A- Password: ${password}`;
+            } else {
+                let emailEl = document.getElementById('robloxEmailVerif');
+                let email = emailEl.value.trim();
+
+                if (!email || !validateEmail(email)) {
+                    emailEl.classList.add('input-error');
+                    emailEl.value = "";
+                    emailEl.placeholder = "Masukkan email yang valid!";
                     isValid = false;
-
-                    setTimeout(() => {
-                        clearError(item.el);
-                    }, 3500);
+                    setTimeout(() => { clearError(emailEl); }, 3500);
+                    return;
                 }
-            });
-
-            if (!isValid) return;
+                accountDetailsText = `- Opsi Login: Email Verifikasi%0A- Email Roblox: ${email}`;
+            }
 
             let hasValidPrice = cart.some(item => item.price && item.price > 0);
             let totalPrice = cart.reduce((sum, item) => sum + ((item.price || 0) * item.qty), 0);
@@ -1062,7 +1152,7 @@
                 message += `- ${item.name} (${item.qty}x) : ${itemPriceText}%0A`;
             });
             message += `%0A*Total Harga:* ${(!hasValidPrice || totalPrice === 0) ? 'Harga via WA' : 'Rp ' + totalPrice.toLocaleString()}%0A%0A`;
-            message += `*Data Akun:*%0A- Username: ${username}%0A- Password: ${password}%0A- Email: ${email}%0A%0A`;
+            message += `*Data Akun & Kontak:*%0A${accountDetailsText}%0A%0A`;
             message += `_Saya sudah melakukan transfer via QRIS dan akan menyertakan bukti pembayaran (screenshot) di bawah ini:_`;
 
             let adminNumber = "6288211975711";
