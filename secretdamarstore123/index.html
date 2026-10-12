@@ -227,6 +227,23 @@
             border-color: rgba(255, 204, 0, 0.4);
         }
 
+        .input-suggestion-bar {
+            font-size: 0.8rem;
+            color: var(--primary-yellow);
+            cursor: pointer;
+            margin-top: 4px;
+            display: none;
+            width: fit-content;
+            background: rgba(255, 204, 0, 0.1);
+            padding: 4px 12px;
+            border-radius: 8px;
+            transition: 0.2s;
+        }
+
+        .input-suggestion-bar:hover {
+            background: rgba(255, 204, 0, 0.2);
+        }
+
         .btn-primary-yellow {
             background-color: var(--primary-yellow);
             color: var(--bg-color);
@@ -269,9 +286,6 @@
             display: flex;
             flex-direction: column;
             gap: 16px;
-            max-height: 520px;
-            overflow-y: auto;
-            padding-right: 4px;
         }
 
         .admin-category-group {
@@ -449,23 +463,26 @@
                         <div class="form-group">
                             <label class="form-label">Judul Layanan</label>
                             <div class="input-wrapper">
-                                <input type="text" class="form-input" id="prodTitle" placeholder="Contoh: Trial V4 Full Gear" required autocomplete="off" onblur="capitalizeInput(this)">
+                                <input type="text" class="form-input" id="prodTitle" placeholder="Contoh: Trial V4 Full Gear" required autocomplete="off" oninput="handleInputHelper('prodTitle', 'titleHelper')">
                             </div>
+                            <div class="input-suggestion-bar" id="titleHelper" onclick="applySuggestion('prodTitle', 'titleHelper')"></div>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label">Kategori</label>
                             <div class="input-wrapper">
-                                <input type="text" class="form-input" id="prodCategory" list="categorySuggestions" placeholder="Contoh: Gear, Boss, atau Paket" required autocomplete="off" onblur="capitalizeInput(this)">
+                                <input type="text" class="form-input" id="prodCategory" list="categorySuggestions" placeholder="Contoh: Gear, Boss, atau Paket" required autocomplete="off" oninput="handleInputHelper('prodCategory', 'categoryHelper')">
                                 <datalist id="categorySuggestions"></datalist>
                             </div>
+                            <div class="input-suggestion-bar" id="categoryHelper" onclick="applySuggestion('prodCategory', 'categoryHelper')"></div>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label">Tags / Kata Kunci Pencarian</label>
                             <div class="input-wrapper">
-                                <input type="text" class="form-input" id="prodTags" placeholder="Contoh: trial, v4, gear" required autocomplete="off">
+                                <input type="text" class="form-input" id="prodTags" placeholder="Contoh: trial, v4, gear" required autocomplete="off" oninput="handleInputHelper('prodTags', 'tagsHelper')">
                             </div>
+                            <div class="input-suggestion-bar" id="tagsHelper" onclick="applySuggestion('prodTags', 'tagsHelper')"></div>
                         </div>
 
                         <div class="form-group">
@@ -570,11 +587,31 @@
             });
         };
 
-        window.capitalizeInput = function(element) {
-            let val = element.value.trim();
-            if (!val) return;
-            let formatted = val.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
-            element.value = formatted;
+        window.handleInputHelper = function(inputId, helperId) {
+            let input = document.getElementById(inputId);
+            let helper = document.getElementById(helperId);
+            let val = input.value;
+            if (!val.trim()) {
+                helper.style.display = 'none';
+                return;
+            }
+            let formatted = val.split(',').map(part => {
+                let trimmed = part.trim();
+                if (!trimmed) return '';
+                return trimmed.split(' ').map(word => word ? word.charAt(0).toUpperCase() + word.slice(1).toLowerCase() : '').join(' ');
+            }).join(', ');
+
+            helper.innerText = formatted;
+            helper.style.display = 'block';
+        };
+
+        window.applySuggestion = function(inputId, helperId) {
+            let input = document.getElementById(inputId);
+            let helper = document.getElementById(helperId);
+            if (helper.innerText) {
+                input.value = helper.innerText;
+                helper.style.display = 'none';
+            }
         };
 
         function loadProductsDatabase() {
@@ -882,6 +919,9 @@
             document.getElementById('formTitleText').innerText = 'Tambah Produk Baru';
             document.getElementById('submitBtn').innerText = 'Simpan Produk';
             document.getElementById('cancelEditBtn').style.display = 'none';
+            document.getElementById('titleHelper').style.display = 'none';
+            document.getElementById('categoryHelper').style.display = 'none';
+            document.getElementById('tagsHelper').style.display = 'none';
         };
     </script>
 
