@@ -202,6 +202,31 @@
             color: var(--text-main);
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 6px;
+        }
+
+        .filter-btn {
+            background-color: var(--surface-color);
+            border: none;
+            color: var(--text-muted);
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .filter-btn.active {
+            background-color: var(--primary-yellow);
+            color: var(--bg-color);
         }
 
         .form-group {
@@ -552,6 +577,11 @@
                 <div class="admin-card">
                     <div class="section-heading">
                         <span>Daftar Produk Database</span>
+                        <div class="filter-buttons">
+                            <button class="filter-btn active" onclick="setFilter('all', this)">Semua</button>
+                            <button class="filter-btn" onclick="setFilter('highest', this)">Termahal</button>
+                            <button class="filter-btn" onclick="setFilter('lowest', this)">Termurah</button>
+                        </div>
                     </div>
 
                     <div class="product-list-container" id="adminProductList">
@@ -590,6 +620,7 @@
 
         const allowedAdminEmails = ["marzstore027@gmail.com", "muhammaddamarsobari@gmail.com"];
         let productsData = {};
+        let currentSortFilter = 'all';
 
         onAuthStateChanged(auth, (user) => {
             const authScreen = document.getElementById('authScreen');
@@ -628,6 +659,13 @@
             signOut(auth).catch((error) => {
                 alert("Gagal Keluar: " + error.message);
             });
+        };
+
+        window.setFilter = function(filterType, btn) {
+            currentSortFilter = filterType;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderAdminProductList();
         };
 
         window.handleInputHelper = function(inputId, helperId) {
@@ -785,6 +823,11 @@
 
             Object.keys(groupedByCategory).forEach(catKey => {
                 groupedByCategory[catKey].items.sort((a, b) => {
+                    if (currentSortFilter === 'lowest') {
+                        return (a.price || 0) - (b.price || 0);
+                    } else if (currentSortFilter === 'highest') {
+                        return (b.price || 0) - (a.price || 0);
+                    }
                     let orderA = a.order !== undefined ? a.order : 0;
                     let orderB = b.order !== undefined ? b.order : 0;
                     return orderA - orderB;
@@ -930,7 +973,9 @@
             let targetCatKey = sortedCatKeys[swapIndex];
 
             let currentCatData = groupedByCategory[catKey];
-            let targetCatData = groupedByCategory[targetCatKey];
+            let targetCatData = sortedCatKeys[swapIndex] ? groupedByCategory[sortedCatKeys[swapIndex]] : null;
+
+            if (!targetCatData) return;
 
             let tempCatOrder = currentCatData.catOrder;
             let newCatOrder = targetCatData.catOrder;
