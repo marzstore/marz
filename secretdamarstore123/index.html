@@ -263,6 +263,13 @@
             background: rgba(255, 204, 0, 0.2);
         }
 
+        .price-helper-text {
+            font-size: 0.75rem;
+            color: var(--text-dimmed);
+            margin-top: 4px;
+            display: none;
+        }
+
         .btn-primary-yellow {
             background-color: var(--primary-yellow);
             color: var(--bg-color);
@@ -493,6 +500,7 @@
 
                     <form id="productForm" onsubmit="handleFormSubmit(event)" style="display: flex; flex-direction: column; gap: 16px;">
                         <input type="hidden" id="editingProductId">
+                        <input type="hidden" id="prodPriceRaw">
 
                         <div class="form-group">
                             <label class="form-label">Judul Layanan</label>
@@ -522,8 +530,9 @@
                         <div class="form-group">
                             <label class="form-label">Harga (Rp)</label>
                             <div class="input-wrapper">
-                                <input type="number" class="form-input" id="prodPrice" placeholder="Contoh: 50000" required min="0">
+                                <input type="text" class="form-input" id="prodPriceFormatted" placeholder="Contoh: 50.000" required autocomplete="off" oninput="handlePriceInput(this)">
                             </div>
+                            <div class="price-helper-text" id="priceHelperText"></div>
                         </div>
 
                         <div class="form-group">
@@ -648,6 +657,25 @@
             }
         };
 
+        window.handlePriceInput = function(input) {
+            let rawVal = input.value.replace(/\D/g, '');
+            let rawInput = document.getElementById('prodPriceRaw');
+            let helperText = document.getElementById('priceHelperText');
+
+            if (!rawVal) {
+                input.value = '';
+                rawInput.value = '';
+                helperText.style.display = 'none';
+                return;
+            }
+
+            rawInput.value = rawVal;
+            let numericVal = parseInt(rawVal, 10);
+            input.value = numericVal.toLocaleString('id-ID');
+            helperText.innerText = `Terbaca: Rp ${numericVal.toLocaleString('id-ID')}`;
+            helperText.style.display = 'block';
+        };
+
         function loadProductsDatabase() {
             const productsRef = ref(db, 'produk');
             onValue(productsRef, (snapshot) => {
@@ -683,12 +711,12 @@
             let title = document.getElementById('prodTitle').value.trim();
             let category = document.getElementById('prodCategory').value.trim();
             let tags = document.getElementById('prodTags').value.trim();
-            let price = parseInt(document.getElementById('prodPrice').value) || 0;
+            let price = parseInt(document.getElementById('prodPriceRaw').value) || 0;
             let description = document.getElementById('prodDesc').value.trim();
             let badge = category;
 
             if (!title || !category || !price) {
-                alert("Harap isi field yang wajib!");
+                alert("Harap isi field yang wajib dan pastikan harga valid!");
                 return;
             }
 
@@ -801,7 +829,7 @@
                             <div class="admin-product-info">
                                 <span class="admin-product-title">${item.title}</span>
                                 <div class="admin-product-meta">
-                                    <span class="admin-product-price">Rp ${Number(item.price).toLocaleString()}</span>
+                                    <span class="admin-product-price">Rp ${Number(item.price).toLocaleString('id-ID')}</span>
                                     ${item.tags ? `<span class="admin-product-tags">${item.tags}</span>` : ''}
                                 </div>
                             </div>
@@ -928,7 +956,17 @@
             document.getElementById('prodTitle').value = item.title || '';
             document.getElementById('prodCategory').value = item.category || '';
             document.getElementById('prodTags').value = item.tags || '';
-            document.getElementById('prodPrice').value = item.price || 0;
+            
+            let priceVal = item.price || 0;
+            document.getElementById('prodPriceRaw').value = priceVal;
+            document.getElementById('prodPriceFormatted').value = priceVal ? Number(priceVal).toLocaleString('id-ID') : '';
+            
+            if (priceVal) {
+                let helperText = document.getElementById('priceHelperText');
+                helperText.innerText = `Terbaca: Rp ${Number(priceVal).toLocaleString('id-ID')}`;
+                helperText.style.display = 'block';
+            }
+
             document.getElementById('prodDesc').value = item.description || '';
 
             document.getElementById('formTitleText').innerText = 'Edit Produk Layanan';
@@ -950,12 +988,14 @@
         window.resetForm = function() {
             document.getElementById('productForm').reset();
             document.getElementById('editingProductId').value = '';
+            document.getElementById('prodPriceRaw').value = '';
             document.getElementById('formTitleText').innerText = 'Tambah Produk Baru';
             document.getElementById('submitBtn').innerText = 'Simpan Produk';
             document.getElementById('cancelEditBtn').style.display = 'none';
             document.getElementById('titleHelper').style.display = 'none';
             document.getElementById('categoryHelper').style.display = 'none';
             document.getElementById('tagsHelper').style.display = 'none';
+            document.getElementById('priceHelperText').style.display = 'none';
         };
     </script>
 
