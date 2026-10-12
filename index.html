@@ -260,6 +260,12 @@
             padding: 0 24px;
         }
 
+        .online-status-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+
         .online-status-bar {
             display: inline-flex;
             align-items: center;
@@ -267,11 +273,62 @@
             background-color: var(--surface-alt);
             padding: 6px 14px;
             border-radius: 20px;
-            margin-bottom: 12px;
             font-size: 0.8rem;
             font-weight: 600;
             color: var(--text-muted);
             border: none;
+            cursor: pointer;
+        }
+
+        .online-info-dropdown {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-8px);
+            width: 280px;
+            background-color: var(--surface-alt);
+            border-radius: 12px;
+            padding: 14px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+            z-index: 150;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+            text-align: left;
+        }
+
+        .online-info-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .online-info-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary-yellow);
+            margin-bottom: 8px;
+        }
+
+        .online-info-row {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+
+        .online-info-row strong {
+            color: var(--text-main);
+        }
+
+        .online-info-desc {
+            font-size: 0.7rem;
+            color: var(--text-dimmed);
+            margin-top: 8px;
+            line-height: 1.4;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 6px;
         }
 
         .online-dot {
@@ -766,9 +823,18 @@
     <div class="main-container">
         <section class="hero-section">
             <div class="hero-content">
-                <div class="online-status-bar">
-                    <div class="online-dot" id="onlineDot"></div>
-                    <span id="onlineStatusText">Mengecek status...</span>
+                <div class="online-status-wrapper">
+                    <div class="online-status-bar" onclick="toggleOnlineInfo(event)">
+                        <div class="online-dot" id="onlineDot"></div>
+                        <span id="onlineStatusText">Mengecek status...</span>
+                        <svg style="width: 14px; height: 14px; fill: var(--text-muted); margin-left: 4px;" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+                    </div>
+                    <div class="online-info-dropdown" id="onlineInfoDropdown">
+                        <div class="online-info-title">Jadwal Operasional Admin</div>
+                        <div class="online-info-row"><span>Senin - Jumat:</span> <strong>18:00 - 09:00</strong></div>
+                        <div class="online-info-row"><span>Sabtu - Minggu:</span> <strong>09:00 - 23:00</strong></div>
+                        <div class="online-info-desc">Diluar jam operasional, admin mungkin slow respon. Order tetap bisa dikirim kapan saja!</div>
+                    </div>
                 </div>
                 <img src="source/logo.png" alt="Marz Logo Hero" class="hero-logo-large">
                 <h1 class="hero-title">Joki Roblox.<br><span>Murah. Satset.</span></h1>
@@ -779,7 +845,7 @@
 
             <div class="action-buttons-container">
                 <a href="/joki" class="btn-primary-yellow">
-                    <span>Pilih layanan joki</span>
+                    <span>Pilih Layanan Joki & Item</span>
                     <svg style="width:20px;height:20px;fill:#0b0b0b;" viewBox="0 0 24 24"><path d="M5 13h11.86l-5.43 5.43 1.42 1.42L21.71 12l-7.86-7.86-1.42 1.42L16.86 11H5v2z"/></svg>
                 </a>
 
@@ -788,7 +854,11 @@
                 </button>
 
                 <a href="https://wa.me/6288211975711" target="_blank" class="btn-dark-solid">
-                    Chat admin
+                    Chat Admin
+                </a>
+
+                <a href="https://chat.whatsapp.com/ENnSTNY0zziCv3ClQCCFWd?s=cl&p=a&mlu=4&ilr=4" target="_blank" class="btn-dark-solid">
+                    Gabung Komunitas
                 </a>
             </div>
 
@@ -918,6 +988,12 @@
             element.classList.toggle('active');
         }
 
+        function toggleOnlineInfo(event) {
+            event.stopPropagation();
+            const dropdown = document.getElementById('onlineInfoDropdown');
+            dropdown.classList.toggle('show');
+        }
+
         function checkOperatingStatus() {
             const now = new Date();
             const day = now.getDay();
@@ -1037,6 +1113,10 @@
             const tooltip = document.getElementById('cartTooltip');
             if (tooltip && !event.target.closest('.cart-wrapper')) {
                 tooltip.classList.remove('show');
+            }
+            const onlineDropdown = document.getElementById('onlineInfoDropdown');
+            if (onlineDropdown && !event.target.closest('.online-status-wrapper')) {
+                onlineDropdown.classList.remove('show');
             }
         };
 
