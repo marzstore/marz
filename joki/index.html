@@ -351,13 +351,13 @@
             align-items: center;
             font-size: var(--font-md);
             font-weight: 700;
-            color: var(--text-muted);
+            color: var(--text-main);
         }
 
         .calc-input-val {
-            background: var(--bg-color);
+            background: var(--dropdown-bg);
             border: none;
-            color: var(--primary-yellow);
+            color: var(--text-main);
             padding: 6px 12px;
             border-radius: 32px;
             font-weight: 800;
@@ -492,10 +492,62 @@
             margin-bottom: var(--spacing-xl);
         }
 
+        .section-title-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-sm);
+            position: relative;
+        }
+
         .section-heading {
             font-size: var(--font-xxl);
             font-weight: 800;
             color: var(--text-main);
+        }
+
+        .info-icon-btn {
+            background: var(--surface-alt);
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            color: var(--text-main);
+            font-weight: 800;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        .info-icon-btn:hover {
+            background-color: #262626;
+        }
+
+        .info-tooltip-box {
+            position: absolute;
+            top: 40px;
+            right: 0;
+            background-color: var(--surface-color);
+            color: var(--text-muted);
+            font-size: var(--font-sm);
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-radius: var(--radius-tooltip);
+            box-shadow: var(--shadow-tooltip);
+            z-index: 150;
+            width: 280px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-8px);
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+            line-height: 1.4;
+        }
+
+        .info-tooltip-box.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
         }
 
         .catalog-info {
@@ -830,6 +882,13 @@
             padding: var(--spacing-section) 0;
         }
 
+        footer {
+            text-align: center;
+            padding: 24px 20px 10px 20px;
+            font-size: 0.8rem;
+            color: var(--text-dimmed);
+        }
+
         @media (max-width: 767px) {
             .desktop-nav {
                 display: none;
@@ -927,12 +986,11 @@
         <div class="calculator-box" style="margin-top: var(--spacing-xxl);">
             <div class="calc-header">
                 <div class="calc-title">
-                    <svg style="width:20px;height:20px;fill:var(--primary-yellow)" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
                     Kalkulator Leveling Blox Fruits
                 </div>
                 <div class="calc-badge-group">
                     <span class="calc-badge">Ketik Level / Geser Slider</span>
-                    <span class="calc-badge" style="color:var(--primary-yellow)">Batas Max Game: Lv 2.800</span>
+                    <span class="calc-badge">Batas Max Game: Lv 2.800</span>
                 </div>
             </div>
 
@@ -985,10 +1043,18 @@
         <div class="section-divider"></div>
 
         <div class="catalog-header">
-            <div class="section-heading" style="text-align: left; margin-bottom: var(--spacing-sm);">Pilih Joki Atau Item</div>
+            <div class="section-title-wrapper">
+                <div class="section-heading">Pilih Joki Atau Item</div>
+                <div style="position: relative;">
+                    <button class="info-icon-btn" onclick="toggleInfoTooltip(event)">?</button>
+                    <div class="info-tooltip-box" id="infoTooltipBox">
+                        Ketika sudah menambahkan item cek keranjang di atas kanan untuk ke menu order/pesan.
+                    </div>
+                </div>
+            </div>
+            
             <div class="catalog-info">
                 <span id="catalogCountInfo">Memuat layanan...</span>
-                <span style="color: var(--primary-yellow);">Ketika sudah menambahkan item cek keranjang di atas kanan untuk ke menu order/pesan.</span>
             </div>
 
             <div class="catalog-controls">
@@ -1015,6 +1081,10 @@
         </div>
 
     </div>
+
+    <footer>
+        ©marz 2k26 - all reverse - design by <a href="https://mineplix.biz.id" target="_blank" style="color: var(--primary-yellow); text-decoration: none;">mineplix.biz.id</a>
+    </footer>
 
     <nav class="bottom-nav">
         <a href="/" class="nav-item">
@@ -1254,10 +1324,21 @@
             dropdown.classList.toggle('open');
         };
 
+        window.toggleInfoTooltip = function(event) {
+            event.stopPropagation();
+            const box = document.getElementById('infoTooltipBox');
+            box.classList.toggle('show');
+        };
+
         window.onclick = function(event) {
             const tooltip = document.getElementById('cartTooltip');
             if (tooltip && !event.target.closest('.cart-wrapper')) {
                 tooltip.classList.remove('show');
+            }
+
+            const infoBox = document.getElementById('infoTooltipBox');
+            if (infoBox && !event.target.closest('.section-title-wrapper')) {
+                infoBox.classList.remove('show');
             }
 
             if (!event.target.closest('.custom-dropdown-wrapper')) {
