@@ -13,7 +13,7 @@
             --surface-color: #141414;
             --surface-alt: #1f1f1f;
             --surface-card: #262626;
-            --accent-orange: #ffcc00;
+            --accent-yellow: #ffcc00;
             --text-main: #ffffff;
             --text-muted: #d0d0d0;
             --text-dimmed: #8a8a8a;
@@ -171,7 +171,7 @@
         }
 
         .admin-tab-btn:active {
-            background-color: var(--accent-orange);
+            background-color: var(--accent-yellow);
             color: var(--bg-color);
         }
 
@@ -184,7 +184,7 @@
         }
 
         .admin-tab-btn.active {
-            background-color: var(--accent-orange);
+            background-color: var(--accent-yellow);
             color: var(--bg-color);
         }
 
@@ -556,11 +556,12 @@
         }
 
         .admin-product-tags {
-            background: var(--surface-alt);
+            background: var(--accent-yellow);
             padding: 4px 10px;
             border-radius: 8px;
             font-size: 0.72rem;
-            color: var(--text-dimmed);
+            color: var(--bg-color);
+            font-weight: 700;
             max-width: 180px;
             white-space: nowrap;
             overflow: hidden;
@@ -730,7 +731,7 @@
         }
 
         .admin-btn-icon {
-            background: var(--bg-color);
+            background: var(--accent-yellow);
             border: none;
             width: 40px;
             height: 40px;
@@ -739,7 +740,7 @@
             align-items: center;
             justify-content: center;
             transition: 0.2s;
-            color: var(--text-muted);
+            color: var(--bg-color);
         }
 
         @media (min-width: 768px) {
@@ -751,8 +752,8 @@
         }
 
         .admin-btn-icon:hover {
-            background: #363636;
-            color: var(--text-main);
+            background: #e6b800;
+            color: var(--bg-color);
         }
 
         .admin-btn-icon svg {
@@ -1001,6 +1002,31 @@
             text-align: center;
             font-size: 0.68rem;
             color: #666;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #receiptPrintCardContent, #receiptPrintCardContent * {
+                visibility: visible;
+            }
+            #receiptPrintCardContent {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0;
+                padding: 16px;
+                background: #ffffff !important;
+                color: #000000 !important;
+            }
+            .receipt-print-modal {
+                background: transparent !important;
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
         }
     </style>
 </head>
