@@ -275,6 +275,11 @@
             font-weight: 600;
             color: var(--text-muted);
             border: none;
+            background: none;
+        }
+
+        .online-status-bar:active {
+            transform: scale(0.98);
         }
 
         .online-info-dropdown {
@@ -418,6 +423,10 @@
             background-color: var(--primary-hover);
         }
 
+        .btn-primary-yellow:active {
+            transform: scale(0.98);
+        }
+
         .btn-dark-solid {
             background-color: var(--surface-alt);
             color: var(--text-main);
@@ -435,6 +444,10 @@
 
         .btn-dark-solid:hover {
             background-color: #262626;
+        }
+
+        .btn-dark-solid:active {
+            transform: scale(0.98);
         }
 
         .security-note {
@@ -674,6 +687,13 @@
             color: var(--text-main);
         }
 
+        footer {
+            text-align: center;
+            padding: 24px 20px 10px 20px;
+            font-size: 0.8rem;
+            color: var(--text-dimmed);
+        }
+
         @media (max-width: 767px) {
             .desktop-nav {
                 display: none;
@@ -816,11 +836,11 @@
         <section class="hero-section">
             <div class="hero-content">
                 <div class="online-status-wrapper">
-                    <div class="online-status-bar" onclick="toggleOnlineInfo(event)">
+                    <button class="online-status-bar" onclick="toggleOnlineInfo(event)">
                         <div class="online-dot" id="onlineDot"></div>
                         <span id="onlineStatusText">Mengecek status...</span>
                         <svg style="width: 14px; height: 14px; fill: var(--text-muted); margin-left: 4px;" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
-                    </div>
+                    </button>
                     <div class="online-info-dropdown" id="onlineInfoDropdown">
                         <div class="online-info-title">Jadwal Operasional Admin</div>
                         <div class="online-info-row"><span>Senin - Jumat:</span> <strong>18:00 - 09:00</strong></div>
@@ -836,22 +856,22 @@
             </div>
 
             <div class="action-buttons-container">
-                <a href="/joki" class="btn-primary-yellow">
+                <div class="btn-primary-yellow" onclick="window.location.href='/joki'">
                     <span>Pilih Layanan Joki & Item</span>
                     <svg style="width:20px;height:20px;fill:#0b0b0b;" viewBox="0 0 24 24"><path d="M5 13h11.86l-5.43 5.43 1.42 1.42L21.71 12l-7.86-7.86-1.42 1.42L16.86 11H5v2z"/></svg>
-                </a>
+                </div>
 
-                <button class="btn-dark-solid" onclick="openOrderModal()">
+                <div class="btn-dark-solid" onclick="openOrderModal()">
                     Cara Order
-                </button>
+                </div>
 
-                <a href="https://wa.me/6288211975711" target="_blank" class="btn-dark-solid">
+                <div class="btn-dark-solid" onclick="window.open('https://wa.me/6288211975711', '_blank')">
                     Chat Admin
-                </a>
+                </div>
 
-                <a href="https://chat.whatsapp.com/ENnSTNY0zziCv3ClQCCFWd?s=cl&p=a&mlu=4&ilr=4" target="_blank" class="btn-dark-solid">
+                <div class="btn-dark-solid" onclick="window.open('https://chat.whatsapp.com/ENnSTNY0zziCv3ClQCCFWd?s=cl&p=a&mlu=4&ilr=4', '_blank')">
                     Gabung Komunitas
-                </a>
+                </div>
             </div>
 
             <div class="security-note">jangan memberikan hal yang terlalu sensitive ktp dsb nya
@@ -907,6 +927,10 @@
         </section>
     </div>
 
+    <footer>
+        ©marz 2k26 - all reverse - design by <a href="https://mineplix.biz.id" target="_blank" style="color: var(--primary-yellow); text-decoration: none;">mineplix.biz.id</a>
+    </footer>
+
     <div class="modal-overlay" id="orderModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -960,7 +984,7 @@
             </svg>
             <span>Beranda</span>
         </a>
-        <a href="/joki" class="nav-item">
+        <button class="nav-item" onclick="window.location.href='/joki'">
             <svg class="svg-nav-icon" viewBox="0 0 24 24">
                 <line x1="8" y1="6" x2="21" y2="6"></line>
                 <line x1="8" y1="12" x2="21" y2="12"></line>
@@ -970,15 +994,15 @@
                 <line x1="3" y1="18" x2="3.01" y2="18"></line>
             </svg>
             <span>List Joki</span>
-        </a>
-        <a href="/order" class="nav-item">
+        </button>
+        <button class="nav-item" onclick="window.location.href='/order'">
             <svg class="svg-nav-icon" viewBox="0 0 24 24">
                 <circle cx="9" cy="21" r="1"></circle>
                 <circle cx="20" cy="21" r="1"></circle>
                 <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
             </svg>
             <span>Status</span>
-        </a>
+        </button>
     </nav>
 
     <script>
