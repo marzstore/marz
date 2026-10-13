@@ -3,24 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marz - Admin Dashboard Produk</title>
+    <title>Marz - Admin Dashboard Produk & Order</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-color: #0b0b0b;
-            --surface-color: #161616;
-            --surface-alt: #141414;
-            --primary-yellow: #ffcc00;
-            --primary-hover: #e6b800;
+            --bg-color: #070707;
+            --surface-color: #121212;
+            --surface-alt: #1a1a1a;
+            --surface-card: #1f1f1f;
+            --primary-yellow: #ffd000;
+            --primary-hover: #e6bc00;
             --text-main: #ffffff;
-            --text-muted: #a3a3a3;
-            --text-dimmed: #737373;
+            --text-muted: #b0b0b0;
+            --text-dimmed: #7a7a7a;
             --danger-color: #ff3b30;
             --danger-hover: #e0322b;
-            --radius-btn: 20px;
-            --radius-card: 16px;
-            --radius-input: 20px;
+            --success-color: #34A853;
+            --info-color: #3b82f6;
+            --radius-btn: 10px;
+            --radius-card: 14px;
+            --radius-input: 10px;
         }
 
         * {
@@ -43,22 +46,24 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 14px 20px;
-            background-color: var(--bg-color);
+            padding: 12px 16px;
+            background-color: var(--surface-color);
             position: sticky;
             top: 0;
             z-index: 100;
             width: 100%;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
         }
 
         .nav-brand {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .nav-logo {
-            height: 26px;
+            height: 24px;
             width: auto;
             object-fit: contain;
             display: block;
@@ -66,31 +71,33 @@
 
         .desktop-nav {
             display: flex;
-            gap: 20px;
+            gap: 12px;
             align-items: center;
         }
 
         .desktop-nav-item {
-            color: var(--text-dimmed);
+            color: var(--text-muted);
             text-decoration: none;
-            font-size: 0.85rem;
+            font-size: 0.78rem;
             font-weight: 600;
-            cursor: pointer;
             transition: 0.2s;
-            background: none;
-            border: none;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 6px 12px;
+            border-radius: 8px;
         }
 
-        .desktop-nav-item:hover,
-        .desktop-nav-item.active {
-            color: var(--primary-yellow);
+        .desktop-nav-item:hover {
+            color: var(--bg-color);
+            background-color: var(--primary-yellow);
+            border-color: var(--primary-yellow);
         }
 
         .main-container {
             width: 100%;
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 16px;
+            padding: 12px;
         }
 
         @media (min-width: 768px) {
@@ -100,19 +107,90 @@
         }
 
         .page-header {
-            margin-bottom: 24px;
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background-color: var(--surface-alt);
+            padding: 16px;
+            border-radius: var(--radius-card);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        @media (min-width: 768px) {
+            .page-header {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                padding: 24px;
+            }
         }
 
         .page-title {
-            font-size: 1.5rem;
+            font-size: 1.15rem;
             font-weight: 800;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
+            letter-spacing: -0.2px;
+        }
+
+        @media (min-width: 768px) {
+            .page-title {
+                font-size: 1.5rem;
+            }
         }
 
         .page-subtitle {
-            font-size: 0.82rem;
+            font-size: 0.75rem;
             color: var(--text-muted);
             line-height: 1.4;
+        }
+
+        @media (min-width: 768px) {
+            .page-subtitle {
+                font-size: 0.82rem;
+            }
+        }
+
+        .admin-tabs-nav {
+            display: flex;
+            background-color: var(--surface-color);
+            padding: 4px;
+            border-radius: 12px;
+            gap: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            width: 100%;
+        }
+
+        @media (min-width: 768px) {
+            .admin-tabs-nav {
+                width: fit-content;
+            }
+        }
+
+        .admin-tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            transition: 0.2s;
+            flex: 1;
+            text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            .admin-tab-btn {
+                font-size: 0.8rem;
+                padding: 10px 16px;
+                flex: unset;
+            }
+        }
+
+        .admin-tab-btn.active {
+            background-color: var(--primary-yellow);
+            color: var(--bg-color);
         }
 
         .auth-container {
@@ -120,21 +198,23 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 60vh;
-            gap: 20px;
+            min-height: 65vh;
+            gap: 16px;
             text-align: center;
-            padding: 16px;
+            padding: 12px;
         }
 
         .auth-card {
             background-color: var(--surface-alt);
             border-radius: var(--radius-card);
-            padding: 24px;
-            max-width: 400px;
+            padding: 24px 18px;
+            max-width: 380px;
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
         }
 
         .btn-google {
@@ -144,14 +224,14 @@
             padding: 12px 16px;
             border-radius: var(--radius-btn);
             font-weight: 700;
-            font-size: 0.88rem;
+            font-size: 0.82rem;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 10px;
-            cursor: pointer;
+            gap: 8px;
             transition: 0.2s;
             width: 100%;
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
         }
 
         .btn-google:hover {
@@ -166,28 +246,40 @@
             display: block;
         }
 
+        .tab-panel {
+            display: none;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .tab-panel.active {
+            display: flex;
+        }
+
         .admin-layout {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 20px;
+            gap: 16px;
             align-items: start;
         }
 
-        @media (min-width: 900px) {
+        @media (min-width: 992px) {
             .admin-layout {
-                grid-template-columns: 1fr 1.2fr;
+                grid-template-columns: 1fr 1.25fr;
             }
         }
 
         .admin-card {
             background-color: var(--surface-alt);
             border-radius: var(--radius-card);
-            padding: 20px;
+            padding: 16px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 16px;
             width: 100%;
             overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
         }
 
         @media (min-width: 768px) {
@@ -197,11 +289,20 @@
         }
 
         .section-heading {
-            font-size: 1.05rem;
+            font-size: 0.95rem;
             font-weight: 800;
             color: var(--text-main);
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        @media (min-width: 768px) {
+            .section-heading {
+                font-size: 1.05rem;
+            }
         }
 
         .form-group {
@@ -211,9 +312,15 @@
         }
 
         .form-label {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 700;
             color: var(--text-muted);
+        }
+
+        @media (min-width: 768px) {
+            .form-label {
+                font-size: 0.8rem;
+            }
         }
 
         .input-wrapper {
@@ -226,65 +333,79 @@
         .form-input, .form-textarea {
             width: 100%;
             background-color: var(--surface-color);
-            border: 1.5px solid transparent;
-            padding: 12px 16px;
+            border: 1.5px solid rgba(255, 255, 255, 0.08);
+            padding: 10px 14px;
             border-radius: var(--radius-input);
             color: var(--text-main);
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             outline: none;
             transition: all 0.2s ease;
-            text-transform: none;
+        }
+
+        @media (min-width: 768px) {
+            .form-input, .form-textarea {
+                padding: 12px 16px;
+                font-size: 0.85rem;
+            }
         }
 
         .form-textarea {
             resize: vertical;
-            min-height: 100px;
+            min-height: 90px;
         }
 
         .form-input:focus, .form-textarea:focus {
-            background-color: #1f1f1f;
-            border-color: rgba(255, 204, 0, 0.4);
+            background-color: var(--surface-card);
+            border-color: var(--primary-yellow);
+            box-shadow: 0 0 0 3px rgba(255, 208, 0, 0.15);
         }
 
         .input-suggestion-bar {
-            font-size: 0.78rem;
+            font-size: 0.72rem;
             color: var(--primary-yellow);
-            cursor: pointer;
             margin-top: 4px;
             display: none;
             width: fit-content;
-            background: rgba(255, 204, 0, 0.1);
+            background: rgba(255, 208, 0, 0.1);
+            border: 1px solid rgba(255, 208, 0, 0.2);
             padding: 4px 10px;
-            border-radius: 8px;
+            border-radius: 6px;
             transition: 0.2s;
         }
 
         .input-suggestion-bar:hover {
-            background: rgba(255, 204, 0, 0.2);
+            background: rgba(255, 208, 0, 0.2);
         }
 
         .price-helper-text {
-            font-size: 0.75rem;
-            color: var(--text-dimmed);
+            font-size: 0.72rem;
+            color: var(--primary-yellow);
             margin-top: 4px;
             display: none;
+            font-weight: 600;
         }
 
         .btn-primary-yellow {
             background-color: var(--primary-yellow);
             color: var(--bg-color);
             border: none;
-            padding: 14px 18px;
+            padding: 12px 16px;
             border-radius: var(--radius-btn);
-            font-weight: 700;
-            font-size: 0.88rem;
+            font-weight: 800;
+            font-size: 0.82rem;
             display: flex;
             justify-content: center;
             align-items: center;
-            cursor: pointer;
             transition: 0.2s;
-            box-shadow: 0 4px 15px rgba(255, 204, 0, 0.2);
+            box-shadow: 0 4px 15px rgba(255, 208, 0, 0.25);
             width: 100%;
+        }
+
+        @media (min-width: 768px) {
+            .btn-primary-yellow {
+                font-size: 0.88rem;
+                padding: 14px 18px;
+            }
         }
 
         .btn-primary-yellow:hover {
@@ -294,35 +415,48 @@
         .btn-secondary {
             background-color: rgba(255, 255, 255, 0.08);
             color: var(--text-main);
-            border: none;
-            padding: 14px 18px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 16px;
             border-radius: var(--radius-btn);
             font-weight: 700;
-            font-size: 0.88rem;
-            cursor: pointer;
+            font-size: 0.82rem;
             transition: 0.2s;
             display: none;
+        }
+
+        @media (min-width: 768px) {
+            .btn-secondary {
+                font-size: 0.88rem;
+                padding: 14px 18px;
+            }
         }
 
         .btn-secondary:hover {
             background-color: rgba(255, 255, 255, 0.15);
         }
 
-        .product-list-container {
+        .product-list-container, .orders-list-container {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 12px;
             width: 100%;
         }
 
         .admin-category-group {
-            background-color: transparent;
-            border-radius: 0;
-            padding: 0;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
             width: 100%;
+            background-color: var(--surface-color);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 10px;
+            border-radius: var(--radius-card);
+        }
+
+        @media (min-width: 768px) {
+            .admin-category-group {
+                padding: 14px;
+            }
         }
 
         .admin-category-header {
@@ -334,10 +468,16 @@
         }
 
         .admin-category-title {
-            font-size: 0.88rem;
+            font-size: 0.8rem;
             font-weight: 800;
             color: var(--primary-yellow);
             text-transform: capitalize;
+        }
+
+        @media (min-width: 768px) {
+            .admin-category-title {
+                font-size: 0.88rem;
+            }
         }
 
         .admin-category-actions {
@@ -353,15 +493,28 @@
         }
 
         .admin-product-item {
-            background-color: var(--surface-color);
-            padding: 12px 14px;
-            border-radius: 12px;
+            background-color: var(--surface-alt);
+            padding: 10px 12px;
+            border-radius: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             width: 100%;
-            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: 0.2s;
+        }
+
+        @media (min-width: 768px) {
+            .admin-product-item {
+                padding: 14px 16px;
+                border-radius: 12px;
+                gap: 12px;
+            }
+        }
+
+        .admin-product-item:hover {
+            border-color: rgba(255, 255, 255, 0.15);
         }
 
         .admin-product-info {
@@ -373,21 +526,31 @@
         }
 
         .admin-product-title {
-            font-size: 0.88rem;
+            font-size: 0.8rem;
             font-weight: 700;
             color: var(--text-main);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        }
+
+        @media (min-width: 768px) {
+            .admin-product-title {
+                font-size: 0.88rem;
+            }
         }
 
         .admin-product-meta {
             font-size: 0.7rem;
             color: var(--text-muted);
             display: flex;
-            gap: 10px;
+            gap: 8px;
             align-items: center;
             flex-wrap: wrap;
+        }
+
+        @media (min-width: 768px) {
+            .admin-product-meta {
+                font-size: 0.78rem;
+                gap: 12px;
+            }
         }
 
         .admin-product-price {
@@ -398,25 +561,203 @@
         .admin-product-tags {
             background: rgba(255, 255, 255, 0.08);
             padding: 2px 6px;
-            border-radius: 6px;
-            font-size: 0.65rem;
+            border-radius: 4px;
+            font-size: 0.62rem;
             color: var(--text-muted);
-            max-width: 140px;
+            max-width: 120px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
+        @media (min-width: 768px) {
+            .admin-product-tags {
+                font-size: 0.7rem;
+                max-width: 160px;
+                padding: 3px 8px;
+                border-radius: 6px;
+            }
+        }
+
+        .admin-order-card {
+            background-color: var(--surface-color);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-card);
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            transition: 0.2s;
+        }
+
+        @media (min-width: 768px) {
+            .admin-order-card {
+                padding: 18px;
+                gap: 14px;
+            }
+        }
+
+        .admin-order-card:hover {
+            border-color: rgba(255, 208, 0, 0.3);
+        }
+
+        .order-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 10px;
+        }
+
+        .order-id-tag {
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: 0.5px;
+        }
+
+        .order-date-tag {
+            font-size: 0.68rem;
+            color: var(--text-dimmed);
+        }
+
+        .order-grid-details {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        @media (min-width: 768px) {
+            .order-grid-details {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .order-meta-box {
+            background-color: var(--surface-alt);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 10px;
+            padding: 10px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .order-meta-title {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .order-items-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .order-item-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-main);
+        }
+
+        .order-total-price {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--primary-yellow);
+        }
+
+        .order-credentials-box {
+            background-color: rgba(255, 208, 0, 0.03);
+            border: 1px solid rgba(255, 208, 0, 0.15);
+            border-radius: 10px;
+            padding: 10px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-size: 0.75rem;
+        }
+
+        .cred-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cred-label {
+            color: var(--text-muted);
+        }
+
+        .cred-value {
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .status-badge {
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            width: fit-content;
+        }
+
+        .status-badge.tunggu {
+            background: rgba(255, 208, 0, 0.1);
+            color: var(--primary-yellow);
+            border: 1px solid rgba(255, 208, 0, 0.2);
+        }
+
+        .status-badge.terkonfirmasi {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--info-color);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .status-badge.mengerjakan {
+            background: rgba(255, 153, 0, 0.1);
+            color: #ff9900;
+            border: 1px solid rgba(255, 153, 0, 0.2);
+        }
+
+        .status-badge.selesai {
+            background: rgba(52, 168, 83, 0.1);
+            color: var(--success-color);
+            border: 1px solid rgba(52, 168, 83, 0.2);
+        }
+
+        .order-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding-top: 10px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
         .admin-action-buttons {
             display: flex;
-            gap: 4px;
+            gap: 6px;
             align-items: center;
             flex-shrink: 0;
         }
 
+        @media (min-width: 768px) {
+            .admin-action-buttons {
+                gap: 8px;
+            }
+        }
+
         .admin-btn-icon {
             background: rgba(255, 255, 255, 0.08);
-            border: none;
+            border: 1px solid rgba(255, 255, 255, 0.06);
             color: var(--text-main);
             width: 28px;
             height: 28px;
@@ -424,25 +765,89 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
             transition: 0.2s;
+        }
+
+        @media (min-width: 768px) {
+            .admin-btn-icon {
+                width: 32px;
+                height: 32px;
+                border-radius: 8px;
+            }
         }
 
         .admin-btn-icon:hover {
             background: rgba(255, 255, 255, 0.2);
             color: var(--primary-yellow);
+            border-color: rgba(255, 255, 255, 0.2);
         }
 
         .admin-btn-icon.delete:hover {
             background-color: rgba(255, 59, 48, 0.2);
             color: var(--danger-color);
+            border-color: rgba(255, 59, 48, 0.3);
+        }
+
+        .btn-confirm-payment, .btn-start-process, .btn-complete-order {
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        @media (min-width: 768px) {
+            .btn-confirm-payment, .btn-start-process, .btn-complete-order {
+                padding: 10px 16px;
+                border-radius: 10px;
+                font-size: 0.8rem;
+                gap: 6px;
+            }
+        }
+
+        .btn-confirm-payment {
+            background-color: var(--primary-yellow);
+            color: var(--bg-color);
+        }
+
+        .btn-confirm-payment:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-start-process {
+            background-color: var(--info-color);
+            color: #ffffff;
+        }
+
+        .btn-start-process:hover {
+            opacity: 0.85;
+        }
+
+        .btn-complete-order {
+            background-color: var(--success-color);
+            color: #ffffff;
+        }
+
+        .btn-complete-order:hover {
+            opacity: 0.85;
         }
 
         .empty-admin-msg {
             text-align: center;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             color: var(--text-muted);
             padding: 30px 0;
+        }
+
+        @media (min-width: 768px) {
+            .empty-admin-msg {
+                font-size: 0.85rem;
+                padding: 40px 0;
+            }
         }
 
         .unauthorized-view {
@@ -452,12 +857,108 @@
             justify-content: center;
             min-height: 60vh;
             text-align: center;
-            gap: 16px;
-            padding: 16px;
+            gap: 14px;
+            padding: 12px;
         }
 
         .unauthorized-view.active {
             display: flex;
+        }
+
+        .custom-modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .custom-modal-backdrop.active {
+            display: flex;
+        }
+
+        .custom-modal-card {
+            background-color: var(--surface-alt);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-card);
+            padding: 20px;
+            max-width: 400px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+            transform: scale(0.95);
+            transition: 0.2s ease;
+        }
+
+        .custom-modal-backdrop.active .custom-modal-card {
+            transform: scale(1);
+        }
+
+        .custom-modal-header {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .custom-modal-body {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .custom-modal-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+            margin-top: 6px;
+        }
+
+        .btn-modal-cancel {
+            background-color: rgba(255, 255, 255, 0.08);
+            color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            transition: 0.2s;
+        }
+
+        .btn-modal-cancel:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-modal-confirm {
+            background-color: var(--primary-yellow);
+            color: var(--bg-color);
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 800;
+            transition: 0.2s;
+        }
+
+        .btn-modal-confirm:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-modal-confirm.danger {
+            background-color: var(--danger-color);
+            color: #ffffff;
+        }
+
+        .btn-modal-confirm.danger:hover {
+            background-color: var(--danger-hover);
         }
     </style>
 </head>
@@ -469,7 +970,6 @@
         </div>
         
         <nav class="desktop-nav">
-            <a href="admin.html" class="desktop-nav-item active">Admin Panel</a>
             <button class="desktop-nav-item" id="logoutBtn" style="display: none;" onclick="logoutAdmin()">Keluar</button>
         </nav>
     </header>
@@ -477,8 +977,8 @@
     <div class="main-container">
         <div id="authScreen" class="auth-container">
             <div class="auth-card">
-                <h2 style="font-size: 1.25rem; font-weight: 800;">Login Admin Marz</h2>
-                <p style="font-size: 0.8rem; color: var(--text-muted);">Silakan masuk menggunakan akun Google resmi untuk mengakses dashboard admin.</p>
+                <h2 style="font-size: 1.15rem; font-weight: 800;">Login Admin Marz</h2>
+                <p style="font-size: 0.75rem; color: var(--text-muted);">Silakan masuk menggunakan akun Google resmi untuk mengakses dashboard admin.</p>
                 <button class="btn-google" onclick="loginWithGoogle()">
                     <svg style="width:16px;height:16px;" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.11-6.72-4.95H1.19v3.15C3.17 21.36 7.24 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.25c-.25-.72-.38-1.49-.38-2.25s.13-1.53.38-2.25V6.6H1.19C.43 8.13 0 9.87 0 12s.43 3.87 1.19 5.4l4.09-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.24 0 3.17 2.64 1.19 6.6l4.09 3.15c.95-2.84 3.6-4.95 6.72-4.95z"/></svg>
                     Masuk dengan Google
@@ -488,83 +988,115 @@
 
         <div id="adminDashboard" class="admin-content">
             <div class="page-header">
-                <h1 class="page-title">Admin Dashboard</h1>
-                <p class="page-subtitle">Kelola daftar layanan produk joki secara real-time di database Firebase.</p>
+                <div>
+                    <h1 class="page-title" id="adminPageTitle">Admin Dashboard - Produk</h1>
+                    <p class="page-subtitle" id="adminPageSubtitle">Kelola daftar layanan produk joki secara real-time di database Firebase.</p>
+                </div>
+                <div class="admin-tabs-nav">
+                    <button class="admin-tab-btn active" id="tabBtnProducts" onclick="switchAdminTab('products')">Produk</button>
+                    <button class="admin-tab-btn" id="tabBtnOrders" onclick="switchAdminTab('orders')">Konfirmasi Order</button>
+                </div>
             </div>
 
-            <div class="admin-layout">
-                <div class="admin-card">
-                    <div class="section-heading">
-                        <span id="formTitleText">Tambah Produk Baru</span>
+            <div class="tab-panel active" id="panelProducts">
+                <div class="admin-layout">
+                    <div class="admin-card">
+                        <div class="section-heading">
+                            <span id="formTitleText">Tambah Produk Baru</span>
+                        </div>
+
+                        <form id="productForm" onsubmit="handleFormSubmit(event)" style="display: flex; flex-direction: column; gap: 14px;">
+                            <input type="hidden" id="editingProductId">
+                            <input type="hidden" id="prodPriceRaw">
+
+                            <div class="form-group">
+                                <label class="form-label">Judul Layanan</label>
+                                <div class="input-wrapper">
+                                    <input type="text" class="form-input" id="prodTitle" placeholder="Contoh: Trial V4 Full Gear" required autocomplete="off" oninput="handleInputHelper('prodTitle', 'titleHelper')">
+                                </div>
+                                <div class="input-suggestion-bar" id="titleHelper" onclick="applySuggestion('prodTitle', 'titleHelper')"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Kategori</label>
+                                <div class="input-wrapper">
+                                    <input type="text" class="form-input" id="prodCategory" list="categorySuggestions" placeholder="Contoh: Gear, Boss, atau Paket" required autocomplete="off" oninput="handleInputHelper('prodCategory', 'categoryHelper')">
+                                    <datalist id="categorySuggestions"></datalist>
+                                </div>
+                                <div class="input-suggestion-bar" id="categoryHelper" onclick="applySuggestion('prodCategory', 'categoryHelper')"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Tags / Kata Kunci Pencarian</label>
+                                <div class="input-wrapper">
+                                    <input type="text" class="form-input" id="prodTags" placeholder="Contoh: trial, v4, gear" required autocomplete="off" oninput="handleInputHelper('prodTags', 'tagsHelper')">
+                                </div>
+                                <div class="input-suggestion-bar" id="tagsHelper" onclick="applySuggestion('prodTags', 'tagsHelper')"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Harga (Rp)</label>
+                                <div class="input-wrapper">
+                                    <input type="text" class="form-input" id="prodPriceFormatted" placeholder="Contoh: 50.000" required autocomplete="off" oninput="handlePriceInput(this)">
+                                </div>
+                                <div class="price-helper-text" id="priceHelperText"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Deskripsi Layanan</label>
+                                <div class="input-wrapper">
+                                    <textarea class="form-textarea" id="prodDesc" placeholder="Tuliskan keterangan singkat layanan..." autocomplete="off"></textarea>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; gap: 8px; margin-top: 4px;">
+                                <button type="submit" class="btn-primary-yellow" id="submitBtn" style="flex: 1;">Simpan Produk</button>
+                                <button type="button" class="btn-secondary" id="cancelEditBtn" onclick="resetForm()">Batal</button>
+                            </div>
+                        </form>
                     </div>
 
-                    <form id="productForm" onsubmit="handleFormSubmit(event)" style="display: flex; flex-direction: column; gap: 16px;">
-                        <input type="hidden" id="editingProductId">
-                        <input type="hidden" id="prodPriceRaw">
-
-                        <div class="form-group">
-                            <label class="form-label">Judul Layanan</label>
-                            <div class="input-wrapper">
-                                <input type="text" class="form-input" id="prodTitle" placeholder="Contoh: Trial V4 Full Gear" required autocomplete="off" oninput="handleInputHelper('prodTitle', 'titleHelper')">
-                            </div>
-                            <div class="input-suggestion-bar" id="titleHelper" onclick="applySuggestion('prodTitle', 'titleHelper')"></div>
+                    <div class="admin-card">
+                        <div class="section-heading">
+                            <span>Daftar Produk Database</span>
                         </div>
 
-                        <div class="form-group">
-                            <label class="form-label">Kategori</label>
-                            <div class="input-wrapper">
-                                <input type="text" class="form-input" id="prodCategory" list="categorySuggestions" placeholder="Contoh: Gear, Boss, atau Paket" required autocomplete="off" oninput="handleInputHelper('prodCategory', 'categoryHelper')">
-                                <datalist id="categorySuggestions"></datalist>
-                            </div>
-                            <div class="input-suggestion-bar" id="categoryHelper" onclick="applySuggestion('prodCategory', 'categoryHelper')"></div>
+                        <div class="product-list-container" id="adminProductList">
+                            <div class="empty-admin-msg">Memuat data produk...</div>
                         </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Tags / Kata Kunci Pencarian</label>
-                            <div class="input-wrapper">
-                                <input type="text" class="form-input" id="prodTags" placeholder="Contoh: trial, v4, gear" required autocomplete="off" oninput="handleInputHelper('prodTags', 'tagsHelper')">
-                            </div>
-                            <div class="input-suggestion-bar" id="tagsHelper" onclick="applySuggestion('prodTags', 'tagsHelper')"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Harga (Rp)</label>
-                            <div class="input-wrapper">
-                                <input type="text" class="form-input" id="prodPriceFormatted" placeholder="Contoh: 50.000" required autocomplete="off" oninput="handlePriceInput(this)">
-                            </div>
-                            <div class="price-helper-text" id="priceHelperText"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Deskripsi Layanan</label>
-                            <div class="input-wrapper">
-                                <textarea class="form-textarea" id="prodDesc" placeholder="Tuliskan keterangan singkat layanan..." autocomplete="off"></textarea>
-                            </div>
-                        </div>
-
-                        <div style="display: flex; gap: 10px; margin-top: 4px;">
-                            <button type="submit" class="btn-primary-yellow" id="submitBtn" style="flex: 1;">Simpan Produk</button>
-                            <button type="button" class="btn-secondary" id="cancelEditBtn" onclick="resetForm()">Batal</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
+            </div>
 
-                <div class="admin-card">
+            <div class="tab-panel" id="panelOrders">
+                <div class="admin-card" style="width: 100%;">
                     <div class="section-heading">
-                        <span>Daftar Produk Database</span>
+                        <span>Daftar Orderan Masuk</span>
+                        <span id="orderCountBadge" style="font-size: 0.72rem; background: rgba(255,208,0,0.1); color: var(--primary-yellow); border: 1px solid rgba(255,208,0,0.2); padding: 3px 8px; border-radius: 6px; font-weight: 700;">0 Order</span>
                     </div>
 
-                    <div class="product-list-container" id="adminProductList">
-                        <div class="empty-admin-msg">Memuat data produk...</div>
+                    <div class="orders-list-container" id="adminOrdersList">
+                        <div class="empty-admin-msg">Memuat data orderan...</div>
                     </div>
                 </div>
             </div>
         </div>
 
         <div id="unauthorizedScreen" class="unauthorized-view">
-            <h2 style="font-size: 1.4rem; font-weight: 800; color: var(--danger-color);">Akses Ditolak</h2>
-            <p style="font-size: 0.85rem; color: var(--text-muted);">Akun Google yang kamu gunakan tidak memiliki izin sebagai admin.</p>
-            <button class="btn-secondary" style="display: block; width: 180px; margin-top: 10px;" onclick="logoutAdmin()">Coba Akun Lain</button>
+            <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--danger-color);">Akses Ditolak</h2>
+            <p style="font-size: 0.78rem; color: var(--text-muted);">Akun Google yang kamu gunakan tidak memiliki izin sebagai admin.</p>
+            <button class="btn-secondary" style="display: block; width: 160px; margin-top: 8px;" onclick="logoutAdmin()">Coba Akun Lain</button>
+        </div>
+    </div>
+
+    <div class="custom-modal-backdrop" id="customModal">
+        <div class="custom-modal-card">
+            <div class="custom-modal-header" id="modalTitle">Konfirmasi</div>
+            <div class="custom-modal-body" id="modalBody">Pesan konfirmasi...</div>
+            <div class="custom-modal-actions">
+                <button class="btn-modal-cancel" id="modalCancelBtn">Batal</button>
+                <button class="btn-modal-confirm" id="modalConfirmBtn">Ya, Lanjutkan</button>
+            </div>
         </div>
     </div>
 
@@ -590,6 +1122,52 @@
 
         const allowedAdminEmails = ["marzstore027@gmail.com", "muhammaddamarsobari@gmail.com"];
         let productsData = {};
+        let ordersData = {};
+
+        function showCustomModal(options) {
+            const modal = document.getElementById('customModal');
+            const title = document.getElementById('modalTitle');
+            const body = document.getElementById('modalBody');
+            const cancelBtn = document.getElementById('modalCancelBtn');
+            const confirmBtn = document.getElementById('modalConfirmBtn');
+
+            title.innerText = options.title || "Konfirmasi";
+            body.innerText = options.message || "";
+
+            if (options.isAlert) {
+                cancelBtn.style.display = 'none';
+                confirmBtn.innerText = "OK";
+                confirmBtn.className = "btn-modal-confirm";
+            } else {
+                cancelBtn.style.display = 'block';
+                confirmBtn.innerText = options.confirmText || "Ya, Lanjutkan";
+                if (options.isDanger) {
+                    confirmBtn.className = "btn-modal-confirm danger";
+                } else {
+                    confirmBtn.className = "btn-modal-confirm";
+                }
+            }
+
+            modal.classList.add('active');
+
+            const handleConfirm = () => {
+                closeCustomModal();
+                if (options.onConfirm) options.onConfirm();
+            };
+
+            const handleCancel = () => {
+                closeCustomModal();
+                if (options.onCancel) options.onCancel();
+            };
+
+            confirmBtn.onclick = handleConfirm;
+            cancelBtn.onclick = handleCancel;
+        }
+
+        function closeCustomModal() {
+            const modal = document.getElementById('customModal');
+            modal.classList.remove('active');
+        }
 
         onAuthStateChanged(auth, (user) => {
             const authScreen = document.getElementById('authScreen');
@@ -604,6 +1182,7 @@
                     unauthorizedScreen.classList.remove('active');
                     logoutBtn.style.display = 'block';
                     loadProductsDatabase();
+                    loadOrdersDatabase();
                 } else {
                     adminDashboard.classList.remove('active');
                     unauthorizedScreen.classList.add('active');
@@ -620,14 +1199,47 @@
         window.loginWithGoogle = function() {
             const provider = new GoogleAuthProvider();
             signInWithPopup(auth, provider).catch((error) => {
-                alert("Gagal Login: " + error.message);
+                showCustomModal({
+                    title: "Gagal Login",
+                    message: error.message,
+                    isAlert: true
+                });
             });
         };
 
         window.logoutAdmin = function() {
             signOut(auth).catch((error) => {
-                alert("Gagal Keluar: " + error.message);
+                showCustomModal({
+                    title: "Gagal Keluar",
+                    message: error.message,
+                    isAlert: true
+                });
             });
+        };
+
+        window.switchAdminTab = function(tabName) {
+            let panelProducts = document.getElementById('panelProducts');
+            let panelOrders = document.getElementById('panelOrders');
+            let tabBtnProducts = document.getElementById('tabBtnProducts');
+            let tabBtnOrders = document.getElementById('tabBtnOrders');
+            let pageTitle = document.getElementById('adminPageTitle');
+            let pageSubtitle = document.getElementById('adminPageSubtitle');
+
+            if (tabName === 'products') {
+                panelProducts.classList.add('active');
+                panelOrders.classList.remove('active');
+                tabBtnProducts.classList.add('active');
+                tabBtnOrders.classList.remove('active');
+                pageTitle.innerText = "Admin Dashboard - Produk";
+                pageSubtitle.innerText = "Kelola daftar layanan produk joki secara real-time di database Firebase.";
+            } else {
+                panelOrders.classList.add('active');
+                panelProducts.classList.remove('active');
+                tabBtnOrders.classList.add('active');
+                tabBtnProducts.classList.remove('active');
+                pageTitle.innerText = "Konfirmasi Orderan Masuk";
+                pageSubtitle.innerText = "Tinjau pesanan, konfirmasi pembayaran, proses pengerjaan, lalu selesaikan order untuk mengamankan data kredensial pelanggan.";
+            }
         };
 
         window.handleInputHelper = function(inputId, helperId) {
@@ -684,7 +1296,18 @@
                 updateCategoryDatalist();
                 renderAdminProductList();
             }, (error) => {
-                document.getElementById('adminProductList').innerHTML = '<div class="empty-admin-msg">Gagal memuat data dari database. Periksa Firebase Rules.</div>';
+                document.getElementById('adminProductList').innerHTML = '<div class="empty-admin-msg">Gagal memuat data produk dari database.</div>';
+            });
+        }
+
+        function loadOrdersDatabase() {
+            const ordersRef = ref(db, 'order');
+            onValue(ordersRef, (snapshot) => {
+                const data = snapshot.val();
+                ordersData = data || {};
+                renderAdminOrdersList();
+            }, (error) => {
+                document.getElementById('adminOrdersList').innerHTML = '<div class="empty-admin-msg">Gagal memuat data order dari database.</div>';
             });
         }
 
@@ -716,7 +1339,11 @@
             let badge = category;
 
             if (!title || !category || !price) {
-                alert("Harap isi field yang wajib dan pastikan harga valid!");
+                showCustomModal({
+                    title: "Peringatan",
+                    message: "Harap isi field yang wajib dan pastikan harga valid!",
+                    isAlert: true
+                });
                 return;
             }
 
@@ -732,7 +1359,11 @@
                 }).then(() => {
                     resetForm();
                 }).catch((error) => {
-                    alert("Gagal memperbarui produk: " + error.message);
+                    showCustomModal({
+                        title: "Gagal",
+                        message: "Gagal memperbarui produk: " + error.message,
+                        isAlert: true
+                    });
                 });
             } else {
                 const productsRef = ref(db, 'produk');
@@ -751,7 +1382,11 @@
                 }).then(() => {
                     resetForm();
                 }).catch((error) => {
-                    alert("Gagal menambah produk: " + error.message);
+                    showCustomModal({
+                        title: "Gagal",
+                        message: "Gagal menambah produk: " + error.message,
+                        isAlert: true
+                    });
                 });
             }
         };
@@ -809,11 +1444,11 @@
                         <div class="admin-category-header">
                             <div class="admin-category-title">${catGroup.name}</div>
                             <div class="admin-category-actions">
-                                <button class="admin-btn-icon" ${isFirstCat ? 'style="opacity: 0.3; cursor: not-allowed;"' : `onclick="moveCategory('${catKey}', 'up')"`} title="Pindah Kategori ke Atas">
-                                    <svg style="width:14px;height:14px;fill:currentColor" viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>
+                                <button class="admin-btn-icon" ${isFirstCat ? 'style="opacity: 0.3;"' : `onclick="moveCategory('${catKey}', 'up')"`} title="Pindah Kategori ke Atas">
+                                    <svg style="width:12px;height:12px;fill:currentColor" viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>
                                 </button>
-                                <button class="admin-btn-icon" ${isLastCat ? 'style="opacity: 0.3; cursor: not-allowed;"' : `onclick="moveCategory('${catKey}', 'down')"`} title="Pindah Kategori ke Bawah">
-                                    <svg style="width:14px;height:14px;fill:currentColor" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+                                <button class="admin-btn-icon" ${isLastCat ? 'style="opacity: 0.3;"' : `onclick="moveCategory('${catKey}', 'down')"`} title="Pindah Kategori ke Bawah">
+                                    <svg style="width:12px;height:12px;fill:currentColor" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
                                 </button>
                             </div>
                         </div>
@@ -829,22 +1464,21 @@
                             <div class="admin-product-info">
                                 <span class="admin-product-title">${item.title}</span>
                                 <div class="admin-product-meta">
-                                    <span class="admin-product-price">Rp ${Number(item.price).toLocaleString('id-ID')}</span>
-                                    ${item.tags ? `<span class="admin-product-tags">${item.tags}</span>` : ''}
+                                    <span class="admin-product-price">Rp ${Number(item.price).toLocaleString('id-ID')}</span>${item.tags ? `<span class="admin-product-tags">${item.tags}</span>` : ''}
                                 </div>
                             </div>
                             <div class="admin-action-buttons">
-                                <button class="admin-btn-icon" ${isFirst ? 'style="opacity: 0.3; cursor: not-allowed;"' : `onclick="moveProduct('${item.id}', 'up')"`} title="Pindah ke Atas">
-                                    <svg style="width:14px;height:14px;fill:currentColor" viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>
+                                <button class="admin-btn-icon" ${isFirst ? 'style="opacity: 0.3;"' : `onclick="moveProduct('${item.id}', 'up')"`} title="Pindah ke Atas">
+                                    <svg style="width:12px;height:12px;fill:currentColor" viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>
                                 </button>
-                                <button class="admin-btn-icon" ${isLast ? 'style="opacity: 0.3; cursor: not-allowed;"' : `onclick="moveProduct('${item.id}', 'down')"`} title="Pindah ke Bawah">
-                                    <svg style="width:14px;height:14px;fill:currentColor" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+                                <button class="admin-btn-icon" ${isLast ? 'style="opacity: 0.3;"' : `onclick="moveProduct('${item.id}', 'down')"`} title="Pindah ke Bawah">
+                                    <svg style="width:12px;height:12px;fill:currentColor" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
                                 </button>
                                 <button class="admin-btn-icon" onclick="editProduct('${item.id}')" title="Edit">
-                                    <svg style="width:14px;height:14px;fill:currentColor" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                                    <svg style="width:12px;height:12px;fill:currentColor" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
                                 </button>
                                 <button class="admin-btn-icon delete" onclick="deleteProduct('${item.id}')" title="Hapus">
-                                    <svg style="width:14px;height:14px;fill:currentColor" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                                    <svg style="width:12px;height:12px;fill:currentColor" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
                                 </button>
                             </div>
                         </div>
@@ -858,6 +1492,239 @@
             });
 
             container.innerHTML = html;
+        };
+
+        window.renderAdminOrdersList = function() {
+            let container = document.getElementById('adminOrdersList');
+            let keys = Object.keys(ordersData);
+            let orderCountBadge = document.getElementById('orderCountBadge');
+
+            orderCountBadge.innerText = keys.length + ' Order';
+
+            if (keys.length === 0) {
+                container.innerHTML = '<div class="empty-admin-msg">Belum ada orderan masuk saat ini.</div>';
+                return;
+            }
+
+            let html = '';
+            keys.sort((a, b) => {
+                let dateA = ordersData[a].date ? new Date(ordersData[a].date).getTime() : 0;
+                let dateB = ordersData[b].date ? new Date(ordersData[b].date).getTime() : 0;
+                return dateB - dateA;
+            });
+
+            keys.forEach(key => {
+                let order = ordersData[key];
+                let dateStr = order.date ? new Date(order.date).toLocaleString('id-ID') : 'Waktu tidak tersedia';
+                let items = order.items || [];
+                let account = order.account || {};
+                let currentStatus = (order.status || 'tunggu konfirmasi').toLowerCase().trim();
+
+                let itemsHtml = '';
+                let totalPrice = 0;
+                items.forEach(item => {
+                    let itemTotal = (item.price || 0) * item.qty;
+                    totalPrice += itemTotal;
+                    itemsHtml += `
+                        <div class="order-item-row">
+                            <span>${item.name} (${item.qty}x)</span>
+                            <span style="font-weight: 700;">${item.price ? 'Rp ' + itemTotal.toLocaleString('id-ID') : 'Via WA'}</span>
+                        </div>
+                    `;
+                });
+
+                let accountHtml = '';
+
+                if (account.opsi === 'username') {
+                    if (account.username && account.username !== "[DIHAPUS SETELAH SELESAI]") {
+                        accountHtml = `
+                            <div class="cred-row"><span class="cred-label">Tipe Akun:</span><span class="cred-value">Username & Password</span></div>
+                            <div class="cred-row"><span class="cred-label">Username:</span><span class="cred-value">${account.username}</span></div>
+                            <div class="cred-row"><span class="cred-label">Password:</span><span class="cred-value">${account.password}</span></div>
+                        `;
+                    } else {
+                        accountHtml = `
+                            <div class="cred-row"><span class="cred-label">Status Kredensial:</span><span class="cred-value" style="color: var(--success-color);">Aman / Telah Dihapus</span></div>
+                        `;
+                    }
+                } else if (account.opsi === 'email') {
+                    if (account.email && account.email !== "[DIHAPUS SETELAH SELESAI]") {
+                        accountHtml = `
+                            <div class="cred-row"><span class="cred-label">Tipe Akun:</span><span class="cred-value">Email Verifikasi</span></div>
+                            <div class="cred-row"><span class="cred-label">Email:</span><span class="cred-value">${account.email}</span></div>
+                        `;
+                    } else {
+                        accountHtml = `
+                            <div class="cred-row"><span class="cred-label">Status Email:</span><span class="cred-value" style="color: var(--success-color);">Aman / Telah Dihapus</span></div>
+                        `;
+                    }
+                } else {
+                    accountHtml = `<div class="cred-row"><span class="cred-label">Data Akun:</span><span class="cred-value">Tidak Tersedia</span></div>`;
+                }
+
+                let actionButtonHtml = '';
+                let statusBadgeHtml = '';
+
+                if (currentStatus === 'tunggu konfirmasi') {
+                    statusBadgeHtml = `<span class="status-badge tunggu">Tunggu Konfirmasi</span>`;
+                    actionButtonHtml = `
+                        <button class="btn-confirm-payment" onclick="confirmOrderPayment('${key}')">
+                            <svg style="width:12px;height:12px;fill:currentColor" viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5 1.4-1.4L9 13.4l7.1-7.1 1.4 1.4z"/></svg>
+                            Konfirmasi Bayar
+                        </button>
+                    `;
+                } else if (currentStatus === 'terkonfirmasi') {
+                    statusBadgeHtml = `<span class="status-badge terkonfirmasi">Terkonfirmasi</span>`;
+                    actionButtonHtml = `
+                        <button class="btn-start-process" onclick="startProcessingOrder('${key}')">
+                            <svg style="width:12px;height:12px;fill:currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                            Mulai Kerjakan
+                        </button>
+                    `;
+                } else if (currentStatus === 'mengerjakan') {
+                    statusBadgeHtml = `<span class="status-badge mengerjakan">Sedang Dikerjakan</span>`;
+                    actionButtonHtml = `
+                        <button class="btn-complete-order" onclick="completeAndSanitizeOrder('${key}')">
+                            <svg style="width:12px;height:12px;fill:currentColor" viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5 1.4-1.4L9 13.4l7.1-7.1 1.4 1.4z"/></svg>
+                            Selesaikan
+                        </button>
+                    `;
+                } else {
+                    statusBadgeHtml = `<span class="status-badge selesai">Selesai & Aman</span>`;
+                    actionButtonHtml = ``;
+                }
+
+                html += `
+                    <div class="admin-order-card">
+                        <div class="order-card-header">
+                            <div>
+                                <div class="order-id-tag">ORDER #${key.slice(-6).toUpperCase()}</div>
+                                <div class="order-date-tag">${dateStr}</div>
+                            </div>
+                            ${statusBadgeHtml}
+                        </div>
+
+                        <div class="order-grid-details">
+                            <div class="order-meta-box">
+                                <div class="order-meta-title">Detail Layanan</div>
+                                <div class="order-items-list">
+                                    ${itemsHtml}
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 6px;">
+                                    <span style="font-size: 0.72rem; color: var(--text-muted);">No. Pengirim: <strong>${order.senderPhone || '-'}</strong></span>
+                                    <span class="order-total-price">${totalPrice > 0 ? 'Rp ' + totalPrice.toLocaleString('id-ID') : 'Via WA'}</span>
+                                </div>
+                            </div>
+
+                            <div class="order-credentials-box">
+                                <div class="order-meta-title" style="margin-bottom: 2px;">Kredensial Akun</div>
+                                ${accountHtml}
+                            </div>
+                        </div>
+
+                        <div class="order-card-footer">
+                            <div class="admin-action-buttons" style="width: 100%; justify-content: flex-end;">
+                                ${actionButtonHtml}
+                                <button class="admin-btn-icon delete" onclick="deleteOrder('${key}')" title="Hapus Order">
+                                    <svg style="width:12px;height:12px;fill:currentColor" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        };
+
+        window.confirmOrderPayment = function(orderId) {
+            showCustomModal({
+                title: "Konfirmasi Pembayaran",
+                message: "Ubah status order ini menjadi Terkonfirmasi?",
+                confirmText: "Konfirmasi",
+                onConfirm: () => {
+                    let orderRef = ref(db, 'order/' + orderId);
+                    update(orderRef, {
+                        status: "terkonfirmasi"
+                    }).catch((error) => {
+                        showCustomModal({
+                            title: "Gagal",
+                            message: "Gagal mengkonfirmasi pembayaran: " + error.message,
+                            isAlert: true
+                        });
+                    });
+                }
+            });
+        };
+
+        window.startProcessingOrder = function(orderId) {
+            showCustomModal({
+                title: "Mulai Pengerjaan",
+                message: "Ubah status order ini menjadi Sedang Dikerjakan?",
+                confirmText: "Proses",
+                onConfirm: () => {
+                    let orderRef = ref(db, 'order/' + orderId);
+                    update(orderRef, {
+                        status: "mengerjakan"
+                    }).catch((error) => {
+                        showCustomModal({
+                            title: "Gagal",
+                            message: "Gagal mengubah status: " + error.message,
+                            isAlert: true
+                        });
+                    });
+                }
+            });
+        };
+
+        window.completeAndSanitizeOrder = function(orderId) {
+            showCustomModal({
+                title: "Selesaikan Order",
+                message: "Selesaikan order ini? Kredensial akun pelanggan akan dihapus permanen demi keamanan.",
+                confirmText: "Selesaikan & Hapus Data",
+                onConfirm: () => {
+                    let orderRef = ref(db, 'order/' + orderId);
+                    let orderItem = ordersData[orderId] || {};
+                    let account = orderItem.account || {};
+
+                    if (account.opsi === 'username') {
+                        account.username = "[DIHAPUS SETELAH SELESAI]";
+                        account.password = "[DIHAPUS SETELAH SELESAI]";
+                    } else if (account.opsi === 'email') {
+                        account.email = "[DIHAPUS SETELAH SELESAI]";
+                    }
+
+                    update(orderRef, {
+                        account: account,
+                        status: "selesai"
+                    }).catch((error) => {
+                        showCustomModal({
+                            title: "Gagal",
+                            message: "Gagal menyelesaikan order: " + error.message,
+                            isAlert: true
+                        });
+                    });
+                }
+            });
+        };
+
+        window.deleteOrder = function(orderId) {
+            showCustomModal({
+                title: "Hapus Order",
+                message: "Apakah kamu yakin ingin menghapus data orderan ini permanen?",
+                confirmText: "Hapus Order",
+                isDanger: true,
+                onConfirm: () => {
+                    let orderRef = ref(db, 'order/' + orderId);
+                    remove(orderRef).catch((error) => {
+                        showCustomModal({
+                            title: "Gagal",
+                            message: "Gagal menghapus order: " + error.message,
+                            isAlert: true
+                        });
+                    });
+                }
+            });
         };
 
         window.moveProduct = function(id, direction) {
@@ -892,7 +1759,11 @@
             updates['produk/' + swapItemObj.id + '/order'] = tempOrder;
 
             update(ref(db), updates).catch((error) => {
-                alert("Gagal mengubah urutan: " + error.message);
+                showCustomModal({
+                    title: "Gagal",
+                    message: "Gagal mengubah urutan: " + error.message,
+                    isAlert: true
+                });
             });
         };
 
@@ -944,7 +1815,11 @@
             });
 
             update(ref(db), updates).catch((error) => {
-                alert("Gagal mengubah urutan kategori: " + error.message);
+                showCustomModal({
+                    title: "Gagal",
+                    message: "Gagal mengubah urutan kategori: " + error.message,
+                    isAlert: true
+                });
             });
         };
 
@@ -977,12 +1852,22 @@
         };
 
         window.deleteProduct = function(id) {
-            if (confirm("Apakah kamu yakin ingin menghapus produk ini?")) {
-                let productRef = ref(db, 'produk/' + id);
-                remove(productRef).catch((error) => {
-                    alert("Gagal menghapus produk: " + error.message);
-                });
-            }
+            showCustomModal({
+                title: "Hapus Produk",
+                message: "Apakah kamu yakin ingin menghapus produk ini?",
+                confirmText: "Hapus Produk",
+                isDanger: true,
+                onConfirm: () => {
+                    let productRef = ref(db, 'produk/' + id);
+                    remove(productRef).catch((error) => {
+                        showCustomModal({
+                            title: "Gagal",
+                            message: "Gagal menghapus produk: " + error.message,
+                            isAlert: true
+                        });
+                    });
+                }
+            });
         };
 
         window.resetForm = function() {
