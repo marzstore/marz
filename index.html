@@ -18,9 +18,9 @@
             --bg-color: #0b0b0b;
             --surface-color: #161616;
             --surface-alt: #1e1e1e;
-            --navbar-bg: #212121;
-            --primary-yellow: #ffcc00;
-            --primary-hover: #e6b800;
+            --navbar-bg: #0b0b0b;
+            --primary-yellow: #5B71C4;
+            --primary-hover: #485aa0;
             --text-main: #ffffff;
             --text-muted: #a3a3a3;
             --text-dimmed: #737373;
@@ -237,7 +237,7 @@
             display: block;
             width: 100%;
             background-color: var(--primary-yellow);
-            color: var(--bg-color);
+            color: #ffffff;
             text-align: center;
             padding: 10px;
             border-radius: 10px;
@@ -405,7 +405,7 @@
 
         .btn-primary-yellow {
             background-color: var(--primary-yellow);
-            color: var(--bg-color);
+            color: #ffffff;
             border: none;
             padding: 16px 20px;
             border-radius: var(--radius-btn);
@@ -415,7 +415,7 @@
             justify-content: space-between;
             align-items: center;
             transition: 0.2s;
-            box-shadow: 0 4px 15px rgba(255, 204, 0, 0.2);
+            box-shadow: 0 4px 15px rgba(91, 113, 196, 0.2);
             text-decoration: none;
         }
 
@@ -700,13 +700,13 @@
             }
             .bottom-nav {
                 position: fixed;
-                bottom: 8px;
+                bottom: 12px;
                 left: 50%;
                 transform: translateX(-50%);
                 width: calc(100% - 32px);
                 max-width: 380px;
-                background-color: var(--navbar-bg);
-                border-radius: 24px;
+                background-color: rgba(255, 255, 255, 0.12);
+                border-radius: 36px;
                 display: flex;
                 justify-content: space-around;
                 padding: 10px 0;
@@ -858,7 +858,7 @@
             <div class="action-buttons-container">
                 <div class="btn-primary-yellow" onclick="window.location.href='/joki'">
                     <span>Pilih Layanan Joki & Item</span>
-                    <svg style="width:20px;height:20px;fill:#0b0b0b;" viewBox="0 0 24 24"><path d="M5 13h11.86l-5.43 5.43 1.42 1.42L21.71 12l-7.86-7.86-1.42 1.42L16.86 11H5v2z"/></svg>
+                    <svg style="width:20px;height:20px;fill:#ffffff;" viewBox="0 0 24 24"><path d="M5 13h11.86l-5.43 5.43 1.42 1.42L21.71 12l-7.86-7.86-1.42 1.42L16.86 11H5v2z"/></svg>
                 </div>
 
                 <div class="btn-dark-solid" onclick="openOrderModal()">
