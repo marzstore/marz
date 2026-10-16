@@ -18,11 +18,11 @@
             --bg-color: #0b0b0b;
             --surface-color: #161616;
             --surface-alt: #1e1e1e;
-            --navbar-bg: #212121;
+            --navbar-bg: #0b0b0b;
             --dropdown-bg: #333333;
             --dropdown-scroll: #222222;
-            --primary-yellow: #ffcc00;
-            --primary-hover: #e6b800;
+            --primary-yellow: #5B71C4;
+            --primary-hover: #485aa0;
             --text-main: #ffffff;
             --text-muted: #a3a3a3;
             --text-dimmed: #737373;
@@ -37,7 +37,7 @@
             --radius-dropdown: 16px;
             --shadow-tooltip: 0 10px 25px rgba(0, 0, 0, 0.6);
             --shadow-alert: 0 4px 15px rgba(0, 0, 0, 0.4);
-            --shadow-btn: 0 4px 15px rgba(255, 204, 0, 0.2);
+            --shadow-btn: 0 4px 15px rgba(91, 113, 196, 0.2);
             --spacing-xs: 4px;
             --spacing-sm: 8px;
             --spacing-md: 12px;
@@ -263,7 +263,7 @@
             display: block;
             width: 100%;
             background-color: var(--primary-yellow);
-            color: var(--bg-color);
+            color: #ffffff;
             text-align: center;
             padding: 10px;
             border-radius: 10px;
@@ -463,7 +463,7 @@
 
         .btn-primary-yellow {
             background-color: var(--primary-yellow);
-            color: var(--bg-color);
+            color: #ffffff;
             border: none;
             padding: var(--spacing-xl) var(--spacing-xxl);
             border-radius: var(--radius-btn);
@@ -593,7 +593,7 @@
         .custom-dropdown-btn {
             background-color: var(--primary-yellow);
             border: none;
-            color: var(--bg-color);
+            color: #ffffff;
             padding: var(--spacing-md) var(--spacing-xl);
             border-radius: var(--radius-input);
             font-size: var(--font-md);
@@ -611,7 +611,7 @@
         .custom-dropdown-btn svg {
             width: 16px;
             height: 16px;
-            fill: var(--bg-color);
+            fill: #ffffff;
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -698,7 +698,7 @@
 
         .filter-tag.active {
             background-color: var(--primary-yellow);
-            color: var(--bg-color);
+            color: #ffffff;
         }
 
         .product-grid {
@@ -777,7 +777,7 @@
 
         .product-category-badge {
             background-color: var(--primary-yellow);
-            color: var(--bg-color);
+            color: #ffffff;
             font-size: var(--font-xs);
             font-weight: 700;
             padding: 3px 8px;
@@ -806,7 +806,7 @@
 
         .product-tag-pill {
             background-color: var(--primary-yellow);
-            color: var(--bg-color);
+            color: #ffffff;
             font-size: var(--font-xs);
             font-weight: 700;
             padding: 3px 8px;
@@ -861,7 +861,7 @@
 
         .btn-add-cart {
             background-color: var(--primary-yellow);
-            color: var(--bg-color);
+            color: #ffffff;
             border: none;
             padding: var(--spacing-sm) var(--spacing-lg);
             border-radius: 10px;
@@ -895,13 +895,13 @@
             }
             .bottom-nav {
                 position: fixed;
-                bottom: var(--spacing-sm);
+                bottom: 12px;
                 left: 50%;
                 transform: translateX(-50%);
                 width: calc(100% - 32px);
                 max-width: 380px;
-                background-color: var(--navbar-bg);
-                border-radius: 24px;
+                background-color: rgba(255, 255, 255, 0.12);
+                border-radius: 36px;
                 display: flex;
                 justify-content: space-around;
                 padding: var(--spacing-md) 0;
