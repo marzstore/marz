@@ -18,9 +18,9 @@
             --bg-color: #0b0b0b;
             --surface-color: #161616;
             --surface-alt: #1e1e1e;
-            --navbar-bg: #212121;
-            --primary-yellow: #ffcc00;
-            --primary-hover: #e6b800;
+            --navbar-bg: #0b0b0b;
+            --primary-yellow: #5B71C4;
+            --primary-hover: #485aa0;
             --text-main: #ffffff;
             --text-muted: #a3a3a3;
             --text-dimmed: #737373;
@@ -89,6 +89,170 @@
             color: var(--primary-yellow);
         }
 
+        .nav-icons {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            position: relative;
+        }
+
+        .cart-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .cart-icon-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .svg-icon {
+            width: 22px;
+            height: 22px;
+            fill: var(--text-main);
+            transition: 0.2s;
+        }
+
+        .svg-icon:hover {
+            fill: var(--primary-yellow);
+        }
+
+        .cart-dot {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 8px;
+            height: 8px;
+            background-color: #ff3b30;
+            border-radius: 50%;
+            display: none;
+        }
+
+        .cart-dot.show {
+            display: block;
+        }
+
+        .cart-tooltip {
+            position: absolute;
+            top: 36px;
+            right: 0;
+            width: 260px;
+            background-color: #161616;
+            border-radius: 14px;
+            padding: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+            z-index: 200;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-8px);
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+        }
+
+        .cart-tooltip::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            right: 12px;
+            width: 12px;
+            height: 12px;
+            background-color: #161616;
+            transform: rotate(45deg);
+        }
+
+        .cart-tooltip.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .cart-tooltip-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary-yellow);
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-tooltip-items {
+            max-height: 140px;
+            overflow-y: auto;
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .cart-tooltip-item {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cart-tooltip-item-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            flex: 1;
+        }
+
+        .cart-tooltip-item-info span {
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .cart-remove-btn {
+            background: none;
+            border: none;
+            color: var(--text-dimmed);
+            font-size: 0.9rem;
+            font-weight: 800;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .cart-remove-btn:hover {
+            background-color: rgba(255, 59, 48, 0.2);
+            color: #ff3b30;
+        }
+
+        .cart-tooltip-desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+
+        .btn-order-cart {
+            display: block;
+            width: 100%;
+            background-color: var(--primary-yellow);
+            color: #ffffff;
+            text-align: center;
+            padding: 10px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .btn-order-cart:hover {
+            background-color: var(--primary-hover);
+        }
+
         .main-container {
             flex: 1;
             display: flex;
@@ -130,7 +294,7 @@
 
         .btn-home {
             background-color: var(--primary-yellow);
-            color: var(--bg-color);
+            color: #ffffff;
             border: none;
             padding: 14px 28px;
             border-radius: var(--radius-btn);
@@ -140,7 +304,7 @@
             justify-content: center;
             align-items: center;
             transition: 0.2s;
-            box-shadow: 0 4px 15px rgba(255, 204, 0, 0.2);
+            box-shadow: 0 4px 15px rgba(91, 113, 196, 0.2);
             text-decoration: none;
             margin-top: 8px;
             width: 100%;
@@ -156,13 +320,13 @@
             }
             .bottom-nav {
                 position: fixed;
-                bottom: 8px;
+                bottom: 12px;
                 left: 50%;
                 transform: translateX(-50%);
                 width: calc(100% - 32px);
                 max-width: 380px;
-                background-color: var(--navbar-bg);
-                border-radius: 24px;
+                background-color: rgba(255, 255, 255, 0.12);
+                border-radius: 36px;
                 display: flex;
                 justify-content: space-around;
                 padding: 10px 0;
@@ -180,6 +344,7 @@
                 flex: 1;
                 background: none;
                 border: none;
+                cursor: pointer;
             }
             .nav-item .svg-nav-icon {
                 width: 20px;
@@ -221,6 +386,25 @@
             <a href="/joki" class="desktop-nav-item">List Joki</a>
             <a href="/order" class="desktop-nav-item">Status Order</a>
         </nav>
+
+        <div class="nav-icons">
+            <div class="cart-wrapper">
+                <div class="cart-icon-container" onclick="toggleCartTooltip(event)">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                    <div class="cart-dot" id="cartDot"></div>
+                </div>
+                <div class="cart-tooltip" id="cartTooltip">
+                    <div class="cart-tooltip-title">
+                        <span>Keranjang Belanja</span>
+                        <span id="cartCountBadge" style="font-size: 0.75rem; color: var(--text-dimmed);">0 item</span>
+                    </div>
+                    <div class="cart-tooltip-items" id="cartTooltipItems">
+                        <div class="cart-tooltip-desc">Keranjang kamu masih kosong.</div>
+                    </div>
+                    <a href="/order" class="btn-order-cart">Order Sekarang</a>
+                </div>
+            </div>
+        </div>
     </header>
 
     <div class="main-container">
@@ -250,7 +434,7 @@
             </svg>
             <span>Beranda</span>
         </a>
-        <a href="/joki" class="nav-item">
+        <button class="nav-item" onclick="window.location.href='/joki'">
             <svg class="svg-nav-icon" viewBox="0 0 24 24">
                 <line x1="8" y1="6" x2="21" y2="6"></line>
                 <line x1="8" y1="12" x2="21" y2="12"></line>
@@ -260,16 +444,85 @@
                 <line x1="3" y1="18" x2="3.01" y2="18"></line>
             </svg>
             <span>List Joki</span>
-        </a>
-        <a href="/order" class="nav-item">
+        </button>
+        <button class="nav-item" onclick="window.location.href='/order'">
             <svg class="svg-nav-icon" viewBox="0 0 24 24">
                 <circle cx="9" cy="21" r="1"></circle>
                 <circle cx="20" cy="21" r="1"></circle>
                 <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
             </svg>
             <span>Status</span>
-        </a>
+        </button>
     </nav>
+
+    <script>
+        function getCart() {
+            return JSON.parse(localStorage.getItem('marz_cart')) || [];
+        }
+
+        function saveCart(cart) {
+            localStorage.setItem('marz_cart', JSON.stringify(cart));
+        }
+
+        function toggleCartTooltip(event) {
+            event.stopPropagation();
+            const tooltip = document.getElementById('cartTooltip');
+            tooltip.classList.toggle('show');
+            updateCartTooltipUI();
+        }
+
+        function removeFromCart(index) {
+            let cart = getCart();
+            cart.splice(index, 1);
+            saveCart(cart);
+            updateCartTooltipUI();
+        }
+
+        function updateCartTooltipUI() {
+            let cart = getCart();
+            let itemsContainer = document.getElementById('cartTooltipItems');
+            let countBadge = document.getElementById('cartCountBadge');
+            let cartDot = document.getElementById('cartDot');
+
+            let totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+            countBadge.innerText = totalItems + ' item';
+
+            if (totalItems > 0) {
+                cartDot.classList.add('show');
+            } else {
+                cartDot.classList.remove('show');
+            }
+
+            if (cart.length === 0) {
+                itemsContainer.innerHTML = '<div class="cart-tooltip-desc">Keranjang kamu masih kosong.</div>';
+                return;
+            }
+
+            let html = '';
+            cart.forEach((item, index) => {
+                let priceText = item.price > 0 ? `Rp ${(item.price * item.qty).toLocaleString()}` : 'Harga via WA';
+                html += `
+                    <div class="cart-tooltip-item">
+                        <div class="cart-tooltip-item-info">
+                            <span>${item.name} (${item.qty}x)</span>
+                            <span style="font-size: 0.7rem; color: var(--primary-yellow);">${priceText}</span>
+                        </div>
+                        <button class="cart-remove-btn" onclick="removeFromCart(${index})">&times;</button>
+                    </div>
+                `;
+            });
+            itemsContainer.innerHTML = html;
+        }
+
+        window.onclick = function(event) {
+            const tooltip = document.getElementById('cartTooltip');
+            if (tooltip && !event.target.closest('.cart-wrapper')) {
+                tooltip.classList.remove('show');
+            }
+        };
+
+        updateCartTooltipUI();
+    </script>
 
 </body>
 </html>
