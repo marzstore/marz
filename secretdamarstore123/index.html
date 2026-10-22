@@ -478,31 +478,6 @@
             align-items: center;
         }
 
-        .btn-category-action {
-            background-color: var(--surface-alt);
-            color: var(--text-muted);
-            border: none;
-            padding: 6px 12px;
-            border-radius: 10px;
-            font-size: 0.72rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .btn-category-action:hover {
-            background-color: var(--surface-card);
-            color: var(--text-main);
-        }
-
-        .btn-category-action.danger {
-            color: #ff5c5c;
-        }
-
-        .btn-category-action.danger:hover {
-            background-color: #362626;
-        }
-
         .admin-category-items {
             display: flex;
             flex-direction: column;
@@ -742,7 +717,7 @@
 
         .admin-action-buttons {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             align-items: center;
             justify-content: flex-end;
             flex-wrap: wrap;
@@ -751,9 +726,9 @@
         .admin-btn-icon {
             background: var(--surface-card);
             border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -764,9 +739,9 @@
 
         @media (min-width: 768px) {
             .admin-btn-icon {
-                width: 34px;
-                height: 34px;
-                border-radius: 10px;
+                width: 32px;
+                height: 32px;
+                border-radius: 8px;
             }
         }
 
@@ -778,7 +753,11 @@
         .admin-btn-icon svg {
             width: 16px;
             height: 16px;
-            fill: currentColor;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
             display: block;
         }
 
@@ -1612,7 +1591,8 @@
                     description: description,
                     badge: badge,
                     order: orderValue,
-                    catOrder: catOrderValue
+                    catOrder: catOrderValue,
+                    isActive: true
                 }).then(() => {
                     resetForm();
                 }).catch((error) => {
@@ -1677,7 +1657,9 @@
                         <div class="admin-category-header">
                             <div class="admin-category-title">${catGroup.name}</div>
                             <div class="admin-category-actions">
-                                <button class="btn-category-action danger" id="closeBtn_${catKey}" onclick="closeCategory('${safeCatName}', '${catKey}')">Tutup Kategori</button>
+                                <button class="admin-btn-icon" id="closeBtn_${catKey}" onclick="closeCategory('${safeCatName}', '${catKey}')" title="Tutup Kategori">
+                                    <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                </button>
                             </div>
                         </div>
                         <div class="admin-category-items">
@@ -1686,9 +1668,11 @@
                 items.forEach((item, index) => {
                     let isFirst = index === 0;
                     let isLast = index === items.length - 1;
+                    let isActive = item.isActive !== false;
+                    let opacityStyle = isActive ? '' : 'style="opacity: 0.4;"';
 
                     html += `
-                        <div class="admin-product-item">
+                        <div class="admin-product-item" ${opacityStyle}>
                             <div class="admin-product-info">
                                 <span class="admin-product-title">${item.title}</span>
                                 <div class="admin-product-meta">
@@ -1697,10 +1681,13 @@
                             </div>
                             <div class="admin-action-buttons">
                                 <button class="admin-btn-icon" ${isFirst ? 'style="opacity: 0.3;"' : `onclick="moveProduct('${item.id}', 'up')"`} title="Pindah ke Atas">
-                                    <svg viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>
+                                    <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"></polyline></svg>
                                 </button>
                                 <button class="admin-btn-icon" ${isLast ? 'style="opacity: 0.3;"' : `onclick="moveProduct('${item.id}', 'down')"`} title="Pindah ke Bawah">
-                                    <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+                                    <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                </button>
+                                <button class="admin-btn-icon" onclick="toggleProductStatus('${item.id}')" title="${isActive ? 'Nonaktifkan Produk' : 'Aktifkan Produk'}">
+                                    ${isActive ? '<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>' : '<svg viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>'}
                                 </button>
                                 <button class="admin-btn-icon" onclick="editProduct('${item.id}')" title="Edit">
                                     <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
@@ -1742,7 +1729,7 @@
                 let productsCount = catData.products ? Object.keys(catData.products).length : 0;
 
                 html += `
-                    <div class="admin-product-item">
+                    <div class="admin-product-item" style="opacity: 0.4;">
                         <div class="admin-product-info">
                             <span class="admin-product-title">${catName}</span>
                             <div class="admin-product-meta">
@@ -1750,7 +1737,9 @@
                             </div>
                         </div>
                         <div class="admin-action-buttons">
-                            <button class="btn-category-action" id="activateBtn_${catKey}" onclick="activateCategory('${catKey}')">Aktifkan Kembali</button>
+                            <button class="admin-btn-icon" id="activateBtn_${catKey}" onclick="activateCategory('${catKey}')" title="Aktifkan Kembali">
+                                <svg viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                            </button>
                         </div>
                     </div>
                 `;
@@ -1766,12 +1755,6 @@
                 confirmText: "Ya, Tutup",
                 isDanger: true,
                 onConfirm: () => {
-                    let btn = document.getElementById(`closeBtn_${catKey}`);
-                    if (btn) {
-                        btn.innerText = "Memproses...";
-                        btn.disabled = true;
-                    }
-
                     let productsToMove = {};
                     let productIdsToRemove = [];
 
@@ -1785,10 +1768,6 @@
                     });
 
                     if (productIdsToRemove.length === 0) {
-                        if (btn) {
-                            btn.innerText = "Tutup Kategori";
-                            btn.disabled = false;
-                        }
                         return;
                     }
 
@@ -1804,10 +1783,6 @@
                         });
                         return update(ref(db), updates);
                     }).catch((error) => {
-                        if (btn) {
-                            btn.innerText = "Tutup Kategori";
-                            btn.disabled = false;
-                        }
                         showCustomModal({
                             title: "Gagal",
                             message: "Gagal menutup kategori: " + error.message,
@@ -1819,18 +1794,8 @@
         };
 
         window.activateCategory = function(catKey) {
-            let btn = document.getElementById(`activateBtn_${catKey}`);
-            if (btn) {
-                btn.innerText = "Memproses...";
-                btn.disabled = true;
-            }
-
             let closedCatItem = closedCategoriesData[catKey];
             if (!closedCatItem || !closedCatItem.products) {
-                if (btn) {
-                    btn.innerText = "Aktifkan Kembali";
-                    btn.disabled = false;
-                }
                 return;
             }
 
@@ -1844,13 +1809,25 @@
             updates['close/' + catKey] = null;
 
             update(ref(db), updates).catch((error) => {
-                if (btn) {
-                    btn.innerText = "Aktifkan Kembali";
-                    btn.disabled = false;
-                }
                 showCustomModal({
                     title: "Gagal",
                     message: "Gagal mengaktifkan kategori: " + error.message,
+                    isAlert: true
+                });
+            });
+        };
+
+        window.toggleProductStatus = function(id) {
+            let item = productsData[id];
+            if (!item) return;
+            let currentStatus = item.isActive !== false;
+            let productRef = ref(db, 'produk/' + id);
+            update(productRef, {
+                isActive: !currentStatus
+            }).catch((error) => {
+                showCustomModal({
+                    title: "Gagal",
+                    message: "Gagal mengubah status produk: " + error.message,
                     isAlert: true
                 });
             });
