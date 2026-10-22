@@ -452,12 +452,6 @@
             width: 100%;
         }
 
-        @media (min-width: 768px) {
-            .admin-category-group {
-                padding: 16px;
-            }
-        }
-
         .admin-category-header {
             display: flex;
             justify-content: space-between;
@@ -481,6 +475,32 @@
         .admin-category-actions {
             display: flex;
             gap: 6px;
+            align-items: center;
+        }
+
+        .btn-category-action {
+            background-color: var(--surface-alt);
+            color: var(--text-muted);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-category-action:hover {
+            background-color: var(--surface-card);
+            color: var(--text-main);
+        }
+
+        .btn-category-action.danger {
+            color: #ff5c5c;
+        }
+
+        .btn-category-action.danger:hover {
+            background-color: #362626;
         }
 
         .admin-category-items {
@@ -1184,13 +1204,25 @@
                         </form>
                     </div>
 
-                    <div class="admin-card">
-                        <div class="section-heading">
-                            <span>Daftar Produk Database</span>
+                    <div style="display: flex; flex-direction: column; gap: 16px;">
+                        <div class="admin-card">
+                            <div class="section-heading">
+                                <span>Daftar Produk Database</span>
+                            </div>
+
+                            <div class="product-list-container" id="adminProductList">
+                                <div class="empty-admin-msg">Memuat data produk...</div>
+                            </div>
                         </div>
 
-                        <div class="product-list-container" id="adminProductList">
-                            <div class="empty-admin-msg">Memuat data produk...</div>
+                        <div class="admin-card" id="closedCategoriesCard" style="display: none;">
+                            <div class="section-heading">
+                                <span>Kategori Ditutup Sementara</span>
+                            </div>
+
+                            <div class="product-list-container" id="adminClosedCategoryList">
+                                <div class="empty-admin-msg">Tidak ada kategori yang ditutup.</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1290,6 +1322,7 @@
 
         const allowedAdminEmails = ["marzstore027@gmail.com", "muhammaddamarsobari@gmail.com"];
         let productsData = {};
+        let closedCategoriesData = {};
         let ordersData = {};
         let activeReceiptOrderId = null;
 
@@ -1351,6 +1384,7 @@
                     unauthorizedScreen.classList.remove('active');
                     logoutBtn.style.display = 'block';
                     loadProductsDatabase();
+                    loadClosedCategoriesDatabase();
                     loadOrdersDatabase();
                 } else {
                     adminDashboard.classList.remove('active');
@@ -1467,6 +1501,17 @@
                 renderAdminProductList();
             }, (error) => {
                 document.getElementById('adminProductList').innerHTML = '<div class="empty-admin-msg">Gagal memuat data produk dari database.</div>';
+            });
+        }
+
+        function loadClosedCategoriesDatabase() {
+            const closeRef = ref(db, 'close');
+            onValue(closeRef, (snapshot) => {
+                const data = snapshot.val();
+                closedCategoriesData = data || {};
+                renderAdminClosedCategoriesList();
+            }, (error) => {
+                document.getElementById('adminClosedCategoryList').innerHTML = '<div class="empty-admin-msg">Gagal memuat data kategori ditutup.</div>';
             });
         }
 
@@ -1622,17 +1667,17 @@
             });
 
             let html = '';
-            sortedCatKeys.forEach((catKey, catIndex) => {
+            sortedCatKeys.forEach((catKey) => {
                 let catGroup = groupedByCategory[catKey];
                 let items = catGroup.items;
-                let isFirstCat = catIndex === 0;
-                let isLastCat = catIndex === sortedCatKeys.length - 1;
+                let safeCatName = catGroup.name.replace(/'/g, "\\'");
 
                 html += `
                     <div class="admin-category-group">
                         <div class="admin-category-header">
                             <div class="admin-category-title">${catGroup.name}</div>
                             <div class="admin-category-actions">
+                                <button class="btn-category-action danger" id="closeBtn_${catKey}" onclick="closeCategory('${safeCatName}', '${catKey}')">Tutup Kategori</button>
                             </div>
                         </div>
                         <div class="admin-category-items">
@@ -1675,6 +1720,140 @@
             });
 
             container.innerHTML = html;
+        };
+
+        window.renderAdminClosedCategoriesList = function() {
+            let container = document.getElementById('adminClosedCategoryList');
+            let card = document.getElementById('closedCategoriesCard');
+            let keys = Object.keys(closedCategoriesData);
+
+            if (keys.length === 0) {
+                card.style.display = 'none';
+                container.innerHTML = '<div class="empty-admin-msg">Tidak ada kategori yang ditutup.</div>';
+                return;
+            }
+
+            card.style.display = 'flex';
+            let html = '';
+
+            keys.forEach(catKey => {
+                let catData = closedCategoriesData[catKey];
+                let catName = catData.categoryName || catKey;
+                let productsCount = catData.products ? Object.keys(catData.products).length : 0;
+
+                html += `
+                    <div class="admin-product-item">
+                        <div class="admin-product-info">
+                            <span class="admin-product-title">${catName}</span>
+                            <div class="admin-product-meta">
+                                <span class="admin-product-price">${productsCount} Produk Disembunyikan</span>
+                            </div>
+                        </div>
+                        <div class="admin-action-buttons">
+                            <button class="btn-category-action" id="activateBtn_${catKey}" onclick="activateCategory('${catKey}')">Aktifkan Kembali</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        };
+
+        window.closeCategory = function(catName, catKey) {
+            showCustomModal({
+                title: "Tutup Kategori",
+                message: `Apakah Anda yakin ingin menutup kategori "${catName}" sementara? Semua produk dalam kategori ini akan dipindahkan ke folder penampungan.`,
+                confirmText: "Ya, Tutup",
+                isDanger: true,
+                onConfirm: () => {
+                    let btn = document.getElementById(`closeBtn_${catKey}`);
+                    if (btn) {
+                        btn.innerText = "Memproses...";
+                        btn.disabled = true;
+                    }
+
+                    let productsToMove = {};
+                    let productIdsToRemove = [];
+
+                    Object.keys(productsData).forEach(id => {
+                        let item = productsData[id];
+                        let itemCat = (item.category || '').trim().toLowerCase();
+                        if (itemCat === catKey) {
+                            productsToMove[id] = item;
+                            productIdsToRemove.push(id);
+                        }
+                    });
+
+                    if (productIdsToRemove.length === 0) {
+                        if (btn) {
+                            btn.innerText = "Tutup Kategori";
+                            btn.disabled = false;
+                        }
+                        return;
+                    }
+
+                    let closeRef = ref(db, 'close/' + catKey);
+                    set(closeRef, {
+                        categoryName: catName,
+                        products: productsToMove,
+                        closedAt: Date.now()
+                    }).then(() => {
+                        let updates = {};
+                        productIdsToRemove.forEach(id => {
+                            updates['produk/' + id] = null;
+                        });
+                        return update(ref(db), updates);
+                    }).catch((error) => {
+                        if (btn) {
+                            btn.innerText = "Tutup Kategori";
+                            btn.disabled = false;
+                        }
+                        showCustomModal({
+                            title: "Gagal",
+                            message: "Gagal menutup kategori: " + error.message,
+                            isAlert: true
+                        });
+                    });
+                }
+            });
+        };
+
+        window.activateCategory = function(catKey) {
+            let btn = document.getElementById(`activateBtn_${catKey}`);
+            if (btn) {
+                btn.innerText = "Memproses...";
+                btn.disabled = true;
+            }
+
+            let closedCatItem = closedCategoriesData[catKey];
+            if (!closedCatItem || !closedCatItem.products) {
+                if (btn) {
+                    btn.innerText = "Aktifkan Kembali";
+                    btn.disabled = false;
+                }
+                return;
+            }
+
+            let productsToRestore = closedCatItem.products;
+            let updates = {};
+
+            Object.keys(productsToRestore).forEach(id => {
+                updates['produk/' + id] = productsToRestore[id];
+            });
+
+            updates['close/' + catKey] = null;
+
+            update(ref(db), updates).catch((error) => {
+                if (btn) {
+                    btn.innerText = "Aktifkan Kembali";
+                    btn.disabled = false;
+                }
+                showCustomModal({
+                    title: "Gagal",
+                    message: "Gagal mengaktifkan kategori: " + error.message,
+                    isAlert: true
+                });
+            });
         };
 
         window.renderAdminOrdersList = function() {
